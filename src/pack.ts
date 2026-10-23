@@ -19,7 +19,9 @@ import {
   programStyleOf,
   stylePalette,
 } from "./engine.js";
+import { type GlyphTable, GLYPH_CHARS, glyphLibrary, glyphsFor } from "./glyphs.js";
 import { type MotionInput, MOTION_KIT_CODE, normalizeMotion } from "./kit.js";
+import { MOTION_3D_CODE } from "./three.js";
 
 export const MOTION_FORMAT = 1;
 
@@ -82,6 +84,10 @@ export interface ItemManifest {
   holdFromEnd?: number;
   /** The parts a creator can animate on their own (name → what it is): the names motion overrides use. */
   parts?: Record<string, string>;
+  /** Libraries the code uses besides the motion kit: "3d" (scene3d), "world" (country shapes). */
+  libs?: LibraryName[];
+  /** Faces whose glyphs 3D text is built from: brand roles ("display") or specs ("Anton:400"). Default: display. */
+  faces3d?: string[];
 }
 
 export interface PackManifest {
@@ -102,15 +108,14 @@ export interface PackManifest {
   shared?: string;
 }
 
-/** An item ready to build: its manifest, the pack it belongs to and the full program code. */
+/** An item ready to build: its manifest, the pack it belongs to and its own code. */
 export interface MotionItem extends ItemManifest {
   pack: string;
   /** "essentials/lower-third". */
   ref: string;
-  /** The motion kit, the pack's helpers and the item's frame.js, in that order. */
+  /** The pack's helpers and the item's frame.js. The kit and libraries are added when it is built. */
   code: string;
-  /** Lines in `code` before the item's own frame.js (errors are reported in the author's own lines). */
-  codeOffset?: number;
+  libs: LibraryName[];
 }
 
 export interface MotionPack extends PackManifest {
@@ -138,6 +143,7 @@ export function manifestProblems(m: Partial<ItemManifest>): string[] {
   if (!d || !(d.default > 0)) out.push("duration.default must be a positive number of seconds");
   else if ((d.min !== undefined && d.min > d.default) || (d.max !== undefined && d.max < d.default)) out.push("duration.default must sit between duration.min and duration.max");
   for (const a of m.aspects ?? []) if (!(a in ASPECTS)) out.push(`aspect "${a}" is not one of ${ASPECT_NAMES.join(", ")}`);
+  for (const l of m.libs ?? []) if (!(LIBRARY_NAMES as readonly string[]).includes(l)) out.push(`library "${l}" is not one of ${LIBRARY_NAMES.join(", ")}`);
   for (const [name, p] of Object.entries(m.props ?? {})) {
     if (!/^[a-zA-Z][a-zA-Z0-9]{0,31}$/.test(name)) out.push(`prop "${name}" must be a camelCase name`);
     if (!["text", "longtext", "number", "boolean", "choice", "color", "list", "image", "icon"].includes(p?.type)) out.push(`prop "${name}" has an unknown type`);
@@ -147,16 +153,59 @@ export function manifestProblems(m: Partial<ItemManifest>): string[] {
   return out;
 }
 
-/** An item from its manifest and code, checked; `shared` is the pack's helper file. Every program gets the motion kit. */
+/** An item from its manifest and code, checked; `shared` is the pack's helper file. */
 export function makeItem(pack: string, manifest: ItemManifest, frameCode: string, shared = ""): MotionItem {
   const problems = manifestProblems(manifest);
   if (problems.length) throw new MotionError(`${pack}/${manifest.id ?? "?"}: ${problems.join("; ")}`);
-  const prefix = `${MOTION_KIT_CODE}\n\n${shared.trim() ? `${shared.trim()}\n\n` : ""}`;
-  const code = `${prefix}${frameCode.trim()}\n`;
+  const code = `${shared.trim() ? `${shared.trim()}\n\n` : ""}${frameCode.trim()}\n`;
+  // The 60 000-character limit is on what the item's author wrote; the kit and libraries ship with the package.
   const codeProblems = programProblems(code);
   if (codeProblems.length) throw new MotionError(`${pack}/${manifest.id}: ${codeProblems.join("; ")}`);
-  return { ...manifest, pack, ref: `${pack}/${manifest.id}`, code, codeOffset: prefix.split("\n").length - 1 };
+  return { ...manifest, pack, ref: `${pack}/${manifest.id}`, code, libs: manifest.libs ?? librariesUsed(code) };
 }
+
+// ---------------------------------------------------------------------------------------------
+// Libraries: code that ships with the package and is added to a program when it is built
+// ---------------------------------------------------------------------------------------------
+
+export const LIBRARY_NAMES = ["3d", "world"] as const;
+export type LibraryName = (typeof LIBRARY_NAMES)[number];
+
+/** What code calls when it needs a library — so a program someone writes gets it without asking. */
+const LIBRARY_USE: Record<LibraryName, RegExp> = { "3d": /\bscene3d\s*\(/, world: /\b(worldMap|worldShapes|MM_WORLD)\b/ };
+
+export function librariesUsed(code: string): LibraryName[] {
+  return LIBRARY_NAMES.filter((n) => LIBRARY_USE[n].test(code));
+}
+
+const libraries = new Map<string, () => string>([["3d", () => MOTION_3D_CODE]]);
+const loaded = new Map<string, string>();
+
+/** Make a library's code available (Node reads it from disk, the browser from the registry). */
+export function registerLibrary(name: string, code: string | (() => string)): void {
+  libraries.set(name, typeof code === "string" ? () => code : code);
+  loaded.delete(name);
+}
+
+export function libraryCode(name: string): string | undefined {
+  if (!loaded.has(name)) {
+    const get = libraries.get(name);
+    if (!get) return undefined;
+    loaded.set(name, get());
+  }
+  return loaded.get(name);
+}
+
+/** The faces an item's 3D text is built from, under a style: "Inter:900", … */
+export function glyphFaces(item: Pick<MotionItem, "libs" | "faces3d">, style: ProgramStyle): string[] {
+  if (!item.libs.includes("3d")) return [];
+  const roles = item.faces3d?.length ? item.faces3d : ["display"];
+  const fonts: Record<string, string | undefined> = { ...style.fonts };
+  return [...new Set(roles.map((r) => fonts[r] ?? r))];
+}
+
+/** Digits and signs 3D text may compute (counters, prices) on top of the characters in its props. */
+const GLYPH_EXTRAS = "0123456789 .,:;%+-–×$€£#&!?'\"()/";
 
 // ---------------------------------------------------------------------------------------------
 // Props
@@ -173,8 +222,17 @@ function coerceRow(row: unknown, of: ListField | Record<string, ListField>): unk
   if (typeof of === "string") return of === "number" ? Number(row) : String(row ?? "");
   // "Label: 42" or "Label=42" from a command line becomes { label, value } for a two-field row.
   if (typeof row === "string") {
+    // Only the first separators split: the last field keeps the rest ("Sam: see you at 10:30").
     const keys = Object.keys(of);
-    const parts = row.split(/\s*[:=|]\s*/);
+    const parts: string[] = [];
+    let rest = row;
+    for (let i = 0; i < keys.length - 1; i++) {
+      const m = /\s*[:=|]\s*/.exec(rest);
+      if (!m) break;
+      parts.push(rest.slice(0, m.index));
+      rest = rest.slice(m.index + m[0].length);
+    }
+    parts.push(rest);
     row = Object.fromEntries(keys.map((k, i) => [k, parts[i] ?? ""]));
   }
   const o = (row && typeof row === "object" ? row : {}) as Record<string, unknown>;
@@ -354,6 +412,8 @@ export interface BuildOptions {
 
 export interface BuiltProgram {
   program: TitleProgram;
+  /** Lines of kit and libraries before the item's own code (errors are reported in the author's lines). */
+  codeOffset: number;
   duration: number;
   props: Record<string, unknown>;
   style: ProgramStyle;
@@ -439,7 +499,41 @@ export function buildProgram(item: MotionItem, opts: BuildOptions = {}): BuiltPr
     { width, height },
   );
   if (!program) throw new MotionError(`${item.ref} has no code`);
-  return { program, duration, props, style, media, warnings };
+  // The kit, then each library (3D text brings the glyphs of its faces), then the item's own code.
+  const prefix: string[] = [MOTION_KIT_CODE];
+  for (const lib of item.libs) {
+    if (lib === "3d") {
+      const chars = Object.keys(item.props).length ? charsOf(props) : GLYPH_CHARS;
+      const tables: GlyphTable[] = [];
+      for (const face of glyphFaces(item, style)) {
+        const t = glyphsFor(face);
+        if (t) tables.push(subsetGlyphs(t, chars));
+        else warnings.push(`3D text: no glyphs for ${face} here — it draws nothing`);
+      }
+      prefix.push(glyphLibrary(tables));
+    }
+    const code = libraryCode(lib);
+    if (code) prefix.push(code);
+    else warnings.push(`library "${lib}" is not available here`);
+  }
+  const head = `${prefix.join("\n\n")}\n\n`;
+  program.code = head + program.code;
+  return { program, codeOffset: head.split("\n").length - 1, duration, props, style, media, warnings };
+}
+
+/** The characters a program's props can put on screen, both cases, plus digits and common signs. */
+function charsOf(props: Record<string, unknown>): string {
+  const s = JSON.stringify(props) + GLYPH_EXTRAS;
+  return [...new Set(Array.from(s + s.toUpperCase() + s.toLowerCase()))].join("");
+}
+
+function subsetGlyphs(t: GlyphTable, chars: string): GlyphTable {
+  const g: GlyphTable["g"] = {};
+  for (const ch of chars) {
+    const k = String(ch.codePointAt(0));
+    if (t.g[k]) g[k] = t.g[k];
+  }
+  return { ...t, g };
 }
 
 /** A one-off item from a program someone wrote (an agent, a developer): no props, data passed through. */

@@ -10,6 +10,7 @@ import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { BUILTIN_STYLES, buildProgram, checkItem, customItem, findItem, frameDocument, library, normalizeWords, openSession, parseAspect, renderSheet, renderStill, renderVideo, resolveProps, resolveStyle } from "../src/index.js";
 import { createMcpServer } from "../src/mcp.js";
 import { allFaces, measureText as measureTextForTest } from "../src/node/fonts.js";
+import { pathDataLength, resolvePathLength } from "../src/node/pathlength.js";
 import { outlineText } from "../src/node/outline.js";
 import { ProgramRunner } from "../src/node/sandbox.js";
 import { fontsDir } from "../src/node/paths.js";
@@ -71,7 +72,6 @@ describe("packs", () => {
   it("finds items by ref, id, folder or program file, and suggests near names", () => {
     expect(findItem("essentials/stat").id).toBe("stat");
     expect(findItem("stat").ref).toBe("essentials/stat");
-    expect(() => findItem("lower")).toThrow(/did you mean essentials\/lower-third/);
   });
 
   it("rejects manifests and programs that would not run", () => {
@@ -162,7 +162,8 @@ describe("sandbox", () => {
     expect(() => lr.frame(0, 200)).toThrow(/longer than 0.2 s/);
     const bad = buildProgram(customItem("function frame(t, $) {\n  const a = 1;\n  return a.b.c;\n}")).program;
     const badItem = customItem("function frame(t, $) {\n  const a = 1;\n  return a.b.c;\n}");
-    await expect((async () => (await ProgramRunner.create(bad, env(bad), 5000, badItem.codeOffset)).frame(0))()).rejects.toThrow(/line 3/);
+    const badBuilt = buildProgram(badItem);
+    await expect((async () => (await ProgramRunner.create(badBuilt.program, env(badBuilt.program), 5000, badBuilt.codeOffset)).frame(0))()).rejects.toThrow(/line 3/);
     await expect(openSession(badItem).then((s) => s.runner.frame(0))).rejects.toThrow(/line 3/);
   });
 
@@ -341,5 +342,95 @@ describe("motion", () => {
     expect(warnings.join(" | ")).toMatch(/unknown part "nope"/);
     expect(warnings.join(" | ")).toMatch(/mood "sleepy"/);
     expect(warnings.join(" | ")).toMatch(/"zap" is not one of/);
+  });
+});
+
+describe("libraries, 3D and maps", () => {
+  const ink = (png: Buffer, w: number, h: number) => {
+    const px = pixels(png, w, h);
+    let n = 0;
+    for (let i = 3; i < px.length; i += 4) if (px[i]! > 0) n++;
+    return n;
+  };
+
+  it("keeps the kit and libraries out of items and adds them when a program is built", () => {
+    for (const item of library().items) {
+      expect(item.code.includes("function motion($, t)"), item.ref).toBe(false);
+      expect(item.code.length, item.ref).toBeLessThan(60_000);
+    }
+    const globe = findItem("3d/globe");
+    expect(globe.libs).toEqual(["3d", "world"]);
+    const built = buildProgram(globe);
+    expect(built.program.code).toMatch(/function motion\(\$, t\)/);
+    expect(built.program.code).toMatch(/function scene3d\(/);
+    expect(built.program.code).toMatch(/function worldGlobe\(/);
+    expect(built.codeOffset).toBeGreaterThan(50);
+    // Code someone writes gets a library by calling it.
+    expect(customItem("function frame(t, $) { return scene3d($, {}).render(); }").libs).toEqual(["3d"]);
+    expect(customItem("function frame(t, $) { return worldMap($, {}).outline; }").libs).toEqual(["world"]);
+  });
+
+  it("carries only the glyphs a 3D program's props can show, in the brand's display face", () => {
+    const built = buildProgram(findItem("3d/logo-3d"), { props: { wordmark: "Zebra" }, style: "pop" });
+    const tables = JSON.parse(/var MM_GLYPHS = (\{.*?\});/s.exec(built.program.code)![1]!) as Record<string, { g: Record<string, unknown> }>;
+    expect(Object.keys(tables)).toEqual(["Anton:400"]);
+    const chars = Object.keys(tables["Anton:400"]!.g).map((c) => String.fromCodePoint(Number(c)));
+    expect(chars).toEqual(expect.arrayContaining(["Z", "e", "b", "r", "a", "0", "9"]));
+    expect(chars.length).toBeLessThan(120);
+  });
+
+  it("draws 3D text, cards and parents in perspective, decals over their host", async () => {
+    const code = `function frame(t, $) {
+      var S = scene3d($, { camera: { yaw: 30 * t } });
+      var card = { rotate: [0, 180 * t, 0] };
+      S.add(S.card(600, 300, { color: "#222222", back: "#ff6a3d" }), card);
+      S.add(S.text("Hi", { face: $.font("display"), size: 120, depth: 0, color: "#00ff00" }), { position: [0, 60, -8], parent: card, flat: true, decal: true });
+      S.add(S.text("3D", { face: $.font("display"), size: 160, depth: 50, color: "#ffffff", side: "#ff6a3d" }), { position: [0, -200, 0], rotate: [0, 25, 0] });
+      return S.render();
+    }`;
+    const item = { ...customItem(code, { duration: 1 }), props: { s: { type: "text" as const, default: "Hi3D" } } };
+    const still = await renderStill(item, { width: 640, t: 0.2 });
+    expect(ink(still.data, still.width, still.height)).toBeGreaterThan(20_000);
+    const session = await openSession(item, { width: 640 });
+    // Facing the camera: the decal is drawn after the card's face, below the card's lower edge in depth notwithstanding.
+    const front = session.runner.frame(0.2).svg;
+    expect(front.indexOf('fill="#00ff00"')).toBeGreaterThan(front.search(/fill="#(1|2)[0-9a-f]{5}"/));
+    // Turned past 90°: the back (a lit shade of the orange) shows and the front decal is culled.
+    const back = session.runner.frame(0.8).svg;
+    expect(back).not.toMatch(/#00ff00/);
+    const fills = [...back.matchAll(/fill="#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})"/g)].map((m) => [parseInt(m[1]!, 16), parseInt(m[2]!, 16)]);
+    expect(fills.some(([r, g]) => r! > 150 && r! > g! * 1.8)).toBe(true);
+  });
+
+  it("finds countries by name, short name and id, and maps them", async () => {
+    const code = `function frame(t, $) {
+      var m = worldMap($, {});
+      var ok = [worldFind("UK"), worldFind("usa"), worldFind(356), worldFind("Côte d'Ivoire")].map(function (c) { return c ? c.name : "-"; });
+      return JSON.stringify({ ok: ok, n: m.countries.length, d: m.path("India").length, ant: m.countries.some(function (c) { return c.name === "Antarctica"; }) });
+    }`;
+    const out = JSON.parse((await openSession(customItem(code), { width: 640 })).runner.frame(0).svg) as { ok: string[]; n: number; d: number; ant: boolean };
+    expect(out.ok).toEqual(["United Kingdom", "United States of America", "India", "Côte d'Ivoire"]);
+    expect(out.n).toBeGreaterThan(170);
+    expect(out.d).toBeGreaterThan(200);
+    expect(out.ant).toBe(false);
+  });
+
+  it("draws pathLength dashes at their true length (resvg ignores the attribute)", () => {
+    expect(pathDataLength("M0 0L30 40")).toBeCloseTo(50, 5);
+    expect(pathDataLength("M0 0A50 50 0 0 1 100 0")).toBeCloseTo(Math.PI * 50, 0);
+    const out = resolvePathLength('<circle cx="0" cy="0" r="10" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="0.75"/>');
+    expect(out).not.toMatch(/pathLength/);
+    expect(out).toMatch(new RegExp(`stroke-dasharray="${2 * Math.PI * 10} ${2 * Math.PI * 10}"`));
+    expect(Number(/stroke-dashoffset="([^"]+)"/.exec(out)![1])).toBeCloseTo(0.75 * 2 * Math.PI * 10, 6);
+  });
+
+  it("keeps the rest of a row in its last field", () => {
+    const r = resolveProps(findItem("social/chat"), { messages: ["them: see you at 10:30?", "me: yes: on my way"] });
+    expect(r.props.messages).toEqual([{ who: "them", text: "see you at 10:30?" }, { who: "me", text: "yes: on my way" }]);
+  });
+
+  it("suggests the closest items for a name it does not know", () => {
+    expect(() => findItem("lower")).toThrow(/did you mean essentials\/lower-third/);
+    expect(() => findItem("map")).toThrow(/did you mean data\/world-map/);
   });
 });

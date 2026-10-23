@@ -1,0 +1,68 @@
+{
+  "id": "notifications",
+  "name": "Notification stack",
+  "description": "Notifications land one after another and stack up, each new one pushing the pile down.",
+  "category": "social",
+  "tags": [
+    "notification",
+    "stack",
+    "cascade",
+    "ui",
+    "overlay"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "items": {
+      "type": "list",
+      "label": "Notifications (App: message)",
+      "default": [
+        {
+          "app": "Sales",
+          "text": "New order — $1,240"
+        },
+        {
+          "app": "Mail",
+          "text": "The client signed off on the cut"
+        },
+        {
+          "app": "Calendar",
+          "text": "Launch call moved to 3 pm"
+        },
+        {
+          "app": "Bank",
+          "text": "Payment received from Northwind"
+        }
+      ],
+      "maxItems": 6,
+      "minItems": 1,
+      "of": {
+        "app": "text",
+        "text": "text"
+      }
+    },
+    "gap": {
+      "type": "number",
+      "label": "Seconds between",
+      "default": 0.75,
+      "min": 0.2,
+      "max": 5
+    },
+    "icon": {
+      "type": "icon",
+      "label": "Icon",
+      "default": "bell"
+    }
+  },
+  "parts": {
+    "items": "each notification"
+  },
+  "beats": {
+    "in": 0.2,
+    "out": -0.45
+  }
+}

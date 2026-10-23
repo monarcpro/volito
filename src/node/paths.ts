@@ -26,6 +26,7 @@ export function packageRoot(): string {
 
 export const fontsDir = (): string => join(packageRoot(), "fonts");
 export const packsDir = (): string => join(packageRoot(), "packs");
+export const libsDir = (): string => join(packageRoot(), "libs");
 
 export function packageVersion(): string {
   return (JSON.parse(readFileSync(join(packageRoot(), "package.json"), "utf8")) as { version: string }).version;

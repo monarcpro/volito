@@ -1,0 +1,106 @@
+{
+  "id": "score-bug",
+  "name": "Score bug",
+  "description": "A sports score bug: two teams with their colours and scores, the period and a running clock. A goal adds a point with a flash.",
+  "category": "banner",
+  "tags": [
+    "sports",
+    "score",
+    "scoreboard",
+    "overlay",
+    "broadcast"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 600
+  },
+  "props": {
+    "home": {
+      "type": "text",
+      "label": "Home team",
+      "default": "MON",
+      "maxLength": 4
+    },
+    "away": {
+      "type": "text",
+      "label": "Away team",
+      "default": "NWD",
+      "maxLength": 4
+    },
+    "homeScore": {
+      "type": "number",
+      "label": "Home score",
+      "default": 2,
+      "min": 0,
+      "max": 999
+    },
+    "awayScore": {
+      "type": "number",
+      "label": "Away score",
+      "default": 1,
+      "min": 0,
+      "max": 999
+    },
+    "homeColor": {
+      "type": "color",
+      "label": "Home colour",
+      "default": "#FF6A3D"
+    },
+    "awayColor": {
+      "type": "color",
+      "label": "Away colour",
+      "default": "#3DD6FF"
+    },
+    "period": {
+      "type": "text",
+      "label": "Period",
+      "default": "2nd",
+      "maxLength": 6
+    },
+    "clock": {
+      "type": "text",
+      "label": "Clock (mm:ss)",
+      "default": "67:12",
+      "maxLength": 6
+    },
+    "clockRuns": {
+      "type": "choice",
+      "label": "Clock",
+      "options": [
+        "up",
+        "down",
+        "stopped"
+      ],
+      "default": "up"
+    },
+    "goal": {
+      "type": "choice",
+      "label": "Goal",
+      "options": [
+        "none",
+        "home",
+        "away"
+      ],
+      "default": "home"
+    },
+    "goalAt": {
+      "type": "number",
+      "label": "Goal at (s)",
+      "default": 3.5,
+      "min": 0,
+      "max": 600
+    }
+  },
+  "parts": {
+    "bug": "the board",
+    "home": "the home row",
+    "away": "the away row",
+    "clock": "the period and clock"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.35
+  }
+}

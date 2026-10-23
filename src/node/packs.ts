@@ -8,6 +8,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { type ItemManifest, type MotionItem, type MotionPack, type PackManifest, MOTION_FORMAT, MotionError, customItem, makeItem } from "../pack.js";
 import { packsDir } from "./paths.js";
+import "./setup.js";
 
 const readJson = <T>(file: string): T => {
   try {
@@ -37,10 +38,13 @@ let builtin: MotionPack[] | null = null;
 export function builtinPacks(): MotionPack[] {
   if (builtin) return builtin;
   const dir = packsDir();
+  // Essentials first, then the broadcast, social, data and 3D packs, then any others by name.
+  const order = ["essentials", "broadcast", "social", "data", "3d"];
+  const rank = (d: string) => (order.includes(d) ? order.indexOf(d) : order.length);
   builtin = existsSync(dir)
     ? readdirSync(dir)
         .filter((d) => existsSync(join(dir, d, "pack.json")))
-        .sort()
+        .sort((a, b) => rank(a) - rank(b) || a.localeCompare(b))
         .map((d) => loadPack(join(dir, d)))
     : [];
   return builtin;
@@ -91,7 +95,10 @@ export function findItem(name: string, lib: Library = library()): MotionItem {
   const byId = lib.items.filter((i) => i.id === n);
   if (byId.length === 1) return byId[0]!;
   if (byId.length > 1) throw new MotionError(`"${n}" is in more than one pack: ${byId.map((i) => i.ref).join(", ")}`);
-  const near = lib.items.filter((i) => i.id.includes(n) || n.includes(i.id) || i.name.toLowerCase().includes(n.toLowerCase())).map((i) => i.ref);
+  // Closest first: ids that start with the words, then ids that hold them, then names and tags that do.
+  const q = n.toLowerCase();
+  const score = (i: MotionItem) => (i.id.startsWith(q) ? 0 : i.id.includes(q) || q.includes(i.id) ? 1 : i.name.toLowerCase().includes(q) ? 2 : (i.tags ?? []).some((t) => t.includes(q)) ? 3 : 9);
+  const near = lib.items.map((i) => ({ ref: i.ref, s: score(i) })).filter((r) => r.s < 9).sort((a, b) => a.s - b.s).map((r) => r.ref);
   throw new MotionError(`no item "${n}"${near.length ? ` — did you mean ${near.slice(0, 4).join(", ")}?` : ""} (list them with: monarc-motion list)`);
 }
 

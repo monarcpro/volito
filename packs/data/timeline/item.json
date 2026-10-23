@@ -1,0 +1,70 @@
+{
+  "id": "timeline",
+  "name": "Timeline",
+  "description": "Milestones along a line that draws itself: each date's dot pops as the line reaches it and its words rise beside it.",
+  "category": "list",
+  "tags": [
+    "timeline",
+    "history",
+    "milestones",
+    "roadmap",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 7,
+    "min": 3,
+    "max": 40
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "How we got here",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Milestones (When: what)",
+      "default": [
+        {
+          "when": "2019",
+          "what": "First edit in a garage"
+        },
+        {
+          "when": "2021",
+          "what": "Studio opens in Lisbon"
+        },
+        {
+          "when": "2023",
+          "what": "100 creators on board"
+        },
+        {
+          "when": "2025",
+          "what": "The AI editor ships"
+        },
+        {
+          "when": "2026",
+          "what": "MONARC Motion goes open"
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 2,
+      "of": {
+        "when": "text",
+        "what": "text"
+      }
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "line": "the line",
+    "dots": "the dots",
+    "labels": "the dates and words"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

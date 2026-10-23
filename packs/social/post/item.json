@@ -1,0 +1,86 @@
+{
+  "id": "post",
+  "name": "Social post",
+  "description": "A post card: picture or initials, name, handle and check, the words, and likes, reposts and replies counting up as a heart pops.",
+  "category": "social",
+  "tags": [
+    "post",
+    "tweet",
+    "social",
+    "quote",
+    "card"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Maya Chen",
+      "maxLength": 26
+    },
+    "handle": {
+      "type": "text",
+      "label": "Handle",
+      "default": "@mayaedits",
+      "maxLength": 26
+    },
+    "text": {
+      "type": "longtext",
+      "label": "Post",
+      "default": "Stopped editing timelines by hand this year. I describe the cut, the agent builds it, I direct. Shipping three times as much.",
+      "maxLength": 280
+    },
+    "photo": {
+      "type": "image",
+      "label": "Photo"
+    },
+    "verified": {
+      "type": "boolean",
+      "label": "Verified",
+      "default": true
+    },
+    "likes": {
+      "type": "number",
+      "label": "Likes",
+      "default": 18400,
+      "min": 0,
+      "max": 999999999
+    },
+    "reposts": {
+      "type": "number",
+      "label": "Reposts",
+      "default": 2310,
+      "min": 0,
+      "max": 999999999
+    },
+    "replies": {
+      "type": "number",
+      "label": "Replies",
+      "default": 412,
+      "min": 0,
+      "max": 999999999
+    },
+    "time": {
+      "type": "text",
+      "label": "Time",
+      "default": "2h",
+      "maxLength": 12
+    }
+  },
+  "parts": {
+    "card": "the card",
+    "author": "the name line",
+    "text": "the words",
+    "stats": "the counts",
+    "heart": "the heart"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

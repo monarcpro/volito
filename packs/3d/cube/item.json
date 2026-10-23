@@ -1,0 +1,52 @@
+{
+  "id": "cube",
+  "name": "3D word cube",
+  "description": "A cube turns a quarter at a time on a spring, each side showing the next word — a kinetic way through a list of 2 to 4 words.",
+  "category": "text",
+  "tags": [
+    "3d",
+    "cube",
+    "words",
+    "kinetic",
+    "rotate"
+  ],
+  "placement": "full",
+  "libs": [
+    "3d"
+  ],
+  "duration": {
+    "default": 5,
+    "min": 2.5,
+    "max": 30
+  },
+  "props": {
+    "lead": {
+      "type": "text",
+      "label": "Lead-in",
+      "default": "Edit",
+      "maxLength": 20
+    },
+    "words": {
+      "type": "list",
+      "label": "Words (2–4)",
+      "default": [
+        "faster",
+        "smarter",
+        "together",
+        "anywhere"
+      ],
+      "maxItems": 4,
+      "minItems": 2,
+      "of": "text"
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "lead": "the lead-in",
+    "cube": "the cube"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.45
+  }
+}

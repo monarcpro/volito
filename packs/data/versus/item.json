@@ -1,0 +1,84 @@
+{
+  "id": "versus",
+  "name": "Versus",
+  "description": "Two sides face off: a label and a big number counting up on each, a VS badge popping between them and a split bar settling to their ratio.",
+  "category": "chart",
+  "tags": [
+    "comparison",
+    "versus",
+    "vs",
+    "split",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Hours to publish one video",
+      "maxLength": 50
+    },
+    "left": {
+      "type": "text",
+      "label": "Left",
+      "default": "Before",
+      "maxLength": 20
+    },
+    "leftValue": {
+      "type": "number",
+      "label": "Left value",
+      "default": 9.5,
+      "min": 0,
+      "max": 1000000000000.0
+    },
+    "right": {
+      "type": "text",
+      "label": "Right",
+      "default": "With MONARC",
+      "maxLength": 20
+    },
+    "rightValue": {
+      "type": "number",
+      "label": "Right value",
+      "default": 1.5,
+      "min": 0,
+      "max": 1000000000000.0
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before numbers",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": " h",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 1,
+      "min": 0,
+      "max": 3
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "left": "the left side",
+    "right": "the right side",
+    "badge": "the VS badge",
+    "split": "the split bar"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

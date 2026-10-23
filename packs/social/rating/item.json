@@ -1,0 +1,58 @@
+{
+  "id": "rating",
+  "name": "Rating",
+  "description": "Stars fill one by one to the score, the score counts up, then a review and its author fade in.",
+  "category": "social",
+  "tags": [
+    "rating",
+    "review",
+    "stars",
+    "testimonial",
+    "proof"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "score": {
+      "type": "number",
+      "label": "Score (out of 5)",
+      "default": 4.8,
+      "min": 0,
+      "max": 5,
+      "decimals": 1
+    },
+    "count": {
+      "type": "text",
+      "label": "Count line",
+      "default": "from 2,480 reviews",
+      "maxLength": 40
+    },
+    "quote": {
+      "type": "longtext",
+      "label": "Review",
+      "default": "The fastest way we've found to get from raw footage to something we're proud to post.",
+      "maxLength": 200
+    },
+    "author": {
+      "type": "text",
+      "label": "Author",
+      "default": "Priya S., creative director",
+      "maxLength": 40
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "stars": "the stars",
+    "score": "the score and count",
+    "quote": "the review",
+    "author": "who wrote it"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

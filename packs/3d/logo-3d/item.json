@@ -1,0 +1,53 @@
+{
+  "id": "logo-3d",
+  "name": "3D logo",
+  "description": "An extruded wordmark swings in on a spring and settles as a light sweeps across its faces; the tagline rises beneath. Real depth, light and perspective.",
+  "category": "logo",
+  "tags": [
+    "3d",
+    "logo",
+    "sting",
+    "intro",
+    "brand",
+    "extruded"
+  ],
+  "placement": "full",
+  "libs": [
+    "3d"
+  ],
+  "duration": {
+    "default": 4,
+    "min": 2.5,
+    "max": 20
+  },
+  "props": {
+    "wordmark": {
+      "type": "text",
+      "label": "Wordmark",
+      "default": "MONARC",
+      "maxLength": 16
+    },
+    "tagline": {
+      "type": "text",
+      "label": "Tagline",
+      "default": "Made with motion",
+      "maxLength": 40
+    },
+    "depth": {
+      "type": "number",
+      "label": "Depth (share of the height)",
+      "default": 0.3,
+      "min": 0.05,
+      "max": 1
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "wordmark": "the 3D wordmark",
+    "tagline": "the tagline"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.45
+  }
+}

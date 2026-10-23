@@ -1,0 +1,66 @@
+{
+  "id": "flight",
+  "name": "Flight route",
+  "description": "A map frames two places; a route arcs from one to the other along the great circle while a plane flies it, and both ends are pinned and named.",
+  "category": "chart",
+  "tags": [
+    "map",
+    "travel",
+    "route",
+    "flight",
+    "geo"
+  ],
+  "placement": "full",
+  "libs": [
+    "world"
+  ],
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "from": {
+      "type": "text",
+      "label": "From (name)",
+      "default": "Lisbon",
+      "maxLength": 24
+    },
+    "fromAt": {
+      "type": "text",
+      "label": "From (lat, lon or country)",
+      "default": "38.72, -9.14",
+      "maxLength": 32
+    },
+    "to": {
+      "type": "text",
+      "label": "To (name)",
+      "default": "Mumbai",
+      "maxLength": 24
+    },
+    "toAt": {
+      "type": "text",
+      "label": "To (lat, lon or country)",
+      "default": "19.08, 72.88",
+      "maxLength": 32
+    },
+    "note": {
+      "type": "text",
+      "label": "Note",
+      "default": "8,154 km · 9 h 40 m",
+      "maxLength": 32
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "map": "the map",
+    "route": "the route",
+    "plane": "the plane",
+    "pins": "the two pins and names",
+    "note": "the note"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

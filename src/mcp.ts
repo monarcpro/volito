@@ -10,7 +10,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { BUILTIN_STYLES, MG_API_REFERENCE } from "./engine.js";
-import { AUTHORING_GUIDE, MOTION_GUIDE } from "./guide.js";
+import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE } from "./guide.js";
 import { DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS } from "./kit.js";
 import { ASPECT_NAMES, CATEGORIES, type MotionItem, customItem, describeItem, parseAspect } from "./pack.js";
 import { checkItem, describeReport } from "./node/check.js";
@@ -102,7 +102,7 @@ const warnings = (w: string[]) => (w.length ? `\nWarnings:\n${w.map((x) => `- ${
 
 export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
   const lib = () => library(opts.packs ?? []);
-  const server = new McpServer({ name: "monarc-motion", version: packageVersion() }, { instructions: "MONARC Motion renders brand-aware motion graphics (lower thirds, titles, CTAs, stats, lists, end cards…) to video files with alpha. Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), then motion_render to a file. Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed. To make something no item covers, write a program against motion_api and use the same tools with `code`." });
+  const server = new McpServer({ name: "monarc-motion", version: packageVersion() }, { instructions: "MONARC Motion renders brand-aware motion graphics (lower thirds, titles, CTAs, stats, lists, end cards…) to video files with alpha. Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), then motion_render to a file. Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed. Packs: essentials, broadcast (lower thirds, tickers, score bugs), social (follow cards, notifications, chat), data (charts, maps, flight routes) and 3d (extruded logos and titles, card flips, globes). To make something no item covers, write a program against motion_api (it includes 3D scenes and world maps) and use the same tools with `code`." });
 
   server.registerTool(
     "motion_list",
@@ -230,7 +230,7 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
   server.registerTool(
     "motion_api",
     { title: "Program API", description: "How to write your own graphic: the frame(t, $) contract, the whole $ runtime (timing, motion, text, shapes, cards, charts, art styles, brand colours and faces) and how items and packs are laid out. Read before passing `code`.", inputSchema: {} },
-    async () => text(`${MG_API_REFERENCE}\n\n${MOTION_GUIDE}\n\n${AUTHORING_GUIDE}`),
+    async () => text(`${MG_API_REFERENCE}\n\n${LIBRARY_GUIDE}\n\n${MOTION_GUIDE}\n\n${AUTHORING_GUIDE}`),
   );
 
   return server;

@@ -1,0 +1,47 @@
+{
+  "id": "lt-news",
+  "name": "Lower third — news boxes",
+  "description": "Broadcast style: a tight headline box with a hard accent shadow, a sub-line box beneath and an optional tag above.",
+  "category": "lower-third",
+  "tags": [
+    "lower-third",
+    "overlay",
+    "news",
+    "broadcast"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "tag": {
+      "type": "text",
+      "label": "Tag",
+      "default": "Exclusive",
+      "maxLength": 16
+    },
+    "headline": {
+      "type": "text",
+      "label": "Headline",
+      "default": "Creators switch to AI editing",
+      "maxLength": 48
+    },
+    "sub": {
+      "type": "text",
+      "label": "Sub-line",
+      "default": "Studios report three times the output",
+      "maxLength": 56
+    }
+  },
+  "parts": {
+    "tag": "the tag above",
+    "headline": "the headline box and its words",
+    "sub": "the sub-line box and its words"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

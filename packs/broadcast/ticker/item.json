@@ -1,0 +1,64 @@
+{
+  "id": "ticker",
+  "name": "News ticker",
+  "description": "A crawl along the bottom: a label block in the accent and a line of items scrolling left without a break.",
+  "category": "banner",
+  "tags": [
+    "ticker",
+    "crawl",
+    "news",
+    "overlay",
+    "broadcast"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 10,
+    "min": 3,
+    "max": 120
+  },
+  "props": {
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Latest",
+      "maxLength": 14
+    },
+    "items": {
+      "type": "list",
+      "label": "Items",
+      "default": [
+        "MONARC Motion ships 49 graphics",
+        "3D text renders without a GPU",
+        "Agents preview a graphic in 0.2 s",
+        "Every pack works in any brand"
+      ],
+      "maxItems": 12,
+      "of": "text"
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed (px/s at 1080p)",
+      "default": 170,
+      "min": 40,
+      "max": 600
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "bottom",
+        "top"
+      ],
+      "default": "bottom"
+    }
+  },
+  "parts": {
+    "bar": "the strip",
+    "label": "the label block",
+    "items": "the scrolling words"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.4
+  }
+}

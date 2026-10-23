@@ -15,6 +15,7 @@ import { type BuildOptions, type BuiltProgram, type MotionItem, MotionError, bui
 import { FfmpegMissing, probeFfmpeg } from "./ffmpeg.js";
 import { fontFaceCss, fontFilesFor, fontFilesForDocument } from "./fonts.js";
 import { outlineText } from "./outline.js";
+import { resolvePathLength } from "./pathlength.js";
 import { type ProgramFrame, ProgramRunner } from "./sandbox.js";
 
 export const VIDEO_FORMATS = ["mov", "webm", "mp4", "hevc", "gif", "png"] as const;
@@ -71,7 +72,7 @@ export async function openSession(item: MotionItem, opts: RenderOptions = {}): P
   const built = buildProgram(item, opts);
   const fps = Math.max(1, Math.min(120, Math.round(opts.fps ?? 30)));
   const env = programEnv(built.program, built.duration, fps, built.media);
-  const runner = await ProgramRunner.create(built.program, env, 5000, item.codeOffset ?? 0);
+  const runner = await ProgramRunner.create(built.program, env, 5000, built.codeOffset);
   const p = built.program;
   const width = Math.max(16, Math.min(8192, Math.round(opts.width ?? p.width)));
   const height = Math.max(16, Math.round((width * p.height) / p.width / 2) * 2);
@@ -84,7 +85,7 @@ export async function openSession(item: MotionItem, opts: RenderOptions = {}): P
  * for browsers) the faces are embedded instead and the text left as written.
  */
 export function frameDocument(program: TitleProgram, frame: Pick<ProgramFrame, "svg" | "defs">, width: number, height: number, opts: { background?: string | null; css?: string } = {}): string {
-  let body = opts.css ? frame.svg : outlineText(frame.svg);
+  let body = opts.css ? frame.svg : resolvePathLength(outlineText(frame.svg));
   let defs = MG_STD_DEFS + frame.defs;
   if (program.region) {
     const r = program.region;

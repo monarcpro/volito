@@ -1,0 +1,71 @@
+{
+  "id": "chat",
+  "name": "Chat thread",
+  "description": "A message thread plays out: their bubbles arrive after a typing indicator, yours on the right in the accent.",
+  "category": "social",
+  "tags": [
+    "chat",
+    "messages",
+    "dm",
+    "texting",
+    "ui"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 8,
+    "min": 3,
+    "max": 60
+  },
+  "props": {
+    "contact": {
+      "type": "text",
+      "label": "Contact",
+      "default": "Sam · Producer",
+      "maxLength": 28
+    },
+    "messages": {
+      "type": "list",
+      "label": "Messages (me: … / them: …)",
+      "default": [
+        {
+          "who": "them",
+          "text": "Did the new cut land?"
+        },
+        {
+          "who": "me",
+          "text": "Rendering now — 3 versions"
+        },
+        {
+          "who": "them",
+          "text": "Send the vertical one first"
+        },
+        {
+          "who": "me",
+          "text": "On its way 🚀"
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 1,
+      "of": {
+        "who": "text",
+        "text": "text"
+      }
+    },
+    "gap": {
+      "type": "number",
+      "label": "Seconds between",
+      "default": 1.4,
+      "min": 0.4,
+      "max": 6
+    }
+  },
+  "parts": {
+    "header": "the contact bar",
+    "messages": "each bubble",
+    "typing": "the typing dots"
+  },
+  "beats": {
+    "in": 0.2,
+    "out": -0.45
+  }
+}

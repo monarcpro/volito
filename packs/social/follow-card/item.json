@@ -1,0 +1,105 @@
+{
+  "id": "follow-card",
+  "name": "Follow card",
+  "description": "A profile card: picture or initials, name with a verified check, handle, a follower count that counts up, a line of bio and a Follow button a cursor presses.",
+  "category": "social",
+  "tags": [
+    "social",
+    "follow",
+    "profile",
+    "cta",
+    "overlay"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "MONARC Studio",
+      "maxLength": 26
+    },
+    "handle": {
+      "type": "text",
+      "label": "Handle",
+      "default": "@monarcstudio",
+      "maxLength": 28
+    },
+    "followers": {
+      "type": "number",
+      "label": "Followers",
+      "default": 248000,
+      "min": 0,
+      "max": 999999999
+    },
+    "bio": {
+      "type": "text",
+      "label": "Bio",
+      "default": "Edits that feel directed, not assembled.",
+      "maxLength": 60
+    },
+    "platform": {
+      "type": "choice",
+      "label": "Platform",
+      "options": [
+        "instagram",
+        "tiktok",
+        "youtube",
+        "x",
+        "linkedin",
+        "threads",
+        "website"
+      ],
+      "default": "instagram"
+    },
+    "photo": {
+      "type": "image",
+      "label": "Photo"
+    },
+    "verified": {
+      "type": "boolean",
+      "label": "Verified",
+      "default": true
+    },
+    "action": {
+      "type": "text",
+      "label": "Button",
+      "default": "Follow",
+      "maxLength": 14
+    },
+    "done": {
+      "type": "text",
+      "label": "Button after",
+      "default": "Following",
+      "maxLength": 14
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "auto",
+        "center",
+        "bottom-left",
+        "bottom-right"
+      ],
+      "default": "auto"
+    }
+  },
+  "parts": {
+    "card": "the card",
+    "avatar": "the picture",
+    "name": "the name and handle",
+    "stats": "the follower count",
+    "bio": "the bio",
+    "button": "the button",
+    "cursor": "the cursor"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

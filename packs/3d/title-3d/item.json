@@ -1,0 +1,52 @@
+{
+  "id": "title-3d",
+  "name": "3D title",
+  "description": "Extruded letters flip up one by one on springs while the camera eases in; the subtitle rises beneath.",
+  "category": "title",
+  "tags": [
+    "3d",
+    "title",
+    "chapter",
+    "kinetic",
+    "extruded"
+  ],
+  "placement": "full",
+  "libs": [
+    "3d"
+  ],
+  "duration": {
+    "default": 4.5,
+    "min": 2.5,
+    "max": 20
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Depth over reach",
+      "maxLength": 28
+    },
+    "subtitle": {
+      "type": "text",
+      "label": "Subtitle",
+      "default": "Chapter two",
+      "maxLength": 40
+    },
+    "depth": {
+      "type": "number",
+      "label": "Depth (share of the height)",
+      "default": 0.22,
+      "min": 0.05,
+      "max": 1
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the 3D title",
+    "subtitle": "the subtitle"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.45
+  }
+}

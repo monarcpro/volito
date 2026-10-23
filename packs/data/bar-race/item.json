@@ -1,0 +1,113 @@
+{
+  "id": "bar-race",
+  "name": "Bar chart race",
+  "description": "Ranked bars grow and overtake each other as the periods advance; the axis rescales and the period counts up in the corner.",
+  "category": "chart",
+  "tags": [
+    "chart",
+    "bar race",
+    "ranking",
+    "time series",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 4,
+    "max": 60
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Most-used editing tools",
+      "maxLength": 50
+    },
+    "periods": {
+      "type": "list",
+      "label": "Periods",
+      "default": [
+        "2022",
+        "2023",
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "maxItems": 12,
+      "minItems": 2,
+      "of": "text"
+    },
+    "rows": {
+      "type": "list",
+      "label": "Rows (Name: v1, v2, …)",
+      "default": [
+        {
+          "label": "MONARC",
+          "values": "4, 14, 38, 72, 118"
+        },
+        {
+          "label": "Studio A",
+          "values": "60, 66, 70, 71, 72"
+        },
+        {
+          "label": "Cutter",
+          "values": "40, 48, 52, 50, 46"
+        },
+        {
+          "label": "Frame.io",
+          "values": "22, 30, 41, 47, 51"
+        },
+        {
+          "label": "Clipmate",
+          "values": "35, 30, 24, 20, 18"
+        },
+        {
+          "label": "Reelsy",
+          "values": "8, 20, 33, 44, 49"
+        }
+      ],
+      "maxItems": 12,
+      "minItems": 2,
+      "of": {
+        "label": "text",
+        "values": "text"
+      }
+    },
+    "show": {
+      "type": "number",
+      "label": "Bars shown",
+      "default": 6,
+      "min": 3,
+      "max": 10
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before numbers",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": "K",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 3
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "bars": "the bars",
+    "period": "the period in the corner"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

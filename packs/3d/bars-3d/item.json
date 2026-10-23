@@ -1,0 +1,78 @@
+{
+  "id": "bars-3d",
+  "name": "3D bar chart",
+  "description": "Bars rise from a floor one after another while the camera orbits; values count up on their tops and the leader takes the accent.",
+  "category": "chart",
+  "tags": [
+    "3d",
+    "chart",
+    "bars",
+    "data",
+    "orbit"
+  ],
+  "placement": "full",
+  "libs": [
+    "3d"
+  ],
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Videos shipped per week",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Rows (Label: value)",
+      "default": [
+        {
+          "label": "Jan",
+          "value": 4
+        },
+        {
+          "label": "Feb",
+          "value": 6
+        },
+        {
+          "label": "Mar",
+          "value": 9
+        },
+        {
+          "label": "Apr",
+          "value": 13
+        },
+        {
+          "label": "May",
+          "value": 21
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 2,
+      "of": {
+        "label": "text",
+        "value": "number"
+      }
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": "",
+      "maxLength": 6
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "bars": "the bars and floor",
+    "labels": "the names and values"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.45
+  }
+}

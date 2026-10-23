@@ -12,7 +12,8 @@
  * package's fonts/ and dist/registry.json yourself and pass their folder to keep it offline.
  */
 import { MG_STD_DEFS, type ProgramEnv, type TitleProgram, programEnv, programWorkerSource } from "../engine.js";
-import { type BuildOptions, type BuiltProgram, type MotionItem, type MotionPack, MotionError, buildProgram, customItem } from "../pack.js";
+import { type BuildOptions, type BuiltProgram, type MotionItem, type MotionPack, MotionError, buildProgram, customItem, glyphFaces, registerLibrary, resolveStyle } from "../pack.js";
+import { TrueTypeFace, glyphFaceFile, glyphTable, setGlyphSource } from "../glyphs.js";
 
 declare const __MOTION_VERSION__: string;
 declare const __MOTION_NAME__: string;
@@ -31,6 +32,8 @@ export interface Registry {
   package: string;
   version: string;
   packs: MotionPack[];
+  /** Libraries that ship as files ("world"): name → code. */
+  libs?: Record<string, string>;
 }
 
 const registries = new Map<string, Promise<Registry>>();
@@ -40,9 +43,11 @@ export function loadRegistry(base = CDN_BASE): Promise<Registry> {
   const url = new URL("dist/registry.json", base).href;
   let p = registries.get(url);
   if (!p) {
-    p = fetch(url).then((r) => {
+    p = fetch(url).then(async (r) => {
       if (!r.ok) throw new MotionError(`${url}: HTTP ${r.status}`);
-      return r.json() as Promise<Registry>;
+      const reg = (await r.json()) as Registry;
+      for (const [name, code] of Object.entries(reg.libs ?? {})) registerLibrary(name, code);
+      return reg;
     });
     registries.set(url, p);
     p.catch(() => registries.delete(url));
@@ -56,6 +61,38 @@ export function findItem(reg: Registry, name: string): MotionItem {
   const hit = all.find((i) => i.ref === name) ?? all.filter((i) => i.id === name)[0];
   if (!hit) throw new MotionError(`no item "${name}"`);
   return hit;
+}
+
+// ---------------------------------------------------------------------------------------------
+// 3D text: glyph tables are read from the same font files the frames embed, before a build.
+// ---------------------------------------------------------------------------------------------
+
+const glyphTables = new Map<string, ReturnType<typeof glyphTable>>();
+const glyphLoads = new Map<string, Promise<void>>();
+setGlyphSource((key) => glyphTables.get(key));
+
+/** Fetch and read the faces an item's 3D text needs (no-op for items without 3D). */
+async function preloadGlyphs(item: MotionItem, opts: BuildOptions, base: string): Promise<void> {
+  const faces = glyphFaces(item, resolveStyle(opts.style ?? item.style, opts.colors));
+  await Promise.all(
+    faces.map((face) => {
+      const { key, file } = glyphFaceFile(face);
+      if (glyphTables.has(key)) return Promise.resolve();
+      const pending = glyphLoads.get(key);
+      if (pending) return pending;
+      const p: Promise<void> = fetch(new URL(`fonts/${file}`, base).href)
+        .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(`HTTP ${r.status}`))))
+        .then((buf) => {
+          glyphTables.set(key, glyphTable(new TrueTypeFace(new Uint8Array(buf)), key));
+        })
+        .catch(() => {
+          // A face that cannot be fetched draws no 3D text; the build reports it.
+          glyphLoads.delete(key);
+        });
+      glyphLoads.set(key, p);
+      return p;
+    }),
+  );
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -313,12 +350,13 @@ export class MotionPlayer {
 
   private async load(): Promise<void> {
     this.worker?.stop();
+    await preloadGlyphs(this.item, this.opts, this.opts.base ?? CDN_BASE);
     this.built = buildProgram(this.item, this.opts);
     const fps = this.opts.fps ?? 30;
     const env = programEnv(this.built.program, this.built.duration, fps, this.built.media);
     const fonts = await fontsFor(this.built.program, JSON.stringify(this.built.props), this.opts.base ?? CDN_BASE);
     this.css = fontCss(fonts);
-    this.worker = new ProgramWorker(this.built.program, env, fonts, this.item.codeOffset ?? 0);
+    this.worker = new ProgramWorker(this.built.program, env, fonts, this.built.codeOffset);
     this.lastSvg = "";
     this.report(this.built.warnings);
     await this.worker.ready;

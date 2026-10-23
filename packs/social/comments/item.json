@@ -1,0 +1,66 @@
+{
+  "id": "comments",
+  "name": "Comments",
+  "description": "Comment cards appear one by one: a picture or initials, the name, the time, the words typing on and a like count.",
+  "category": "social",
+  "tags": [
+    "comments",
+    "social",
+    "replies",
+    "typing",
+    "overlay"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 7,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "items": {
+      "type": "list",
+      "label": "Comments (Name: words)",
+      "default": [
+        {
+          "name": "maya.edits",
+          "text": "This transition is unreal. How long did it take?"
+        },
+        {
+          "name": "jordan_k",
+          "text": "Saving this for my next edit"
+        },
+        {
+          "name": "alex.rivera",
+          "text": "The pacing in the first 3 seconds 🔥"
+        }
+      ],
+      "maxItems": 4,
+      "minItems": 1,
+      "of": {
+        "name": "text",
+        "text": "text"
+      }
+    },
+    "likes": {
+      "type": "number",
+      "label": "Likes on the first",
+      "default": 1240,
+      "min": 0,
+      "max": 9999999
+    },
+    "gap": {
+      "type": "number",
+      "label": "Seconds between",
+      "default": 1.6,
+      "min": 0.4,
+      "max": 6
+    }
+  },
+  "parts": {
+    "items": "each comment"
+  },
+  "beats": {
+    "in": 0.2,
+    "out": -0.45
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "id": "social",
+  "name": "MONARC Social",
+  "version": "1.0.0",
+  "description": "Follow cards, notifications, comments, chat threads, posts, now playing and ratings \u2014 the social and app UI that videos borrow, in any brand, any aspect.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://monarcpro.app/motion",
+  "style": "studio",
+  "shared": "shared.js",
+  "items": [
+    "follow-card",
+    "notification",
+    "notifications",
+    "comments",
+    "chat",
+    "post",
+    "now-playing",
+    "rating"
+  ]
+}

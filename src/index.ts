@@ -59,5 +59,5 @@ export { loadImage, loadMedia, normalizeWords, readStyleArg, readWords } from ".
 export { FfmpegMissing, probeFfmpeg } from "./node/ffmpeg.js";
 export { fontsDir, packageVersion } from "./node/paths.js";
 export { BUILTIN_STYLES, MG_API_REFERENCE, MG_ICON_NAMES, MG_SPRITE_NAMES, parseDesignMd } from "./engine.js";
-export { AUTHORING_GUIDE, MOTION_GUIDE } from "./guide.js";
+export { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE } from "./guide.js";
 export { type MotionConfig, type MotionInput, type MotionOverrides, type MotionSpec, DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS, normalizeMotion, parseMotionArgs } from "./kit.js";

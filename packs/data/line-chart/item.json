@@ -1,0 +1,117 @@
+{
+  "id": "line-chart",
+  "name": "Line chart",
+  "description": "A line draws on through its points over a soft area, each point popping as the line reaches it, the last value called out, against an optional target.",
+  "category": "chart",
+  "tags": [
+    "chart",
+    "line",
+    "trend",
+    "growth",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Weekly views since the switch",
+      "maxLength": 56
+    },
+    "rows": {
+      "type": "list",
+      "label": "Rows (Label: value)",
+      "default": [
+        {
+          "label": "W1",
+          "value": 12
+        },
+        {
+          "label": "W2",
+          "value": 18
+        },
+        {
+          "label": "W3",
+          "value": 16
+        },
+        {
+          "label": "W4",
+          "value": 27
+        },
+        {
+          "label": "W5",
+          "value": 34
+        },
+        {
+          "label": "W6",
+          "value": 31
+        },
+        {
+          "label": "W7",
+          "value": 46
+        },
+        {
+          "label": "W8",
+          "value": 58
+        }
+      ],
+      "maxItems": 12,
+      "minItems": 2,
+      "of": {
+        "label": "text",
+        "value": "number"
+      }
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before numbers",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": "K",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 3
+    },
+    "target": {
+      "type": "number",
+      "label": "Target line (0 = none)",
+      "default": 40,
+      "min": 0,
+      "max": 1000000000000.0
+    },
+    "targetLabel": {
+      "type": "text",
+      "label": "Target label",
+      "default": "Goal",
+      "maxLength": 16
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "grid": "the gridlines and axis labels",
+    "area": "the area under the line",
+    "line": "the line",
+    "dots": "the points",
+    "label": "the last value's callout",
+    "target": "the target line"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "notification",
+  "name": "Notification",
+  "description": "A phone or desktop notification slides in: the app's icon and name, the time, a bold title and the message.",
+  "category": "social",
+  "tags": [
+    "notification",
+    "phone",
+    "ui",
+    "overlay",
+    "alert"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4.5,
+    "min": 2,
+    "max": 30
+  },
+  "props": {
+    "app": {
+      "type": "text",
+      "label": "App",
+      "default": "MONARC",
+      "maxLength": 18
+    },
+    "icon": {
+      "type": "icon",
+      "label": "Icon",
+      "default": "sparkle"
+    },
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Your cut is ready",
+      "maxLength": 40
+    },
+    "message": {
+      "type": "text",
+      "label": "Message",
+      "default": "Three versions exported in 4K. Tap to review before you post.",
+      "maxLength": 110
+    },
+    "time": {
+      "type": "text",
+      "label": "Time",
+      "default": "now",
+      "maxLength": 10
+    },
+    "look": {
+      "type": "choice",
+      "label": "Look",
+      "options": [
+        "phone",
+        "desktop"
+      ],
+      "default": "phone"
+    }
+  },
+  "parts": {
+    "banner": "the notification"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

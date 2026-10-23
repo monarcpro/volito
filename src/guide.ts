@@ -33,6 +33,34 @@ In your own code the same kit is there: const M = motion($, t);
   M.progress(name, { at, in, dur, ease }) → { in, out, at, end, outAt }  for things you draw yourself
 Give every part a box when you can: wipes, iris, shutter and blinds need it, and moods pick from more moves.`;
 
+/** The libraries and helpers every program can use besides the $ runtime. */
+export const LIBRARY_GUIDE = `Libraries: layout, 3D and maps
+
+Layout (always there)
+  safeArea($) → {x, y, w, h, tall, square, wide}: the title-safe box (on 9:16 it clears the platforms' buttons)
+  fitFont($, str, role, size, maxW, extra) → a font in the brand's role, shrunk until str fits maxW
+  fitLines($, str, font, maxW, maxSize, minSize, maxLines) → {size, lines, font}: the biggest size that sets in ≤ maxLines
+  landOn($, str, fallback, after) → when the first spoken word of str starts (0.08 s early), else fallback
+  widest($, lines, font) · avatar($, imageProp, cx, cy, r, {name, fill, ring}) · appIcon($, icon, x, y, size, {fill}) · initials(name)
+
+3D — real depth, light and a camera, drawn as SVG paths (no GPU). Call it and the library comes with your program:
+  const S = scene3d($, { camera: { fov: 35, distance, yaw, pitch, roll, target: [x, y, z], x, y }, light: { dir: [x, y, z], ambient, spec, shine } });
+  Coordinates: x right, y down, z away from you, px at the target's depth (z = 0 draws at 1 px per unit by default).
+  Meshes: S.text(str, {face: $.font("display"), size, depth, color, side, back, anchor, ls, each: (i, n, ch) => ({rotate, offset, scale, hide})})
+          S.box(w, h, d, {color, side, back, radius}) · S.card(w, h, {depth, radius, color, back}) · S.disc(r, d, {...})
+          S.shape(loops | "M… path data", depth, {scale, color, side}) · S.sphere(r, {color}) (smooth) or {colorAt(lat, lon)}
+  Place: S.add(mesh, {position, rotate: [x°, y°, z°], scale, parent: {position, rotate, parent}, opacity, flat, decal, twoSided})
+          — parent moves text with the card it is printed on; decal draws it over that card's face.
+  Also: S.line(points3d, {stroke, width}) · S.at(point3d, (x, y, scale) => markup) flat labels at 3D points · S.project(p) → {x, y, z, s}
+        S.measure(str, {face, size}) · S.clip(poly, normal, point)
+  Finish with: return S.render();   3D text uses the brand's display face (an item lists others in "faces3d").
+
+Maps (Natural Earth, 177 countries). Call one and the library comes with your program:
+  worldFind("India" | "UK" | "USA" | 356) → {name, id, c: [lon, lat], rings}
+  const m = worldMap($, { x, y, w, h, center: [lon, lat], zoom });  m.path(country | name) → path data · m.project(lon, lat) → [x, y]
+        m.countries · m.outline (the map's edge) · m.clipId() (clip to it) · m.ring(points)
+  worldGlobe(S, { r, spin, tilt, colorOf: (country) => colour }) countries on a 3D globe · worldOnSphere(lon, lat, r, spin, tilt) → a 3D point`;
+
 /** How MONARC Motion items and packs are written — what `monarc-motion guide` and the MCP motion_api tool print after the API. */
 export const AUTHORING_GUIDE = `Writing MONARC Motion graphics
 

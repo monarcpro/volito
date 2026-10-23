@@ -1,0 +1,64 @@
+{
+  "id": "live-badge",
+  "name": "Live badge",
+  "description": "A LIVE pill with a pulsing dot, a viewer count that counts up and keeps ticking, and an optional running clock.",
+  "category": "social",
+  "tags": [
+    "live",
+    "badge",
+    "stream",
+    "overlay",
+    "hud"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 2,
+    "max": 600
+  },
+  "props": {
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Live",
+      "maxLength": 10
+    },
+    "viewers": {
+      "type": "number",
+      "label": "Viewers",
+      "default": 12480,
+      "min": 0,
+      "max": 99999999
+    },
+    "clock": {
+      "type": "boolean",
+      "label": "Running clock",
+      "default": true
+    },
+    "elapsed": {
+      "type": "number",
+      "label": "Clock starts at (s)",
+      "default": 2534,
+      "min": 0,
+      "max": 359999
+    },
+    "corner": {
+      "type": "choice",
+      "label": "Corner",
+      "options": [
+        "top-left",
+        "top-right"
+      ],
+      "default": "top-left"
+    }
+  },
+  "parts": {
+    "live": "the LIVE pill",
+    "viewers": "the viewer count",
+    "clock": "the running clock"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.35
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "card-flip",
+  "name": "3D card flip",
+  "description": "A card with real thickness tilts in, holds its front, then flips over to its back. Good for before/after, question/answer, myth/fact.",
+  "category": "scene",
+  "tags": [
+    "3d",
+    "card",
+    "flip",
+    "reveal",
+    "before after"
+  ],
+  "placement": "full",
+  "libs": [
+    "3d"
+  ],
+  "faces3d": [
+    "display",
+    "text"
+  ],
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 20
+  },
+  "props": {
+    "frontTitle": {
+      "type": "text",
+      "label": "Front",
+      "default": "Before",
+      "maxLength": 24
+    },
+    "frontText": {
+      "type": "text",
+      "label": "Front line",
+      "default": "9 hours in the timeline",
+      "maxLength": 60
+    },
+    "backTitle": {
+      "type": "text",
+      "label": "Back",
+      "default": "After",
+      "maxLength": 24
+    },
+    "backText": {
+      "type": "text",
+      "label": "Back line",
+      "default": "One sentence to the agent",
+      "maxLength": 60
+    },
+    "flipAt": {
+      "type": "number",
+      "label": "Flip at (s)",
+      "default": 2.1,
+      "min": 0.5,
+      "max": 20
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "card": "the card"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.45
+  }
+}

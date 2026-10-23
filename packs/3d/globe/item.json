@@ -1,0 +1,67 @@
+{
+  "id": "globe",
+  "name": "3D globe",
+  "description": "A lit globe spins to a country, which lights up in the accent; routes arc in from other countries and a pin names the place.",
+  "category": "scene",
+  "tags": [
+    "3d",
+    "globe",
+    "map",
+    "world",
+    "geo",
+    "travel"
+  ],
+  "placement": "full",
+  "libs": [
+    "3d",
+    "world"
+  ],
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "target": {
+      "type": "text",
+      "label": "Country",
+      "default": "India",
+      "maxLength": 40
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Mumbai studio",
+      "maxLength": 28
+    },
+    "from": {
+      "type": "list",
+      "label": "Routes from",
+      "default": [
+        "United States",
+        "Brazil",
+        "United Kingdom",
+        "Australia"
+      ],
+      "maxItems": 8,
+      "of": "text"
+    },
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "",
+      "maxLength": 50
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "globe": "the globe",
+    "routes": "the routes",
+    "pin": "the pin and label"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.45
+  }
+}

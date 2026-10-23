@@ -19,7 +19,7 @@ process.stdout.on("error", (e: NodeJS.ErrnoException) => {
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
-import { AUTHORING_GUIDE, MOTION_GUIDE } from "./guide.js";
+import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE } from "./guide.js";
 import { BUILTIN_STYLES, MG_API_REFERENCE } from "./engine.js";
 import { ASPECT_NAMES, type BuildOptions, CATEGORIES, type MotionItem, MotionError, describeItem, parseAspect } from "./pack.js";
 import { DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS, parseMotionArgs } from "./kit.js";
@@ -322,7 +322,7 @@ async function main(argv: string[]): Promise<number> {
       return 0;
     }
     case "api":
-      process.stdout.write(`${MG_API_REFERENCE}\n`);
+      process.stdout.write(`${MG_API_REFERENCE}\n\n${LIBRARY_GUIDE}\n`);
       return 0;
     case "guide":
       process.stdout.write(`${MOTION_GUIDE}\n\n${AUTHORING_GUIDE}\n`);

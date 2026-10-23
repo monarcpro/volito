@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "id": "data",
+  "name": "MONARC Data",
+  "version": "1.0.0",
+  "description": "Line charts, donuts, bar races, goal meters, versus splits, timelines, funnels, world maps and flight routes \u2014 data that moves, in any brand, any aspect.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://monarcpro.app/motion",
+  "style": "cream",
+  "shared": "shared.js",
+  "items": [
+    "line-chart",
+    "donut",
+    "bar-race",
+    "goals",
+    "versus",
+    "timeline",
+    "funnel",
+    "world-map",
+    "flight"
+  ]
+}

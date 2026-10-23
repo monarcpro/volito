@@ -18,7 +18,7 @@
   nav button[aria-current="true"] { background: var(--panel); outline: 1px solid var(--line); }
   section { padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
   .stage { width: 100%; display: flex; justify-content: center; }
-  canvas { max-width: 100%; max-height: 68vh; border-radius: 10px; background: linear-gradient(135deg, #4a5563, #262c35); }
+  canvas { display: block; border-radius: 10px; background: linear-gradient(135deg, #4a5563, #262c35); }
   canvas.full { background: #000; }
   .controls { display: flex; gap: 10px; align-items: center; width: min(100%, 880px); }
   .controls input[type=range] { flex: 1; }
@@ -89,8 +89,10 @@
     const [w, h] = { "16:9": [960, 540], "9:16": [405, 720], "1:1": [640, 640], "4:5": [576, 720] }[$("aspect").value];
     canvas.width = w * devicePixelRatio;
     canvas.height = h * devicePixelRatio;
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
+    // Shrink with the column and the window, never out of shape.
+    canvas.style.width = `min(${w}px, 100%, calc(68vh * ${w / h}))`;
+    canvas.style.height = "auto";
+    canvas.style.aspectRatio = `${w} / ${h}`;
     canvas.className = item.placement === "full" ? "full" : "";
   }
 
@@ -185,14 +187,21 @@
     show();
   }
 
-  for (const it of items) {
-    const b = document.createElement("button");
-    b.dataset.ref = it.ref;
-    b.innerHTML = `${it.name}<small>${it.placement} · ${it.duration.default}s</small>`;
-    b.onclick = () => pick(it);
-    $("items").append(b);
+  // The list, grouped by pack.
+  for (const pack of reg.packs) {
+    const h = document.createElement("h3");
+    h.textContent = pack.name.replace(/^MONARC /, "");
+    $("items").append(h);
+    for (const it of pack.entries) {
+      const b = document.createElement("button");
+      b.dataset.ref = it.ref;
+      b.innerHTML = `${it.name}<small>${it.placement} · ${it.duration.default}s${it.libs && it.libs.includes("3d") ? " · 3D" : ""}</small>`;
+      b.onclick = () => { pick(it); if (pack.style && !$("style").dataset.touched) $("style").value = pack.style; show(); };
+      $("items").append(b);
+    }
   }
   $("style").value = reg.packs[0]?.style ?? "ember";
+  $("style").addEventListener("change", () => { $("style").dataset.touched = "1"; });
   $("style").onchange = show;
   $("aspect").onchange = show;
   $("mood").onchange = show;

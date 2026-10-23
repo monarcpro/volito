@@ -1,0 +1,64 @@
+{
+  "id": "goals",
+  "name": "Goal meters",
+  "description": "Rows of capsule meters fill to their share of a goal, each with its label and a percentage counting up.",
+  "category": "chart",
+  "tags": [
+    "chart",
+    "progress",
+    "goal",
+    "percent",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Launch checklist",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Rows (Label: percent)",
+      "default": [
+        {
+          "label": "Footage cut",
+          "value": 100
+        },
+        {
+          "label": "Captions",
+          "value": 85
+        },
+        {
+          "label": "Colour grade",
+          "value": 60
+        },
+        {
+          "label": "Sound mix",
+          "value": 35
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 1,
+      "of": {
+        "label": "text",
+        "value": "number"
+      }
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "rows": "each meter"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

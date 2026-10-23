@@ -1,0 +1,100 @@
+{
+  "id": "donut",
+  "name": "Donut chart",
+  "description": "Segments sweep round a ring one after another, the centre counts up to the total (or the first share), and a legend lists each part.",
+  "category": "chart",
+  "tags": [
+    "chart",
+    "donut",
+    "pie",
+    "share",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Where the hours went",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Rows (Label: value)",
+      "default": [
+        {
+          "label": "Editing",
+          "value": 46
+        },
+        {
+          "label": "Rendering",
+          "value": 12
+        },
+        {
+          "label": "Review",
+          "value": 18
+        },
+        {
+          "label": "Publishing",
+          "value": 9
+        }
+      ],
+      "maxItems": 12,
+      "minItems": 2,
+      "of": {
+        "label": "text",
+        "value": "number"
+      }
+    },
+    "center": {
+      "type": "choice",
+      "label": "Centre shows",
+      "options": [
+        "total",
+        "first share"
+      ],
+      "default": "first share"
+    },
+    "centerLabel": {
+      "type": "text",
+      "label": "Centre label",
+      "default": "on editing",
+      "maxLength": 20
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before numbers",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": " h",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 3
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "ring": "the segments",
+    "center": "the number in the middle",
+    "legend": "the legend"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

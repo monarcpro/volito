@@ -1,0 +1,58 @@
+{
+  "id": "lt-kicker",
+  "name": "Lower third — kicker",
+  "description": "A kicker tag in the accent, a heavy name and a baseline that draws under it, the role beneath. Cardless, for footage.",
+  "category": "lower-third",
+  "tags": [
+    "lower-third",
+    "overlay",
+    "podcast",
+    "bold"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2.5,
+    "max": 30
+  },
+  "props": {
+    "kicker": {
+      "type": "text",
+      "label": "Kicker",
+      "default": "Guest",
+      "maxLength": 18
+    },
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Jordan Okafor",
+      "maxLength": 30
+    },
+    "role": {
+      "type": "text",
+      "label": "Role",
+      "default": "Founder, Northwind Studio",
+      "maxLength": 44
+    },
+    "side": {
+      "type": "choice",
+      "label": "Side",
+      "options": [
+        "left",
+        "right"
+      ],
+      "default": "left"
+    }
+  },
+  "parts": {
+    "scrim": "the soft wash behind it",
+    "kicker": "the tag above the name",
+    "name": "the name",
+    "rule": "the baseline",
+    "role": "the role"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

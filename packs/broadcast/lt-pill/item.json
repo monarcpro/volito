@@ -1,0 +1,68 @@
+{
+  "id": "lt-pill",
+  "name": "Lower third — pill",
+  "description": "A rounded pill with a picture or initials, a status dot, the name and the role. Pops in; good for podcasts and calls.",
+  "category": "lower-third",
+  "tags": [
+    "lower-third",
+    "overlay",
+    "podcast",
+    "minimal",
+    "avatar"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2.5,
+    "max": 30
+  },
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Alex Rivera",
+      "maxLength": 28
+    },
+    "role": {
+      "type": "text",
+      "label": "Role",
+      "default": "Host · The Long Cut",
+      "maxLength": 40
+    },
+    "photo": {
+      "type": "image",
+      "label": "Photo",
+      "description": "A square picture of the person; initials when empty"
+    },
+    "status": {
+      "type": "choice",
+      "label": "Status dot",
+      "options": [
+        "live",
+        "online",
+        "none"
+      ],
+      "default": "live"
+    },
+    "side": {
+      "type": "choice",
+      "label": "Side",
+      "options": [
+        "left",
+        "right"
+      ],
+      "default": "left"
+    }
+  },
+  "parts": {
+    "pill": "the pill",
+    "avatar": "the picture or initials",
+    "dot": "the status dot",
+    "name": "the name",
+    "role": "the role"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

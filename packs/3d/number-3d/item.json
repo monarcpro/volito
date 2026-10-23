@@ -1,0 +1,65 @@
+{
+  "id": "number-3d",
+  "name": "3D number",
+  "description": "A big extruded number counts up, tilted toward the camera, with a light sweep when it lands and the label beneath.",
+  "category": "stat",
+  "tags": [
+    "3d",
+    "number",
+    "stat",
+    "counter",
+    "extruded"
+  ],
+  "placement": "full",
+  "libs": [
+    "3d"
+  ],
+  "duration": {
+    "default": 4,
+    "min": 2.5,
+    "max": 20
+  },
+  "props": {
+    "value": {
+      "type": "number",
+      "label": "Value",
+      "default": 3.2,
+      "min": -1000000000000.0,
+      "max": 1000000000000.0
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 1,
+      "min": 0,
+      "max": 3
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After",
+      "default": "×",
+      "maxLength": 4
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "more videos shipped",
+      "maxLength": 48
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "number": "the 3D number",
+    "label": "the label"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.45
+  }
+}

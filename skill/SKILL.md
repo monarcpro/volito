@@ -16,7 +16,11 @@ Everything below runs through the CLI (`npx -y @monarcpro/motion …`, shortened
 
 ## The loop
 
-1. **Find the item.** `mm list` (or `mm list --search "name plate"`). Items are `essentials/<id>`.
+1. **Find the item.** `mm list` (or `mm list --search "name plate"`). 48 items in five packs:
+   `essentials/…`, `broadcast/…` (lower thirds, ticker, live badge, score bug, location, countdown),
+   `social/…` (follow card, notifications, comments, chat, post, now playing, rating), `data/…` (line,
+   donut, bar race, goals, versus, timeline, funnel, world map, flight route) and `3d/…` (3D logo, title,
+   number, card flip, word cube, 3D bars, globe).
 2. **Read its props.** `mm info lower-third` — every prop's type, default and length limit.
 3. **Fill it in.** Repeat `--prop name=value`. Lists take `"a; b; c"`; chart rows take `"Label: 42; Other: 17"`.
 4. **Pick the look.** `--style <name>` (`mm styles` lists them: ember, cream, mono, neon, pop, studio and
@@ -45,7 +49,9 @@ and `--beat out=-0.6` move the entrance and exit.
 
 ## When no item fits: write one
 
-`mm api` prints the whole runtime (timing, springs, text, cards, charts, icons, brand colours and faces).
+`mm api` prints the whole runtime (timing, springs, text, cards, charts, icons, brand colours and faces)
+and the libraries: layout helpers, `scene3d` for real 3D (extruded text, cards, boxes, spheres, a camera
+and light) and `worldMap` / `worldGlobe` for maps.
 Write `function frame(t, $) { … return svg; }` in a `.js` file and use it anywhere an item goes:
 `mm check my.js`, `mm sheet my.js`, `mm render my.js --duration 4 --out my.mov`. Draw elements through the
 motion kit (`const M = motion($, t); M.part("card", { at, in: "pop", box }, markup)`, `M.text(...)`) and

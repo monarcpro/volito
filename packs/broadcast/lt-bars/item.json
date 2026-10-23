@@ -1,0 +1,52 @@
+{
+  "id": "lt-bars",
+  "name": "Lower third — two bars",
+  "description": "A name bar wipes in from one side and a role bar in the accent from the other, the words rising inside their bars.",
+  "category": "lower-third",
+  "tags": [
+    "lower-third",
+    "overlay",
+    "bold",
+    "interview"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2.5,
+    "max": 30
+  },
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Priya Sharma",
+      "maxLength": 32
+    },
+    "role": {
+      "type": "text",
+      "label": "Role",
+      "default": "Product designer",
+      "maxLength": 40
+    },
+    "side": {
+      "type": "choice",
+      "label": "Side",
+      "options": [
+        "left",
+        "right"
+      ],
+      "default": "left"
+    }
+  },
+  "parts": {
+    "scrim": "the soft wash behind it",
+    "nameBar": "the bar behind the name",
+    "name": "the name",
+    "roleBar": "the accent bar behind the role",
+    "role": "the role"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

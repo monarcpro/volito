@@ -1,0 +1,21 @@
+{
+  "format": 1,
+  "id": "3d",
+  "name": "MONARC 3D",
+  "version": "1.0.0",
+  "description": "Extruded logos, titles and numbers, a card that flips, a word cube, a 3D bar chart and a globe \u2014 real depth, light and camera moves, rendered without a GPU, in any brand.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://monarcpro.app/motion",
+  "style": "ember",
+  "shared": "shared.js",
+  "items": [
+    "logo-3d",
+    "title-3d",
+    "number-3d",
+    "card-flip",
+    "cube",
+    "bars-3d",
+    "globe"
+  ]
+}

@@ -5,8 +5,8 @@
 MONARC Motion is the motion graphics engine inside the [MONARC](https://monarcpro.app) video editor, opened up.
 Every graphic is a small program — `function frame(t, $)` returns the SVG of one frame — so it is
 readable, diffable, seekable to any frame, and something an AI agent can write and fix. It ships with
-packs of ready-made graphics, a CLI, a Node API, a browser player and an MCP server, and renders to
-ProRes 4444 or HEVC with alpha, WebM, MP4, GIF, PNG frames or SVG.
+48 ready-made graphics in five packs (3D and maps among them), a CLI, a Node API, a browser player and
+an MCP server, and renders to ProRes 4444 or HEVC with alpha, WebM, MP4, GIF, PNG frames or SVG.
 
 - **One design, every brand.** Items draw with colour roles and faces, not fixed colours: pass one of 14
   built-in styles, your `DESIGN.md`, or a couple of overrides, and the whole pack re-skins.
@@ -34,24 +34,17 @@ npm install @monarcpro/motion      # or run it with npx, nothing to install
 Node 20.10 or newer. Video formats need [ffmpeg](https://ffmpeg.org) on your `PATH` (or `MONARC_MOTION_FFMPEG`);
 stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with libvpx.
 
-## The Essentials pack
+## The packs
 
-| Item | Kind | Length | What it does |
-| --- | --- | --- | --- |
-| `lower-third` | overlay | 5 s | Name plate: accent spine, plate wipes in, name rises, role slides in |
-| `title-card` | full | 4 s | Chapter or opening title built letter by letter, brush underline, subtitle |
-| `headline` | overlay | 3.5 s | Kinetic words popping in (on the voice), marker under `*starred*` words |
-| `subscribe` | overlay | 4.5 s | Channel card, cursor presses Subscribe, bell rings |
-| `social` | overlay | 4 s | Handle pill with platform icon and a Follow press, in any corner |
-| `callout` | overlay | 4 s | Pulsing spot, a line draws out to a label card |
-| `stat` | full | 4 s | A number counting up, with bars or a ring |
-| `bar-chart` | full | 6 s | Ranked bars growing in turn, values counting, one row highlighted |
-| `steps` | full | 6 s | Numbered list or checklist, each step on its own card |
-| `quote` | full | 6 s | Pull quote, line by line, signed off by the speaker |
-| `banner` | overlay | 8 s | Broadcast strap: label slam, headline bar, scrolling ticker |
-| `end-card` | full | 10 s | "Watch next" slots, subscribe press, handle |
-| `logo-sting` | full | 3.5 s | Burst, logo pop, wordmark landing with a light sweep, tagline |
-| `wipe` | overlay | 1.2 s | Transition in brand colours (bars, diagonal, circle) — cut at the midpoint |
+48 graphics in five packs. Every one takes any brand style and any aspect, and every part of it takes any move.
+
+| Pack | Items |
+| --- | --- |
+| **Essentials** (14) | `lower-third` · `title-card` · `headline` (kinetic, on the voice) · `subscribe` · `social` · `callout` · `stat` · `bar-chart` · `steps` · `quote` · `banner` · `end-card` · `logo-sting` · `wipe` |
+| **Broadcast** (10) | Lower thirds in five looks — `lt-bars`, `lt-reveal` (mask reveal), `lt-kicker`, `lt-pill` (picture or initials, status dot), `lt-news` (tight boxes) — `ticker` (crawl), `live-badge` (viewers, clock), `score-bug` (teams, scores, clock, goal flash), `location` (pin and place card), `countdown` |
+| **Social** (8) | `follow-card` (profile, count, Follow press) · `notification` (phone or desktop) · `notifications` (a stack that cascades) · `comments` (typing on) · `chat` (thread with typing dots) · `post` (counts and a heart) · `now-playing` (music card) · `rating` (stars, score, review) |
+| **Data** (9) | `line-chart` (draws on, target line) · `donut` · `bar-race` (overtaking across periods) · `goals` (meters) · `versus` · `timeline` · `funnel` · `world-map` (countries filled by value, regions) · `flight` (a great-circle route between two places) |
+| **3D** (7) | `logo-3d` (extruded wordmark, light sweep) · `title-3d` (letters flip up) · `number-3d` (an extruded counter) · `card-flip` (front and back) · `cube` (a word prism that rolls) · `bars-3d` (orbiting camera) · `globe` (spins to a country, routes arc in) |
 
 `monarc-motion info <item>` lists every prop. To see them all live, serve this package's folder and
 open `examples/gallery.html`.
@@ -82,6 +75,25 @@ Or let it choreograph itself: `--mood energetic | elegant | playful | cinematic 
 and `--seed <n>` for a new take on every number (the same number always moves the same way). `--speed 2` plays
 it all twice as fast. `monarc-motion moves` lists everything. Programs you write get the same kit:
 `const M = motion($, t); M.part("card", { at, in: "pop", box }, markup)`.
+
+## 3D and maps
+
+The 3D items are real geometry, not tricks: meshes are lit, faces turned away are culled, everything is
+sorted far to near and projected through a perspective camera — then drawn as SVG paths, so 3D renders on
+any machine with no GPU, at the same speed as the rest. 3D text is extruded from the outlines of the
+bundled faces (read straight from the font files), so a logo turns in the brand's own type.
+
+```js
+function frame(t, $) {
+  const S = scene3d($, { camera: { yaw: -20 + 40 * (t / $.dur), pitch: -8 } });
+  S.add(S.text("MONARC", { face: $.font("display"), size: 220 * $.k, depth: 60 * $.k, color: $.c.fg, side: $.c.accent }));
+  return S.render();
+}
+```
+
+Maps use Natural Earth's countries (177, packed into 30 KB): `worldMap($, { center, zoom })` projects them
+flat (Equal Earth), `worldGlobe(S, …)` puts them on a 3D globe, and `worldFind("UK")` finds one by name,
+short name or ISO number. `monarc-motion api` documents both.
 
 ## CLI
 
@@ -240,7 +252,10 @@ Node runs each program in a fresh `vm` context holding the same worker source th
 Only strings and numbers cross into it, and eval, `Function`, `require`, `process` and the network are
 out of reach. Text is measured with fontkit against the bundled faces; frames are rasterised by
 [resvg](https://github.com/RazrFalcon/resvg); text beyond a face's Latin cut is shaped by fontkit and
-drawn as outlines. Frames that don't change are drawn once.
+drawn as outlines, and dash patterns written against `pathLength` (which resvg ignores) are scaled to
+each shape's real length first. Frames that don't change are drawn once. The motion kit, the 3D kit and
+the map data ship as libraries that are added to a program when it is built: items stay small, and the
+60 000-character limit applies only to what an item's author (or an agent) wrote.
 
 `vm` keeps mistakes contained, but it is not a security boundary. Run packs you trust, as you would
 any npm package.

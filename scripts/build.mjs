@@ -4,7 +4,7 @@
  * and code, for the browser player and the gallery).
  */
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as esbuild from "esbuild";
@@ -66,11 +66,14 @@ rmSync(types, { recursive: true, force: true });
 // The registry: what a browser needs to list and play every item without the filesystem.
 const { library, packageVersion } = await import(join(dist, "index.js"));
 const lib = library();
+const libs = {};
+for (const f of readdirSync(join(root, "libs")).filter((f) => f.endsWith(".js"))) libs[f.replace(/\.js$/, "")] = readFileSync(join(root, "libs", f), "utf8");
 const registry = {
   format: 1,
   package: pkg.name,
   version: packageVersion(),
   packs: lib.packs.map(({ entries, ...p }) => ({ ...p, entries })),
+  libs,
 };
 writeFileSync(join(dist, "registry.json"), JSON.stringify(registry));
 

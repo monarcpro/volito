@@ -1,0 +1,126 @@
+{
+  "id": "world-map",
+  "name": "World map",
+  "description": "A world map in the brand's colours: chosen countries fill in one by one (shaded by their values when given) and the top ones are labelled. Zooms to a region.",
+  "category": "chart",
+  "tags": [
+    "map",
+    "world",
+    "countries",
+    "choropleth",
+    "geo"
+  ],
+  "placement": "full",
+  "libs": [
+    "world"
+  ],
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Where our viewers are",
+      "maxLength": 50
+    },
+    "countries": {
+      "type": "list",
+      "label": "Countries (Name: value)",
+      "default": [
+        {
+          "name": "India",
+          "value": 42
+        },
+        {
+          "name": "United States",
+          "value": 31
+        },
+        {
+          "name": "Brazil",
+          "value": 18
+        },
+        {
+          "name": "United Kingdom",
+          "value": 12
+        },
+        {
+          "name": "Indonesia",
+          "value": 11
+        },
+        {
+          "name": "Germany",
+          "value": 9
+        },
+        {
+          "name": "Nigeria",
+          "value": 7
+        },
+        {
+          "name": "Japan",
+          "value": 6
+        }
+      ],
+      "maxItems": 40,
+      "minItems": 1,
+      "of": {
+        "name": "text",
+        "value": "number"
+      }
+    },
+    "region": {
+      "type": "choice",
+      "label": "Region",
+      "options": [
+        "world",
+        "americas",
+        "europe",
+        "africa",
+        "asia",
+        "middle east",
+        "oceania",
+        "india"
+      ],
+      "default": "world"
+    },
+    "labels": {
+      "type": "number",
+      "label": "Countries labelled",
+      "default": 4,
+      "min": 0,
+      "max": 12
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before numbers",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": "%",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 3
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "map": "the map",
+    "highlights": "the chosen countries",
+    "labels": "the labels"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

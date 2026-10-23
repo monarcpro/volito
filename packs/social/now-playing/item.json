@@ -1,0 +1,72 @@
+{
+  "id": "now-playing",
+  "name": "Now playing",
+  "description": "A music card: the cover (or a generated one), the title and artist, a progress bar moving with the clip and an equaliser.",
+  "category": "social",
+  "tags": [
+    "music",
+    "now playing",
+    "song",
+    "audio",
+    "card"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 2,
+    "max": 60
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Song",
+      "default": "Midnight Edit",
+      "maxLength": 32
+    },
+    "artist": {
+      "type": "text",
+      "label": "Artist",
+      "default": "The Long Cut",
+      "maxLength": 32
+    },
+    "cover": {
+      "type": "image",
+      "label": "Cover"
+    },
+    "length": {
+      "type": "text",
+      "label": "Length (m:ss)",
+      "default": "3:42",
+      "maxLength": 6
+    },
+    "start": {
+      "type": "number",
+      "label": "Starts at (0–1)",
+      "default": 0.34,
+      "min": 0,
+      "max": 1
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "auto",
+        "center",
+        "bottom-left",
+        "bottom-right"
+      ],
+      "default": "auto"
+    }
+  },
+  "parts": {
+    "card": "the card",
+    "cover": "the cover",
+    "title": "the song and artist",
+    "progress": "the progress bar",
+    "eq": "the equaliser"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

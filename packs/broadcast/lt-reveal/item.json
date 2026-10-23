@@ -1,0 +1,51 @@
+{
+  "id": "lt-reveal",
+  "name": "Lower third — mask reveal",
+  "description": "Cardless: an accent sweep crosses the frame and leaves the name behind it, then the role fades up. Made for footage.",
+  "category": "lower-third",
+  "tags": [
+    "lower-third",
+    "overlay",
+    "cardless",
+    "minimal"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2.5,
+    "max": 30
+  },
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Maya Chen",
+      "maxLength": 32
+    },
+    "role": {
+      "type": "text",
+      "label": "Role",
+      "default": "Documentary editor",
+      "maxLength": 44
+    },
+    "side": {
+      "type": "choice",
+      "label": "Side",
+      "options": [
+        "left",
+        "right"
+      ],
+      "default": "left"
+    }
+  },
+  "parts": {
+    "scrim": "the soft wash behind it",
+    "sweep": "the accent bar that crosses",
+    "name": "the name",
+    "role": "the role"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

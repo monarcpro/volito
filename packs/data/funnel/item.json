@@ -1,0 +1,83 @@
+{
+  "id": "funnel",
+  "name": "Funnel",
+  "description": "Stages stack from widest to narrowest, each dropping in with its count, and the share that carries on to the next stage between them.",
+  "category": "chart",
+  "tags": [
+    "funnel",
+    "conversion",
+    "pipeline",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "From view to sign-up",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Stages (Label: count)",
+      "default": [
+        {
+          "label": "Watched",
+          "value": 120000
+        },
+        {
+          "label": "Clicked",
+          "value": 18400
+        },
+        {
+          "label": "Tried it",
+          "value": 6200
+        },
+        {
+          "label": "Signed up",
+          "value": 2480
+        }
+      ],
+      "maxItems": 7,
+      "minItems": 2,
+      "of": {
+        "label": "text",
+        "value": "number"
+      }
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before numbers",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": "",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 3
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "stages": "each stage",
+    "rates": "the share between stages"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

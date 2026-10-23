@@ -1,0 +1,62 @@
+{
+  "id": "location",
+  "name": "Location pin",
+  "description": "A map pin drops and bounces with a ripple, and a card beside it names the place, its region and its coordinates.",
+  "category": "callout",
+  "tags": [
+    "location",
+    "map",
+    "pin",
+    "place",
+    "overlay"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2.5,
+    "max": 30
+  },
+  "props": {
+    "place": {
+      "type": "text",
+      "label": "Place",
+      "default": "Lisbon",
+      "maxLength": 26
+    },
+    "region": {
+      "type": "text",
+      "label": "Region",
+      "default": "Portugal",
+      "maxLength": 32
+    },
+    "coords": {
+      "type": "text",
+      "label": "Coordinates",
+      "default": "38.72° N, 9.14° W",
+      "maxLength": 28
+    },
+    "x": {
+      "type": "number",
+      "label": "Pin across (0–1)",
+      "default": 0.3,
+      "min": 0.05,
+      "max": 0.95
+    },
+    "y": {
+      "type": "number",
+      "label": "Pin down (0–1)",
+      "default": 0.62,
+      "min": 0.1,
+      "max": 0.9
+    }
+  },
+  "parts": {
+    "pin": "the pin",
+    "ripple": "the ring under it",
+    "card": "the place card"
+  },
+  "beats": {
+    "in": 0.1,
+    "out": -0.4
+  }
+}
