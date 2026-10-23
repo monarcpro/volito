@@ -69,6 +69,12 @@ describe("packs", () => {
     }
   });
 
+  it("ships every folder the items need at run time", () => {
+    // Tests run from the repo, so a folder missing from package.json "files" only breaks installed copies.
+    const files = (JSON.parse(readFileSync(join(import.meta.dirname, "../package.json"), "utf8")) as { files: string[] }).files;
+    for (const dir of ["dist", "packs", "libs", "fonts"]) expect(files, dir).toContain(dir);
+  });
+
   it("finds items by ref, id, folder or program file, and suggests near names", () => {
     expect(findItem("essentials/stat").id).toBe("stat");
     expect(findItem("stat").ref).toBe("essentials/stat");

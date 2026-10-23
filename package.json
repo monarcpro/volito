@@ -43,6 +43,7 @@
   "files": [
     "dist",
     "packs",
+    "libs",
     "fonts",
     "skill",
     "examples",
