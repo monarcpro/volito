@@ -1,0 +1,59 @@
+{
+  "id": "pixels",
+  "name": "Pixel dissolve",
+  "description": "The frame dissolves into square pixels in random order — a few in the accents — until it is covered, then dissolves away to the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "pixels",
+    "dissolve",
+    "mosaic",
+    "retro",
+    "digital"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.2,
+    "min": 0.5,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "size": {
+      "type": "number",
+      "label": "Pixel size",
+      "default": 48,
+      "min": 16,
+      "max": 160,
+      "step": 4
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

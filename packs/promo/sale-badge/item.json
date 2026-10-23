@@ -1,0 +1,74 @@
+{
+  "id": "sale-badge",
+  "name": "Sale badge",
+  "description": "A starburst badge slams in spinning — 50% OFF — then wobbles while a dashed ring turns inside it.",
+  "category": "cta",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "badge",
+    "starburst",
+    "discount",
+    "percent",
+    "off",
+    "sticker"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1,
+    "max": 15
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "big": {
+      "type": "text",
+      "label": "Big",
+      "default": "50%",
+      "maxLength": 6
+    },
+    "small": {
+      "type": "text",
+      "label": "Small",
+      "default": "Off",
+      "maxLength": 12
+    },
+    "x": {
+      "type": "number",
+      "label": "Centre across (%)",
+      "default": 78,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Centre down (%)",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "size": {
+      "type": "number",
+      "label": "Size",
+      "default": 100,
+      "min": 40,
+      "max": 200,
+      "step": 5
+    }
+  },
+  "parts": {
+    "badge": "the starburst",
+    "words": "the words"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

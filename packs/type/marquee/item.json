@@ -1,0 +1,67 @@
+{
+  "id": "marquee",
+  "name": "Marquee bands",
+  "description": "Big words repeat along tilted bands that scroll in opposite directions — solid on accent, outlined on the ground — like a poster in motion.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "marquee",
+    "ticker",
+    "scrolling",
+    "bands",
+    "poster",
+    "repeat"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 2,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "text",
+      "label": "Words",
+      "default": "New drop",
+      "maxLength": 28
+    },
+    "bands": {
+      "type": "number",
+      "label": "Bands",
+      "default": 3,
+      "min": 1,
+      "max": 5,
+      "step": 1
+    },
+    "angle": {
+      "type": "number",
+      "label": "Tilt",
+      "default": -8,
+      "min": -30,
+      "max": 30,
+      "step": 1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0.2,
+      "max": 3,
+      "step": 0.1
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "bands": "the bands"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

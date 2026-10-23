@@ -1,0 +1,51 @@
+{
+  "id": "stack",
+  "name": "Editorial stack",
+  "description": "Lines stack like a magazine cover — heavy capitals alternating with *italic* accent lines — sliding in from alternate sides between hairline rules.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "stack",
+    "editorial",
+    "magazine",
+    "serif",
+    "italic",
+    "headline"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "lines": {
+      "type": "list",
+      "label": "Lines",
+      "of": "text",
+      "default": [
+        "Make",
+        "*things*",
+        "people",
+        "*remember*"
+      ],
+      "maxItems": 6,
+      "description": "wrap a line in *stars* for the italic accent face"
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "lines": "the lines",
+    "rules": "the hairlines"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

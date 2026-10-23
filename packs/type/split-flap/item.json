@@ -1,0 +1,44 @@
+{
+  "id": "split-flap",
+  "name": "Split-flap board",
+  "description": "An airport split-flap board: every cell flutters through letters and clacks onto the message, left to right.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "split flap",
+    "flap",
+    "board",
+    "airport",
+    "departures",
+    "solari"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Message",
+      "default": "NOW BOARDING\nGATE 7",
+      "maxLength": 60,
+      "description": "up to three lines; new line for a new row"
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "board": "the board"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

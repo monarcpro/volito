@@ -5,10 +5,10 @@
 MONARC Motion is the motion graphics engine inside the [MONARC](https://monarcpro.app) video editor, opened up.
 Every graphic is a small program — `function frame(t, $)` returns the SVG of one frame — so it is
 readable, diffable, seekable to any frame, and something an AI agent can write and fix. It ships with
-48 ready-made graphics in five packs (3D and maps among them), a CLI, a Node API, a browser player and
-an MCP server, and renders to ProRes 4444 or HEVC with alpha, WebM, MP4, GIF, PNG frames or SVG.
+96 ready-made graphics in ten packs (3D, maps, transitions and kinetic type among them), 36 brand styles,
+sixteen animated patterns, a CLI, a Node API, a browser player and an MCP server, and renders to ProRes 4444 or HEVC with alpha, WebM, MP4, GIF, PNG frames or SVG.
 
-- **One design, every brand.** Items draw with colour roles and faces, not fixed colours: pass one of 14
+- **One design, every brand.** Items draw with colour roles and faces, not fixed colours: pass one of 36
   built-in styles, your `DESIGN.md`, or a couple of overrides, and the whole pack re-skins.
 - **One design, every aspect.** Layouts follow the canvas and keep to title-safe areas, including the
   space platforms reserve on 9:16. 16:9, 9:16, 1:1 and 4:5 from the same item.
@@ -36,7 +36,7 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 
 ## The packs
 
-48 graphics in five packs. Every one takes any brand style and any aspect, and every part of it takes any move.
+96 graphics in ten packs. Every one takes any brand style and any aspect, and every part of it takes any move.
 
 | Pack | Items |
 | --- | --- |
@@ -45,6 +45,11 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 | **Social** (8) | `follow-card` (profile, count, Follow press) · `notification` (phone or desktop) · `notifications` (a stack that cascades) · `comments` (typing on) · `chat` (thread with typing dots) · `post` (counts and a heart) · `now-playing` (music card) · `rating` (stars, score, review) |
 | **Data** (9) | `line-chart` (draws on, target line) · `donut` · `bar-race` (overtaking across periods) · `goals` (meters) · `versus` · `timeline` · `funnel` · `world-map` (countries filled by value, regions) · `flight` (a great-circle route between two places) |
 | **3D** (7) | `logo-3d` (extruded wordmark, light sweep) · `title-3d` (letters flip up) · `number-3d` (an extruded counter) · `card-flip` (front and back) · `cube` (a word prism that rolls) · `bars-3d` (orbiting camera) · `globe` (spins to a country, routes arc in) |
+| **Transitions** (11) | Cover the frame by the cut, reveal the next shot: `iris` (circle, diamond, star, square) · `blinds` · `doors` (with a Bauhaus disc) · `glitch` · `ink` (wobbly blooms) · `clock` · `tiles` (Bauhaus shapes) · `pixels` · `stripes` · `slices` · `whip` — each with a word at the cut |
+| **Annotate** (10) | Point at things in footage (places in % of the frame): `arrow` (hand-drawn or clean) · `circle` · `spotlight` (feathered dim) · `focus` (brackets that lock on) · `highlight` (highlighter, underline, box, strike) · `stamp` (pressed ink) · `reactions` (live hearts, likes, fire) · `pointer` (leader line and card) · `emphasis` · `markers` (numbered) |
+| **Type** (10) | Kinetic type: `typewriter` · `word-swap` (a word that keeps changing) · `split-flap` · `marquee` (tilted scrolling bands) · `echo` · `liquid-fill` · `decode` · `word-by-word` · `key-phrase` (marker on *marked* words) · `stack` (editorial) |
+| **Backdrops** (9) | Moving grounds: `pattern` (any of the sixteen) · `aurora` · `tiles` (Bauhaus field) · `retro-grid` (synthwave) · `blobs` (lava goo) · `gradient` · `starfield` · `bokeh` · `topo` |
+| **Promo** (8) | `sale-badge` (starburst) · `price-card` (counts down, strike, click) · `coupon` (copy the code) · `offer-countdown` (D:H:M:S) · `features` (checklist) · `cta` (button and cursor) · `launch` · `ribbon` (crossing tapes) |
 
 `monarc-motion info <item>` lists every prop. To see them all live, serve this package's folder and
 open `examples/gallery.html`.
@@ -197,8 +202,36 @@ renderer, so what plays on the page is what renders. Fonts load from `base` (the
 
 ## Brand styles
 
-Built-in: `ember`, `cream`, `mono`, `neon`, `pop`, `studio`, and the explainer art styles `whiteboard`,
-`sketch`, `pastel`, `pixel`, `collage`, `diorama`, `clay`, `storybook`. Or pass a `DESIGN.md`:
+36 built in. The MONARC editor's: `ember`, `cream`, `mono`, `neon`, `pop`, `studio`, and the explainer art
+styles `whiteboard`, `sketch`, `pastel`, `pixel`, `collage`, `diorama`, `clay`, `storybook`. And MONARC
+Motion's own, each with an animated pattern for a ground:
+
+| Style | Look | Pattern |
+| --- | --- | --- |
+| `cobalt` | cobalt colour field, cream type, acid lime | `bauhaus` |
+| `tomato` | tomato-red poster, black slabs | `halftone` |
+| `acid` | acid-yellow sheet, indigo serif | `dither` |
+| `candy` | neo-brutal: outlines, hard shadows, pink and yellow | `dots` |
+| `riso` | risograph pink and blue on paper | `halftone` |
+| `aurora` | night with drifting violet and cyan light, glass | `mesh` |
+| `sunset` | plum ground, coral and gold blooms | `mesh` |
+| `lime` | ink ground, electric lime | `plus` |
+| `sport` | black, volt and blaze, condensed caps | `stripes` |
+| `retro` | seventies cream, orange and mustard, fat serif | `waves` |
+| `diner` | cream, cherry and teal, script headline | `checker` |
+| `blueprint` | graph paper, cobalt ink, serif | `graph` |
+| `forest` | deep green field, peony pink, soft serif | `rings` |
+| `luxe` | black and champagne gold, deco | `sunburst` |
+| `capsule` | outlined pills, coral and lime | `pills` |
+| `memphis` | warm white, hot pink and sky, confetti | `confetti` |
+| `swiss` | off-white, black, signal red, heavy Inter | `tiles` |
+| `terminal` | phosphor green monospace | `dither` |
+| `vapor` | synthwave magenta and cyan | `waves` |
+| `scifi` | HUD cyan, geometric display | `plus` |
+| `mint` | mint sheet, coral pop | `dots` |
+| `editorial` | magazine black and red, didone | `hatch` |
+
+`monarc-motion styles` lists them all. Or pass a `DESIGN.md`:
 
 ```markdown
 ---
@@ -220,7 +253,22 @@ Friendly, confident, never shouty.
 ```
 
 Faces available: Inter, Space Grotesk, Space Mono, Poppins, Playfair Display, Montserrat, Anton, Outfit,
-Gabarito, Caveat, Press Start 2P, Permanent Marker, Patrick Hand, Fredoka, IM Fell English.
+Gabarito, Caveat, Press Start 2P, Permanent Marker, Patrick Hand, Fredoka, IM Fell English, Bebas Neue,
+DM Serif Display, Archivo Black, Syne, Unbounded, Righteous, Orbitron, Pacifico, Fraunces and Bricolage Grotesque.
+
+### Patterns
+
+A style's `texture` can name any of sixteen animated patterns, and every ground the items draw picks it
+up: `dots`, `plus`, `graph`, `hatch`, `stripes`, `checker`, `halftone`, `dither`, `waves`, `rings`, `mesh`,
+`confetti`, `bauhaus`, `tiles`, `pills`, `sunburst` (the editor's `grid`, `glow`, `grain`, `paper`, `board`,
+`parchment`, `pixel` and `studio` still work). Programs can draw one anywhere:
+
+```js
+s += $.pattern(t, "halftone", { box: { x: 0, y: 0, w: W, h: H }, a: 1.2, scale: 1, speed: 0.5 });
+```
+
+Options: `box`, `color`, `color2`, `a` (strength), `scale`, `speed`, `angle`, `at` ([x, y] for rings,
+halftone, sunburst), `count`, `seed`, `r`. They are pure functions of time like everything else — no GPU.
 
 ## Write your own
 
@@ -269,14 +317,18 @@ pnpm test
 node dist/cli.js sheet lower-third --mood playful --seed 7 --out sheet.png
 ```
 
-`node scripts/review.mjs <aspect> <style>` writes contact sheets of every item to `out/`,
+`node scripts/review.mjs <aspect> <style> [items | pack:<id>] [times]` writes contact sheets to `out/`,
+`node scripts/styles.mjs [styles] [items]` one row per style, `node scripts/strip.mjs <items> <aspect> <style>
+<times> '<props JSON>'` the same props across several items,
 `node scripts/variants.mjs <item>` one item under many seeds, and `node scripts/demo-grid.mjs <item>` a 3×3
 video of nine choreographies.
 
 The engine in `src/engine/` (the runtime every program draws with, its sandbox and the brand styles) is the
 same code the MONARC editor uses, copied from MONARC's core so this repo stands alone; `src/engine/SOURCE.json`
 names the commit. With a MONARC checkout next to this one, `pnpm sync-engine` brings it up to date and
-`node scripts/sync-engine.mjs --check` reports drift. Packs and the motion kit (`src/kit.ts`) live here.
+`node scripts/sync-engine.mjs --check` reports drift. Packs, the motion kit (`src/kit.ts`), the extra
+faces (`src/fonts-extra.ts`), styles (`src/styles-extra.ts`) and patterns (`src/patterns.ts`) live here;
+`src/engine.ts` splices the faces and patterns into the runtime without editing the copy.
 
 ## Licence
 

@@ -1,0 +1,79 @@
+{
+  "id": "stamp",
+  "name": "Stamp",
+  "description": "A rubber stamp slams down at an angle — APPROVED, SOLD OUT, NEW — with a rough inked double border and a jolt.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "stamp",
+    "approved",
+    "sold",
+    "rubber",
+    "badge",
+    "seal"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 2.5,
+    "min": 1,
+    "max": 12
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "text",
+      "label": "Words",
+      "default": "Approved",
+      "maxLength": 18
+    },
+    "x": {
+      "type": "number",
+      "label": "Centre across (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Centre down (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "angle": {
+      "type": "number",
+      "label": "Angle",
+      "default": -12,
+      "min": -45,
+      "max": 45,
+      "step": 1
+    },
+    "size": {
+      "type": "number",
+      "label": "Size",
+      "default": 100,
+      "min": 40,
+      "max": 240,
+      "step": 5
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "stamp": "the stamp"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

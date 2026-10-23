@@ -1,0 +1,105 @@
+{
+  "id": "spotlight",
+  "name": "Spotlight",
+  "description": "Everything but one area dims; a feathered spotlight closes onto it with an accent ring, and a label sits by it.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "spotlight",
+    "focus",
+    "dim",
+    "highlight",
+    "isolate"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 15
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Box left (%)",
+      "default": 38,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Box top (%)",
+      "default": 28,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "w": {
+      "type": "number",
+      "label": "Box width (%)",
+      "default": 24,
+      "min": 2,
+      "max": 100,
+      "step": 1
+    },
+    "h": {
+      "type": "number",
+      "label": "Box height (%)",
+      "default": 34,
+      "min": 2,
+      "max": 100,
+      "step": 1
+    },
+    "shape": {
+      "type": "choice",
+      "label": "Shape",
+      "options": [
+        "circle",
+        "box"
+      ],
+      "default": "circle"
+    },
+    "dim": {
+      "type": "number",
+      "label": "Dim (%)",
+      "default": 70,
+      "min": 10,
+      "max": 95,
+      "step": 5
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "This part",
+      "maxLength": 28,
+      "description": "empty for none"
+    },
+    "note": {
+      "type": "text",
+      "label": "Note",
+      "default": "",
+      "maxLength": 60,
+      "description": "a line under the label"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "dim": "the dimmed frame",
+    "ring": "the ring",
+    "label": "the label and note"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "blinds",
+  "name": "Blinds",
+  "description": "Venetian blinds: slats swing shut one after another in alternating colours, then open on the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "blinds",
+    "slats",
+    "stripes",
+    "venetian"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.2,
+    "min": 0.5,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "slats": {
+      "type": "number",
+      "label": "Slats",
+      "default": 8,
+      "min": 3,
+      "max": 20,
+      "step": 1
+    },
+    "direction": {
+      "type": "choice",
+      "label": "Slats run",
+      "options": [
+        "across",
+        "down"
+      ],
+      "default": "across"
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

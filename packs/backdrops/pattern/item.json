@@ -1,0 +1,96 @@
+{
+  "id": "pattern",
+  "name": "Pattern",
+  "description": "Any of the sixteen animated patterns as a full ground — mesh, halftone, dither, Bauhaus tiles, waves, rings, dots, confetti, pills, sunburst… — in the brand's colours or your own.",
+  "category": "scene",
+  "tags": [
+    "backdrop",
+    "background",
+    "loop",
+    "pattern",
+    "texture",
+    "motion background"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "kind": {
+      "type": "choice",
+      "label": "Pattern",
+      "options": [
+        "mesh",
+        "halftone",
+        "dither",
+        "tiles",
+        "bauhaus",
+        "waves",
+        "rings",
+        "dots",
+        "plus",
+        "graph",
+        "hatch",
+        "stripes",
+        "checker",
+        "confetti",
+        "pills",
+        "sunburst"
+      ],
+      "default": "mesh"
+    },
+    "strength": {
+      "type": "number",
+      "label": "Strength",
+      "default": 1,
+      "min": 0.2,
+      "max": 2,
+      "step": 0.1
+    },
+    "scale": {
+      "type": "number",
+      "label": "Scale",
+      "default": 1,
+      "min": 0.4,
+      "max": 3,
+      "step": 0.1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 4,
+      "step": 0.1
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    },
+    "color2": {
+      "type": "color",
+      "label": "Second colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "pattern": "the pattern"
+  }
+}

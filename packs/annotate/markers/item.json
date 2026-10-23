@@ -1,0 +1,62 @@
+{
+  "id": "markers",
+  "name": "Numbered markers",
+  "description": "Numbered dots pop onto the frame one after another, each with a ring and an optional label — for walking through the parts of a shot.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "markers",
+    "numbers",
+    "steps",
+    "points",
+    "parts",
+    "hotspots"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "points": {
+      "type": "list",
+      "label": "Points",
+      "of": "text",
+      "default": [
+        "22 38 Lens",
+        "52 62 Grip",
+        "78 30 Screen"
+      ],
+      "maxItems": 8,
+      "description": "one per line: across% down% label"
+    },
+    "gap": {
+      "type": "number",
+      "label": "Seconds apart",
+      "default": 0.45,
+      "min": 0.1,
+      "max": 3,
+      "step": 0.05
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "markers": "the numbered dots",
+    "labels": "their labels"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

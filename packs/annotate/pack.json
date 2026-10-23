@@ -1,0 +1,24 @@
+{
+  "format": 1,
+  "id": "annotate",
+  "name": "MONARC Annotate",
+  "version": "1.0.0",
+  "description": "Point things out in footage: hand-drawn arrows and circles, a spotlight, focus brackets, highlighter marks, a rubber stamp, live reactions, a tech pointer, emphasis marks and numbered markers.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://monarcpro.app/motion",
+  "style": "candy",
+  "shared": "shared.js",
+  "items": [
+    "arrow",
+    "circle",
+    "spotlight",
+    "focus",
+    "highlight",
+    "stamp",
+    "reactions",
+    "pointer",
+    "emphasis",
+    "markers"
+  ]
+}

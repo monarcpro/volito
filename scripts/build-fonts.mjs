@@ -1,5 +1,5 @@
 /**
- * The faces MONARC Motion ships: every face the runtime knows (core GRAPHIC_FONTS), every
+ * The faces MONARC Motion ships: every face the runtime knows (core GRAPHIC_FONTS plus EXTRA_FONTS), every
  * script subset Fontsource cuts it in, converted to TTF (resvg reads TTF/OTF only; browsers
  * read TTF too) with one family name across weights. Writes fonts/*.ttf, fonts/faces.json
  * (family, weight, italic, subset, unicode-range, file) and each family's OFL licence.
@@ -11,7 +11,11 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { GRAPHIC_FONTS } from "../src/engine/graphic-fonts.ts";
+import { GRAPHIC_FONTS as ENGINE_FONTS } from "../src/engine/graphic-fonts.ts";
+import { EXTRA_FONTS } from "../src/fonts-extra.ts";
+
+// The engine's faces and the ones MONARC Motion adds (src/fonts-extra.ts).
+const GRAPHIC_FONTS = { ...ENGINE_FONTS, ...EXTRA_FONTS };
 import { woffToSfnt } from "./woff.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));

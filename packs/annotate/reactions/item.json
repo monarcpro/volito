@@ -1,0 +1,78 @@
+{
+  "id": "reactions",
+  "name": "Reactions",
+  "description": "Live reactions float up in a stream — hearts, likes, fire, laughs — swaying, popping in and fading out, like a live stream.",
+  "category": "social",
+  "tags": [
+    "annotation",
+    "reactions",
+    "hearts",
+    "likes",
+    "live",
+    "emoji",
+    "float"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "kind": {
+      "type": "choice",
+      "label": "Reactions",
+      "options": [
+        "mixed",
+        "hearts",
+        "likes",
+        "fire",
+        "laughs",
+        "stars"
+      ],
+      "default": "mixed"
+    },
+    "x": {
+      "type": "number",
+      "label": "Stream across (%)",
+      "default": 86,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "rate": {
+      "type": "number",
+      "label": "Per second",
+      "default": 4,
+      "min": 1,
+      "max": 12,
+      "step": 1
+    },
+    "size": {
+      "type": "number",
+      "label": "Size",
+      "default": 88,
+      "min": 36,
+      "max": 160,
+      "step": 4
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "stream": "the reactions"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

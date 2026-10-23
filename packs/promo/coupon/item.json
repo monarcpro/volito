@@ -1,0 +1,63 @@
+{
+  "id": "coupon",
+  "name": "Coupon",
+  "description": "A ticket with a perforated tear line tears in: the deal on the stub, the code in a dashed box — then a click copies it.",
+  "category": "cta",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "coupon",
+    "code",
+    "voucher",
+    "ticket",
+    "promo code",
+    "discount"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "deal": {
+      "type": "text",
+      "label": "Deal",
+      "default": "20% off",
+      "maxLength": 12
+    },
+    "note": {
+      "type": "text",
+      "label": "Note",
+      "default": "your first order",
+      "maxLength": 32
+    },
+    "code": {
+      "type": "text",
+      "label": "Code",
+      "default": "SAVE20",
+      "maxLength": 16
+    },
+    "copied": {
+      "type": "text",
+      "label": "After the click",
+      "default": "Copied",
+      "maxLength": 12
+    }
+  },
+  "parts": {
+    "ticket": "the ticket",
+    "code": "the code box",
+    "copied": "the copied chip"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

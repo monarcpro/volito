@@ -20,11 +20,20 @@ Everything below runs through the CLI (`npx -y @monarcpro/motion …`, shortened
    `essentials/…`, `broadcast/…` (lower thirds, ticker, live badge, score bug, location, countdown),
    `social/…` (follow card, notifications, comments, chat, post, now playing, rating), `data/…` (line,
    donut, bar race, goals, versus, timeline, funnel, world map, flight route) and `3d/…` (3D logo, title,
-   number, card flip, word cube, 3D bars, globe).
+   number, card flip, word cube, 3D bars, globe), `transitions/…` (iris, blinds, doors, glitch, ink, clock,
+   tiles, pixels, stripes, slices, whip — cut your clips at the midpoint), `annotate/…` (arrow, circle,
+   spotlight, focus, highlight, stamp, reactions, pointer, emphasis, numbered markers — places in % of the
+   frame), `type/…` (typewriter, word swap, split-flap, marquee, echo, liquid fill, decode, word by word,
+   key phrase, editorial stack), `backdrops/…` (any pattern, aurora, Bauhaus field, synthwave grid, lava
+   blobs, colour sweep, starfield, bokeh, topographic) and `promo/…` (sale badge, price card, coupon, offer
+   countdown, feature list, call to action, launch, tape ribbons).
 2. **Read its props.** `mm info lower-third` — every prop's type, default and length limit.
 3. **Fill it in.** Repeat `--prop name=value`. Lists take `"a; b; c"`; chart rows take `"Label: 42; Other: 17"`.
-4. **Pick the look.** `--style <name>` (`mm styles` lists them: ember, cream, mono, neon, pop, studio and
-   eight explainer art styles), or `--style path/to/DESIGN.md` for the creator's own brand.
+4. **Pick the look.** `--style <name>` (`mm styles` lists all 36: the editor's ember, cream, mono, neon, pop,
+   studio and eight explainer art styles, plus colour fields and modern looks — cobalt, tomato, acid, candy,
+   riso, aurora, sunset, lime, sport, retro, diner, blueprint, forest, luxe, capsule, memphis, swiss, terminal,
+   vapor, scifi, mint, editorial — each with an animated pattern ground), or `--style path/to/DESIGN.md` for
+   the creator's own brand (its `texture:` can name a pattern: halftone, dither, bauhaus, mesh, …).
    Fine-tune with `--accent "#hex" --display "Poppins:800"`.
 5. **Pick the frame.** `--aspect 16:9 | 9:16 | 1:1 | 4:5` (or `WIDTHxHEIGHT`) and `--duration <s>`.
 6. **Choreograph it.** Motion is open-ended: `mm info <item>` lists its parts, and any part takes any

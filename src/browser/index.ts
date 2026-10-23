@@ -21,6 +21,7 @@ declare const __MOTION_NAME__: string;
 export { ASPECTS, ASPECT_NAMES, CATEGORIES, MotionError, buildProgram, customItem, describeItem, parseAspect, resolveProps, resolveStyle } from "../pack.js";
 export type { Aspect, BuildOptions, ItemManifest, MotionItem, MotionPack, PropSpec } from "../pack.js";
 export { BUILTIN_STYLES, MG_API_REFERENCE } from "../engine.js";
+export { PATTERN_NAMES } from "../patterns.js";
 export { type MotionConfig, type MotionInput, type MotionOverrides, type MotionSpec, DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS, parseMotionArgs } from "../kit.js";
 
 export const VERSION = __MOTION_VERSION__;

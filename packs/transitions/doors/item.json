@@ -1,0 +1,56 @@
+{
+  "id": "doors",
+  "name": "Doors",
+  "description": "Two doors slide shut and a Bauhaus disc locks them, then they slide open on the next shot. Across on wide frames, top and bottom on tall ones.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "doors",
+    "split",
+    "close",
+    "open",
+    "bauhaus"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.4,
+    "min": 0.6,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "disc": {
+      "type": "boolean",
+      "label": "Disc at the seam",
+      "default": true
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

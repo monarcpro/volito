@@ -1,0 +1,59 @@
+{
+  "id": "glitch",
+  "name": "Glitch",
+  "description": "A digital glitch: torn slices and RGB-split blocks flicker in, the frame breaks fully at the cut, then glitches out to the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "glitch",
+    "digital",
+    "rgb",
+    "noise",
+    "tech"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.0,
+    "min": 0.4,
+    "max": 3
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "intensity": {
+      "type": "number",
+      "label": "Intensity",
+      "default": 1,
+      "min": 0.3,
+      "max": 1.5,
+      "step": 0.1
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

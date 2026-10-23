@@ -1,0 +1,90 @@
+{
+  "id": "circle",
+  "name": "Circle it",
+  "description": "A marker loop drawn round the thing that matters — once, twice, or a clean ring — with an optional label.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "circle",
+    "loop",
+    "ring",
+    "marker",
+    "hand-drawn"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1.5,
+    "max": 12
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Box left (%)",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Box top (%)",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "w": {
+      "type": "number",
+      "label": "Box width (%)",
+      "default": 22,
+      "min": 2,
+      "max": 100,
+      "step": 1
+    },
+    "h": {
+      "type": "number",
+      "label": "Box height (%)",
+      "default": 30,
+      "min": 2,
+      "max": 100,
+      "step": 1
+    },
+    "look": {
+      "type": "choice",
+      "label": "Look",
+      "options": [
+        "marker",
+        "double",
+        "clean"
+      ],
+      "default": "marker"
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "",
+      "maxLength": 28,
+      "description": "a tag by the loop (empty for none)"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "loop": "the loop",
+    "label": "the label"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

@@ -7,7 +7,7 @@ import * as fontkit from "fontkit";
 import { afterAll, describe, expect, it } from "vitest";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
-import { BUILTIN_STYLES, buildProgram, checkItem, customItem, findItem, frameDocument, library, normalizeWords, openSession, parseAspect, renderSheet, renderStill, renderVideo, resolveProps, resolveStyle } from "../src/index.js";
+import { BUILTIN_STYLES, PATTERN_NAMES, buildProgram, checkItem, composeDesignMd, customItem, findItem, frameDocument, library, normalizeWords, openSession, parseAspect, renderSheet, renderStill, renderVideo, resolveProps, resolveStyle } from "../src/index.js";
 import { createMcpServer } from "../src/mcp.js";
 import { allFaces, measureText as measureTextForTest } from "../src/node/fonts.js";
 import { pathDataLength, resolvePathLength } from "../src/node/pathlength.js";
@@ -98,6 +98,39 @@ describe("packs", () => {
       }
     }
   }, 300_000);
+});
+
+describe("patterns and the package's styles", () => {
+  it("draws every pattern, moving with t, and a style's pattern on every ground", async () => {
+    for (const kind of PATTERN_NAMES) {
+      const s = await openSession(customItem(`function frame(t, $) { return $.pattern(t, "${kind}", { a: 1 }); }`, { duration: 4 }), { width: 320 });
+      const fa = s.runner.frame(0.5), fb = s.runner.frame(2.5);
+      expect(fa.svg.length, kind).toBeGreaterThan(60);
+      // Everything but the ids (tile patterns move in their defs): the pattern moved.
+      const plain = (f: { svg: string; defs: string }) => (f.defs + f.svg).replace(/mg[a-z]+\d+/g, "");
+      expect(plain(fa), kind).not.toBe(plain(fb));
+    }
+    expect((await openSession(customItem('function frame(t, $) { return $.pattern(t, "nope", {}); }'), { width: 320 })).runner.frame(0).svg).toBe("");
+    // A halftone style draws its dots on the title card's ground; a plain one does not.
+    const dots = async (style: string) => ((await openSession(findItem("title-card"), { style, width: 320 })).runner.frame(2).svg.match(/<circle/g) ?? []).length;
+    expect(await dots("tomato")).toBeGreaterThan((await dots("cream")) + 100);
+  });
+
+  it("names the package's faces in the frames it draws", async () => {
+    for (const [style, family] of [["luxe", "DM Serif Display"], ["candy", "Archivo Black"], ["retro", "Fraunces"], ["diner", "Pacifico"], ["sport", "Bebas Neue"], ["aurora", "Unbounded"]]) {
+      const svg = (await openSession(findItem("title-card"), { style, width: 320 })).runner.frame(2).svg;
+      expect(svg, style).toContain(`font-family="'${family}'`);
+    }
+  });
+
+  it("describes every style in words, patterns included", () => {
+    expect(BUILTIN_STYLES.length).toBeGreaterThanOrEqual(36);
+    for (const s of BUILTIN_STYLES) expect(s.body, s.name).not.toMatch(/undefined/);
+    const cobalt = BUILTIN_STYLES.find((s) => s.name === "cobalt")!;
+    expect(cobalt.body).toMatch(/Bauhaus/);
+    expect(composeDesignMd({ ...cobalt, body: "" })).toMatch(/texture: bauhaus[\s\S]*Bauhaus shapes/);
+    expect(resolveStyle("---\nname: x\ncolors:\n  accent: \"#ff0000\"\n  ink: \"#111111\"\n  paper: \"#ffffff\"\ntexture: halftone\n---\n").texture).toBe("halftone");
+  });
 });
 
 describe("props and styles", () => {

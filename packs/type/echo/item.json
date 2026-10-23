@@ -1,0 +1,52 @@
+{
+  "id": "echo",
+  "name": "Echo stack",
+  "description": "One word with outlined echoes fanning out above and below it, rippling in a slow wave — a poster headline that breathes.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "echo",
+    "repeat",
+    "outline",
+    "stack",
+    "poster",
+    "wave"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "word": {
+      "type": "text",
+      "label": "Word",
+      "default": "Echo",
+      "maxLength": 16
+    },
+    "copies": {
+      "type": "number",
+      "label": "Echoes each side",
+      "default": 4,
+      "min": 1,
+      "max": 7,
+      "step": 1
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "word": "the solid word",
+    "echoes": "the outlined echoes"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

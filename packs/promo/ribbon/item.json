@@ -1,0 +1,58 @@
+{
+  "id": "ribbon",
+  "name": "Tape ribbons",
+  "description": "Two tapes cross the frame like caution tape, their words scrolling — FREE SHIPPING • LIMITED DROP — over your footage.",
+  "category": "banner",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "ribbon",
+    "tape",
+    "banner",
+    "caution",
+    "scrolling",
+    "free shipping"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "text",
+      "label": "First tape",
+      "default": "Free shipping",
+      "maxLength": 28
+    },
+    "text2": {
+      "type": "text",
+      "label": "Second tape",
+      "default": "Limited drop",
+      "maxLength": 28,
+      "description": "empty for one tape"
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0.2,
+      "max": 3,
+      "step": 0.1
+    }
+  },
+  "parts": {
+    "tapes": "the tapes"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

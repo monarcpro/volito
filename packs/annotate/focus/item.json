@@ -1,0 +1,82 @@
+{
+  "id": "focus",
+  "name": "Focus lock",
+  "description": "Camera focus brackets hunt in from the frame's corners, snap onto the subject with a blink, and lock in the accent with a label and crosshair.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "focus",
+    "brackets",
+    "camera",
+    "lock",
+    "target",
+    "track"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1.5,
+    "max": 12
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Box left (%)",
+      "default": 36,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Box top (%)",
+      "default": 26,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "w": {
+      "type": "number",
+      "label": "Box width (%)",
+      "default": 28,
+      "min": 2,
+      "max": 100,
+      "step": 1
+    },
+    "h": {
+      "type": "number",
+      "label": "Box height (%)",
+      "default": 40,
+      "min": 2,
+      "max": 100,
+      "step": 1
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Subject",
+      "maxLength": 28,
+      "description": "empty for none"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "brackets": "the corner brackets",
+    "cross": "the crosshair",
+    "label": "the label"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

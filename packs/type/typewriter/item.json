@@ -1,0 +1,60 @@
+{
+  "id": "typewriter",
+  "name": "Typewriter",
+  "description": "Words type on letter by letter with a blinking caret — in the brand's mono, text or display face.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "typewriter",
+    "typing",
+    "type on",
+    "caret",
+    "terminal"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 1.5,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "default": "Every great edit starts with a single cut.",
+      "maxLength": 200
+    },
+    "face": {
+      "type": "choice",
+      "label": "Face",
+      "options": [
+        "mono",
+        "display",
+        "text"
+      ],
+      "default": "mono"
+    },
+    "speed": {
+      "type": "number",
+      "label": "Letters a second",
+      "default": 18,
+      "min": 4,
+      "max": 60,
+      "step": 1
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "text": "the typed text"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

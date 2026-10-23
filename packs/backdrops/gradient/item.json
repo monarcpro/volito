@@ -1,0 +1,46 @@
+{
+  "id": "gradient",
+  "name": "Colour sweep",
+  "description": "A slow, rich gradient through the brand's colours that turns and shifts, with a light grain — the simplest premium ground.",
+  "category": "scene",
+  "tags": [
+    "backdrop",
+    "background",
+    "loop",
+    "gradient",
+    "sweep",
+    "colour",
+    "smooth",
+    "duotone"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the gradient"
+  }
+}

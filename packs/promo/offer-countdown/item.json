@@ -1,0 +1,64 @@
+{
+  "id": "offer-countdown",
+  "name": "Offer countdown",
+  "description": "Offer ends in — days, hours, minutes and seconds in tiles, the seconds rolling down live. Sits low in the frame.",
+  "category": "timer",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "countdown",
+    "timer",
+    "deadline",
+    "urgency",
+    "ends",
+    "limited"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Offer ends in",
+      "maxLength": 28
+    },
+    "hours": {
+      "type": "number",
+      "label": "Hours left",
+      "default": 26,
+      "min": 0,
+      "max": 9999
+    },
+    "minutes": {
+      "type": "number",
+      "label": "And minutes",
+      "default": 41,
+      "min": 0,
+      "max": 59,
+      "step": 1
+    },
+    "days": {
+      "type": "boolean",
+      "label": "Show days",
+      "default": true
+    }
+  },
+  "parts": {
+    "panel": "the panel",
+    "digits": "the digit tiles"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

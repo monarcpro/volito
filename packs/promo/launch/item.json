@@ -1,0 +1,66 @@
+{
+  "id": "launch",
+  "name": "Launch",
+  "description": "A launch title: a NEW sticker spins on, the product name lands huge over the brand's pattern, then the tagline and when it is out.",
+  "category": "title",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "launch",
+    "new",
+    "product",
+    "reveal",
+    "announcement",
+    "drop"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "badge": {
+      "type": "text",
+      "label": "Sticker",
+      "default": "New",
+      "maxLength": 8
+    },
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Aero Pro",
+      "maxLength": 28
+    },
+    "tagline": {
+      "type": "text",
+      "label": "Tagline",
+      "default": "Lighter than anything we've made",
+      "maxLength": 64
+    },
+    "when": {
+      "type": "text",
+      "label": "When",
+      "default": "Available now",
+      "maxLength": 28,
+      "description": "empty for none"
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "badge": "the sticker",
+    "name": "the name",
+    "tagline": "the tagline",
+    "when": "the availability chip"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

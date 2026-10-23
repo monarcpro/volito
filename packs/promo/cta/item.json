@@ -1,0 +1,73 @@
+{
+  "id": "cta",
+  "name": "Call to action",
+  "description": "A short line, then a big button — a cursor glides on, presses it with a ripple, and it flips to the done label.",
+  "category": "cta",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "cta",
+    "button",
+    "click",
+    "shop now",
+    "sign up",
+    "download",
+    "link in bio"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 15
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "line": {
+      "type": "text",
+      "label": "Line",
+      "default": "Ready when you are",
+      "maxLength": 40,
+      "description": "empty for none"
+    },
+    "button": {
+      "type": "text",
+      "label": "Button",
+      "default": "Get started",
+      "maxLength": 20
+    },
+    "done": {
+      "type": "text",
+      "label": "After the click",
+      "default": "You're in",
+      "maxLength": 20
+    },
+    "icon": {
+      "type": "icon",
+      "label": "Icon",
+      "default": "arrowRight"
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "center",
+        "bottom"
+      ],
+      "default": "center"
+    }
+  },
+  "parts": {
+    "line": "the line",
+    "button": "the button",
+    "cursor": "the cursor"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

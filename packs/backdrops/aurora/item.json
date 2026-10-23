@@ -1,0 +1,56 @@
+{
+  "id": "aurora",
+  "name": "Aurora",
+  "description": "Soft blooms of the brand's colours drift and melt into each other under a fine grain — a calm, premium ground for titles.",
+  "category": "scene",
+  "tags": [
+    "backdrop",
+    "background",
+    "loop",
+    "aurora",
+    "mesh",
+    "gradient",
+    "glow",
+    "soft",
+    "premium"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "intensity": {
+      "type": "number",
+      "label": "Intensity",
+      "default": 1.2,
+      "min": 0.4,
+      "max": 2,
+      "step": 0.1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "light": "the drifting light"
+  }
+}

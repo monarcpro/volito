@@ -1,0 +1,57 @@
+{
+  "id": "features",
+  "name": "Feature list",
+  "description": "A title, then features tick in one by one — a check draws in its circle and the line slides across.",
+  "category": "list",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "features",
+    "checklist",
+    "benefits",
+    "list",
+    "ticks",
+    "included"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Everything you need",
+      "maxLength": 40
+    },
+    "features": {
+      "type": "list",
+      "label": "Features",
+      "of": "text",
+      "default": [
+        "Unlimited projects",
+        "4K exports",
+        "Brand styles",
+        "Team sharing"
+      ],
+      "maxItems": 6
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the title",
+    "rows": "the feature rows"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "key-phrase",
+  "name": "Key phrase",
+  "description": "A sentence sets in big type, then its *marked* words get a marker swipe one after another — the line people should remember.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "key phrase",
+    "highlight",
+    "marker",
+    "quote",
+    "emphasis",
+    "sentence"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 1.5,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "default": "Good editing is *invisible* until it is *missing*.",
+      "maxLength": 140,
+      "description": "wrap words in *stars* to mark them"
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "text": "the sentence",
+    "marks": "the marker swipes"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

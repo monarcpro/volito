@@ -1,0 +1,52 @@
+{
+  "id": "word-by-word",
+  "name": "Word by word",
+  "description": "A sentence one word at a time, each word slammed full-frame on a new ground — the brand's, the accent, the second accent — cut to a steady pace. *Marked* words go big.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "word by word",
+    "kinetic",
+    "fast",
+    "punchy",
+    "quote",
+    "beat"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 1.5,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "default": "Stop scrolling. *This* changes everything.",
+      "maxLength": 160,
+      "description": "wrap a word in *stars* to make it the accent"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds a word",
+      "default": 0.42,
+      "min": 0.15,
+      "max": 2,
+      "step": 0.01
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "words": "the words"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

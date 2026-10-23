@@ -1,0 +1,68 @@
+{
+  "id": "ink",
+  "name": "Ink bleed",
+  "description": "Ink spreads from a point in wobbly blooms of the accents until it floods the frame, then a hole blooms open on the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "ink",
+    "paint",
+    "blob",
+    "organic",
+    "liquid",
+    "splash"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.6,
+    "min": 0.6,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "From across (%)",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "From down (%)",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

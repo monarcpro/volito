@@ -1,0 +1,85 @@
+{
+  "id": "arrow",
+  "name": "Arrow",
+  "description": "A hand-drawn (or clean) arrow sweeps from a label to the thing you point at, with a pulse on the spot.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "arrow",
+    "point",
+    "look",
+    "here",
+    "hand-drawn"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1.5,
+    "max": 12
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Look here",
+      "maxLength": 32
+    },
+    "x": {
+      "type": "number",
+      "label": "Point across (%)",
+      "default": 62,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Point down (%)",
+      "default": 45,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "side": {
+      "type": "choice",
+      "label": "Label side",
+      "options": [
+        "auto",
+        "left",
+        "right",
+        "above",
+        "below"
+      ],
+      "default": "auto"
+    },
+    "look": {
+      "type": "choice",
+      "label": "Look",
+      "options": [
+        "marker",
+        "clean"
+      ],
+      "default": "marker"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "label": "the label",
+    "arrow": "the arrow",
+    "spot": "the pulse on the spot"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

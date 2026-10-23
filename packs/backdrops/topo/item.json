@@ -1,0 +1,56 @@
+{
+  "id": "topo",
+  "name": "Topographic",
+  "description": "Contour lines like a topographic map, slowly shifting as if the land were breathing.",
+  "category": "scene",
+  "tags": [
+    "backdrop",
+    "background",
+    "loop",
+    "topographic",
+    "contour",
+    "lines",
+    "map",
+    "terrain",
+    "organic"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "lines": {
+      "type": "number",
+      "label": "Lines",
+      "default": 14,
+      "min": 6,
+      "max": 40,
+      "step": 1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "lines": "the contour lines"
+  }
+}

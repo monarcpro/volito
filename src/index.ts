@@ -58,6 +58,7 @@ export { ProgramError, ProgramRunner } from "./node/sandbox.js";
 export { loadImage, loadMedia, normalizeWords, readStyleArg, readWords } from "./node/inputs.js";
 export { FfmpegMissing, probeFfmpeg } from "./node/ffmpeg.js";
 export { fontsDir, packageVersion } from "./node/paths.js";
-export { BUILTIN_STYLES, MG_API_REFERENCE, MG_ICON_NAMES, MG_SPRITE_NAMES, parseDesignMd } from "./engine.js";
+export { BUILTIN_STYLES, EDITOR_STYLES, MG_API_REFERENCE, MG_ICON_NAMES, MG_SPRITE_NAMES, composeDesignMd, parseDesignMd } from "./engine.js";
+export { PATTERN_NAMES, PATTERN_WORDS, type PatternName } from "./patterns.js";
 export { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE } from "./guide.js";
 export { type MotionConfig, type MotionInput, type MotionOverrides, type MotionSpec, DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS, normalizeMotion, parseMotionArgs } from "./kit.js";

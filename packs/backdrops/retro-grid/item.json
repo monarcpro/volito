@@ -1,0 +1,55 @@
+{
+  "id": "retro-grid",
+  "name": "Retro grid",
+  "description": "Synthwave: a neon grid floor rushing toward you under a striped sun and a glowing horizon, stars twinkling above.",
+  "category": "scene",
+  "tags": [
+    "backdrop",
+    "background",
+    "loop",
+    "synthwave",
+    "retro",
+    "grid",
+    "80s",
+    "neon",
+    "vaporwave",
+    "sun"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "sun": {
+      "type": "boolean",
+      "label": "Sun",
+      "default": true
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the sky",
+    "sun": "the sun",
+    "floor": "the grid floor"
+  }
+}

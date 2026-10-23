@@ -1,0 +1,81 @@
+{
+  "id": "pointer",
+  "name": "Pointer",
+  "description": "A tech callout: a pulsing dot on the spot, a leader line that draws out at an angle, and a card with a title and a detail.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "pointer",
+    "callout",
+    "leader",
+    "label",
+    "spec",
+    "tech"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 15
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "48 MP sensor",
+      "maxLength": 32
+    },
+    "detail": {
+      "type": "text",
+      "label": "Detail",
+      "default": "Larger pixels, better low light",
+      "maxLength": 64
+    },
+    "x": {
+      "type": "number",
+      "label": "Point across (%)",
+      "default": 42,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Point down (%)",
+      "default": 55,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "side": {
+      "type": "choice",
+      "label": "Card side",
+      "options": [
+        "auto",
+        "left",
+        "right"
+      ],
+      "default": "auto"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "dot": "the dot on the spot",
+    "line": "the leader line",
+    "card": "the card"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

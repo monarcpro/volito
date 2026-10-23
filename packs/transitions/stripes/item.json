@@ -1,0 +1,68 @@
+{
+  "id": "stripes",
+  "name": "Speed stripes",
+  "description": "Diagonal stripes in the brand's colours race across in a stagger to cover the frame, then race off to reveal the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "stripes",
+    "diagonal",
+    "speed",
+    "sport",
+    "swipe"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.1,
+    "min": 0.5,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "stripes": {
+      "type": "number",
+      "label": "Stripes",
+      "default": 7,
+      "min": 3,
+      "max": 16,
+      "step": 1
+    },
+    "direction": {
+      "type": "choice",
+      "label": "Direction",
+      "options": [
+        "right",
+        "left"
+      ],
+      "default": "right"
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

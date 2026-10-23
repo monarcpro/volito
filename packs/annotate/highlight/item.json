@@ -1,0 +1,83 @@
+{
+  "id": "highlight",
+  "name": "Highlight",
+  "description": "A highlighter swipes across a word or area — or a marker underline, box or strike-through drawn on by hand.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "highlight",
+    "marker",
+    "underline",
+    "strike",
+    "emphasis"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 2.5,
+    "min": 1,
+    "max": 12
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Box left (%)",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Box top (%)",
+      "default": 44,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "w": {
+      "type": "number",
+      "label": "Box width (%)",
+      "default": 40,
+      "min": 2,
+      "max": 100,
+      "step": 1
+    },
+    "h": {
+      "type": "number",
+      "label": "Box height (%)",
+      "default": 10,
+      "min": 1,
+      "max": 100,
+      "step": 1
+    },
+    "mode": {
+      "type": "choice",
+      "label": "Mark",
+      "options": [
+        "highlight",
+        "underline",
+        "box",
+        "strike"
+      ],
+      "default": "highlight"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "mark": "the mark"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

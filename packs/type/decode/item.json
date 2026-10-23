@@ -1,0 +1,52 @@
+{
+  "id": "decode",
+  "name": "Decode",
+  "description": "A title decodes letter by letter out of scrambled glyphs between brackets, then a mono line types on under it.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "decode",
+    "scramble",
+    "hacker",
+    "glitch",
+    "reveal",
+    "tech"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Access granted",
+      "maxLength": 28
+    },
+    "line": {
+      "type": "text",
+      "label": "Line",
+      "default": "loading your workspace",
+      "maxLength": 60,
+      "description": "empty for none"
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "brackets": "the brackets",
+    "title": "the title",
+    "line": "the mono line"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

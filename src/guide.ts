@@ -34,7 +34,7 @@ In your own code the same kit is there: const M = motion($, t);
 Give every part a box when you can: wipes, iris, shutter and blinds need it, and moods pick from more moves.`;
 
 /** The libraries and helpers every program can use besides the $ runtime. */
-export const LIBRARY_GUIDE = `Libraries: layout, 3D and maps
+export const LIBRARY_GUIDE = `Libraries: layout, patterns, 3D and maps
 
 Layout (always there)
   safeArea($) → {x, y, w, h, tall, square, wide}: the title-safe box (on 9:16 it clears the platforms' buttons)
@@ -42,6 +42,15 @@ Layout (always there)
   fitLines($, str, font, maxW, maxSize, minSize, maxLines) → {size, lines, font}: the biggest size that sets in ≤ maxLines
   landOn($, str, fallback, after) → when the first spoken word of str starts (0.08 s early), else fallback
   widest($, lines, font) · avatar($, imageProp, cx, cy, r, {name, fill, ring}) · appIcon($, icon, x, y, size, {fill}) · initials(name)
+
+Patterns (always there) — sixteen animated grounds in the brand's colours, pure functions of t:
+  $.pattern(t, kind, {box, color, color2, a (strength), scale, speed, angle, at: [x, y], count, seed, r}) → markup
+  kinds: dots · plus · graph · hatch · stripes · checker · halftone · dither · waves · rings · mesh · confetti · bauhaus · tiles · pills · sunburst
+  A style whose texture names one draws it on every $.panel / $.texture ground. confetti, bauhaus and pills keep to the edges.
+
+Faces: Inter, Space Grotesk, Space Mono, Poppins, Playfair Display, Montserrat, Anton, Outfit, Gabarito, Caveat, Press Start 2P,
+  Permanent Marker, Patrick Hand, Fredoka, IM Fell English, Bebas Neue, DM Serif Display, Archivo Black, Syne, Unbounded,
+  Righteous, Orbitron, Pacifico, Fraunces, Bricolage Grotesque — name them "Family:weight" (e.g. "Fraunces:900", "Syne:800").
 
 3D — real depth, light and a camera, drawn as SVG paths (no GPU). Call it and the library comes with your program:
   const S = scene3d($, { camera: { fov: 35, distance, yaw, pitch, roll, target: [x, y, z], x, y }, light: { dir: [x, y, z], ambient, spec, shine } });

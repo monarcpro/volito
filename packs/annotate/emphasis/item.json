@@ -1,0 +1,76 @@
+{
+  "id": "emphasis",
+  "name": "Emphasis marks",
+  "description": "Comic emphasis round a point: action lines burst out and sparkles twinkle — for a punchline, a reveal or a wow.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "emphasis",
+    "burst",
+    "sparkle",
+    "wow",
+    "lines",
+    "comic"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 2.5,
+    "min": 1,
+    "max": 12
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Centre across (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Centre down (%)",
+      "default": 45,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "size": {
+      "type": "number",
+      "label": "Size",
+      "default": 100,
+      "min": 40,
+      "max": 260,
+      "step": 5
+    },
+    "kind": {
+      "type": "choice",
+      "label": "Marks",
+      "options": [
+        "both",
+        "lines",
+        "sparkles"
+      ],
+      "default": "both"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "lines": "the action lines",
+    "sparkles": "the sparkles"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

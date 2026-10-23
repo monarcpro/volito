@@ -1,0 +1,63 @@
+{
+  "id": "word-swap",
+  "name": "Word swap",
+  "description": "A fixed lead and a word that keeps changing: each new word rolls up into an accent box that stretches to fit it — “We make videos / ads / stories”.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "word swap",
+    "rotating",
+    "changing word",
+    "slot",
+    "carousel",
+    "hero"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 2,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "lead": {
+      "type": "text",
+      "label": "Lead",
+      "default": "We make",
+      "maxLength": 24
+    },
+    "words": {
+      "type": "list",
+      "label": "Words",
+      "of": "text",
+      "default": [
+        "videos",
+        "ads",
+        "stories",
+        "brands"
+      ],
+      "maxItems": 8
+    },
+    "end": {
+      "type": "text",
+      "label": "After",
+      "default": "",
+      "maxLength": 12,
+      "description": "words after the box (empty for none)"
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "lead": "the fixed words",
+    "box": "the box and its word"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

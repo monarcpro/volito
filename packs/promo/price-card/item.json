@@ -1,0 +1,102 @@
+{
+  "id": "price-card",
+  "name": "Price card",
+  "description": "A product card: the old price is struck through, the new price counts down to it, a saving chip pops and the button gets pressed.",
+  "category": "cta",
+  "tags": [
+    "promo",
+    "sale",
+    "offer",
+    "price",
+    "product",
+    "card",
+    "discount",
+    "shop",
+    "ecommerce"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "kicker": {
+      "type": "text",
+      "label": "Kicker",
+      "default": "Weekend deal",
+      "maxLength": 24
+    },
+    "name": {
+      "type": "text",
+      "label": "Product",
+      "default": "Studio headphones",
+      "maxLength": 32
+    },
+    "was": {
+      "type": "number",
+      "label": "Was",
+      "default": 199,
+      "min": 0,
+      "max": 10000000.0
+    },
+    "now": {
+      "type": "number",
+      "label": "Now",
+      "default": 149,
+      "min": 0,
+      "max": 10000000.0
+    },
+    "currency": {
+      "type": "text",
+      "label": "Currency",
+      "default": "$",
+      "maxLength": 4
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 2,
+      "step": 1
+    },
+    "cta": {
+      "type": "text",
+      "label": "Button",
+      "default": "Shop now",
+      "maxLength": 16
+    },
+    "added": {
+      "type": "text",
+      "label": "After the click",
+      "default": "Added",
+      "maxLength": 16
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "center",
+        "left",
+        "right"
+      ],
+      "default": "center"
+    }
+  },
+  "parts": {
+    "card": "the card",
+    "price": "the prices",
+    "save": "the saving chip",
+    "button": "the button and cursor"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

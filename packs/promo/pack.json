@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "id": "promo",
+  "name": "MONARC Promo",
+  "version": "1.0.0",
+  "description": "Offers that sell: a sale starburst, a price card that counts down, a coupon with a code to copy, an offer countdown, a feature checklist, a call to action with a click, a launch title and crossing tape ribbons.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://monarcpro.app/motion",
+  "style": "candy",
+  "shared": "shared.js",
+  "items": [
+    "sale-badge",
+    "price-card",
+    "coupon",
+    "offer-countdown",
+    "features",
+    "cta",
+    "launch",
+    "ribbon"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "clock",
+  "name": "Clock wipe",
+  "description": "A clock-hand sweep: the next colour wipes round the frame like a second hand with an accent edge, then sweeps on round to reveal the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "clock",
+    "radial",
+    "sweep",
+    "pie",
+    "wipe"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.2,
+    "min": 0.5,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "direction": {
+      "type": "choice",
+      "label": "Turns",
+      "options": [
+        "clockwise",
+        "anticlockwise"
+      ],
+      "default": "clockwise"
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

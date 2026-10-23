@@ -1,0 +1,58 @@
+{
+  "id": "slices",
+  "name": "Slices",
+  "description": "The frame is sliced into bands that shoot in from alternate sides, each with an accent edge, then shoot out the far side to reveal the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "slices",
+    "bands",
+    "slide",
+    "split"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.2,
+    "min": 0.5,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "slices": {
+      "type": "number",
+      "label": "Slices",
+      "default": 5,
+      "min": 2,
+      "max": 12,
+      "step": 1
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

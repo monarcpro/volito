@@ -1,0 +1,25 @@
+{
+  "format": 1,
+  "id": "transitions",
+  "name": "MONARC Transitions",
+  "version": "1.0.0",
+  "description": "Eleven transitions that cover the frame by the cut and reveal the next shot — iris, blinds, doors, glitch, ink, clock, Bauhaus tiles, pixels, stripes, slices and a whip pan — in any brand's colours.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://monarcpro.app/motion",
+  "style": "cobalt",
+  "shared": "shared.js",
+  "items": [
+    "iris",
+    "blinds",
+    "doors",
+    "glitch",
+    "ink",
+    "clock",
+    "tiles",
+    "pixels",
+    "stripes",
+    "slices",
+    "whip"
+  ]
+}

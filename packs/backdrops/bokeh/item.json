@@ -1,0 +1,56 @@
+{
+  "id": "bokeh",
+  "name": "Bokeh",
+  "description": "Soft out-of-focus lights in the brand's colours drift and breathe — a warm, filmic ground.",
+  "category": "scene",
+  "tags": [
+    "backdrop",
+    "background",
+    "loop",
+    "bokeh",
+    "lights",
+    "blur",
+    "soft",
+    "particles",
+    "film"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "count": {
+      "type": "number",
+      "label": "Lights",
+      "default": 26,
+      "min": 6,
+      "max": 60,
+      "step": 1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "lights": "the lights"
+  }
+}

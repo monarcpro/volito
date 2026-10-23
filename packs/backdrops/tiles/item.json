@@ -1,0 +1,56 @@
+{
+  "id": "tiles",
+  "name": "Bauhaus field",
+  "description": "A full field of Bauhaus tiles — quarter circles, half discs, discs, diamonds — turning in a diagonal wave, in the brand's colours.",
+  "category": "scene",
+  "tags": [
+    "backdrop",
+    "background",
+    "loop",
+    "bauhaus",
+    "tiles",
+    "geometric",
+    "shapes",
+    "grid",
+    "swiss"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "size": {
+      "type": "number",
+      "label": "Tile size",
+      "default": 1.4,
+      "min": 0.5,
+      "max": 3,
+      "step": 0.1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "tiles": "the tiles"
+  }
+}

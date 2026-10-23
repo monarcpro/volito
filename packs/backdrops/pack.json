@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "id": "backdrops",
+  "name": "MONARC Backdrops",
+  "version": "1.0.0",
+  "description": "Grounds that move, to set titles, products or footage on: any of sixteen patterns, aurora, a Bauhaus field, a synthwave grid, lava blobs, a colour sweep, a starfield, bokeh and topographic lines.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://monarcpro.app/motion",
+  "style": "aurora",
+  "shared": "shared.js",
+  "items": [
+    "pattern",
+    "aurora",
+    "tiles",
+    "retro-grid",
+    "blobs",
+    "gradient",
+    "starfield",
+    "bokeh",
+    "topo"
+  ]
+}

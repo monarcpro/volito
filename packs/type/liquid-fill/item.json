@@ -1,0 +1,52 @@
+{
+  "id": "liquid-fill",
+  "name": "Liquid fill",
+  "description": "A big outlined word fills from the bottom with a wavy liquid in the brand's accents, then a tagline rises under it.",
+  "category": "text",
+  "tags": [
+    "kinetic type",
+    "text",
+    "liquid",
+    "fill",
+    "outline",
+    "wave",
+    "water",
+    "pour"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 1.5,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "word": {
+      "type": "text",
+      "label": "Word",
+      "default": "Fresh",
+      "maxLength": 16
+    },
+    "tagline": {
+      "type": "text",
+      "label": "Tagline",
+      "default": "Squeezed this morning",
+      "maxLength": 48,
+      "description": "empty for none"
+    }
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "outline": "the outlined word",
+    "fill": "the liquid",
+    "tagline": "the tagline"
+  },
+  "beats": {
+    "in": 0.2
+  }
+}

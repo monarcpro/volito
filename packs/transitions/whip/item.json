@@ -1,0 +1,63 @@
+{
+  "id": "whip",
+  "name": "Whip pan",
+  "description": "A whip pan: speed streaks blur across, thicken into a smear of the brand's colours at the cut, then streak away the same way onto the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "whip",
+    "pan",
+    "speed",
+    "blur",
+    "streak",
+    "swish"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 0.8,
+    "min": 0.3,
+    "max": 3
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "direction": {
+      "type": "choice",
+      "label": "Direction",
+      "options": [
+        "left",
+        "right",
+        "up",
+        "down"
+      ],
+      "default": "left"
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}

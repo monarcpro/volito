@@ -1,0 +1,78 @@
+{
+  "id": "iris",
+  "name": "Iris",
+  "description": "A camera iris: the frame closes down to a point through a ring of the accent, then opens on the next shot. Circle, diamond, star or square, from any point.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "iris",
+    "circle",
+    "close",
+    "open",
+    "shape"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.2,
+    "min": 0.5,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "shape": {
+      "type": "choice",
+      "label": "Shape",
+      "options": [
+        "circle",
+        "diamond",
+        "star",
+        "square"
+      ],
+      "default": "circle"
+    },
+    "x": {
+      "type": "number",
+      "label": "Centre across (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Centre down (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "brand",
+        "accent",
+        "black",
+        "white"
+      ],
+      "default": "brand",
+      "description": "brand: the accents lead and the brand's ground covers"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "default": "",
+      "maxLength": 24,
+      "description": "shown while the frame is covered (empty for none)"
+    }
+  },
+  "parts": {
+    "cover": "the shapes that cover the frame",
+    "label": "the word at the cut"
+  }
+}
