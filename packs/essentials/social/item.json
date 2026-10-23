@@ -1,0 +1,86 @@
+{
+  "id": "social",
+  "name": "Social handle",
+  "description": "Your handle in a corner: a pill with the platform's icon slides in, a follow button presses, it tucks away.",
+  "category": "social",
+  "tags": [
+    "handle",
+    "follow",
+    "instagram",
+    "tiktok",
+    "youtube",
+    "x",
+    "linkedin",
+    "username",
+    "social"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 2.5,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "handle": {
+      "type": "text",
+      "label": "Handle",
+      "default": "@monarcstudio",
+      "maxLength": 30
+    },
+    "platform": {
+      "type": "choice",
+      "label": "Platform",
+      "description": "picks the icon and the line under the handle",
+      "options": [
+        "youtube",
+        "instagram",
+        "tiktok",
+        "x",
+        "linkedin",
+        "threads",
+        "website"
+      ],
+      "default": "instagram"
+    },
+    "action": {
+      "type": "text",
+      "label": "Button",
+      "description": "empty for no button",
+      "default": "Follow",
+      "maxLength": 12
+    },
+    "done": {
+      "type": "text",
+      "label": "After the press",
+      "default": "Following",
+      "maxLength": 12
+    },
+    "corner": {
+      "type": "choice",
+      "label": "Corner",
+      "options": [
+        "bottom-left",
+        "bottom-right",
+        "top-left",
+        "top-right",
+        "bottom-center"
+      ],
+      "default": "bottom-left"
+    }
+  },
+  "beats": {
+    "in": 0.15
+  },
+  "parts": {
+    "pill": "the pill behind",
+    "icon": "the platform icon",
+    "handle": "the handle and platform line",
+    "button": "the follow button"
+  }
+}

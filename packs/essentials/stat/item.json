@@ -1,0 +1,113 @@
+{
+  "id": "stat",
+  "name": "Stat",
+  "description": "One number that matters, full frame: it counts up as it lands, the label rises under it, a ring fills to the value or bars grow to it.",
+  "category": "stat",
+  "tags": [
+    "number",
+    "statistic",
+    "count",
+    "percent",
+    "growth",
+    "kpi",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 2,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "value": {
+      "type": "number",
+      "label": "Value",
+      "default": 3.2
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 1
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before the number",
+      "default": "",
+      "maxLength": 4
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After the number",
+      "default": "×",
+      "maxLength": 6
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "more reach in 90 days",
+      "maxLength": 48
+    },
+    "context": {
+      "type": "text",
+      "label": "Small print",
+      "description": "a source or a comparison, in the mono face",
+      "default": "Across 1,200 creator channels",
+      "maxLength": 60
+    },
+    "chart": {
+      "type": "choice",
+      "label": "Chart",
+      "options": [
+        "bars",
+        "ring",
+        "none"
+      ],
+      "default": "bars"
+    },
+    "max": {
+      "type": "number",
+      "label": "Ring full at",
+      "description": "the value a full ring stands for (100 for a percent)",
+      "default": 100,
+      "when": {
+        "prop": "chart",
+        "is": [
+          "ring"
+        ]
+      }
+    },
+    "series": {
+      "type": "list",
+      "label": "Bars",
+      "description": "the bars' values, the last one is the stat (empty: four steps up to it)",
+      "of": "number",
+      "default": [],
+      "maxItems": 8,
+      "when": {
+        "prop": "chart",
+        "is": [
+          "bars"
+        ]
+      }
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "number": "the big number",
+    "label": "the label under it",
+    "context": "the small print",
+    "chart": "the bars or ring"
+  }
+}

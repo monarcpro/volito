@@ -1,0 +1,16 @@
+{
+  "id": "my-graphic",
+  "name": "My graphic",
+  "description": "A headline card over footage: it springs in, an accent underline draws on, it leaves before the end.",
+  "category": "title",
+  "tags": ["title"],
+  "placement": "overlay",
+  "duration": { "default": 4, "min": 2, "max": 20 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "title": { "type": "text", "label": "Title", "default": "Hello, motion", "maxLength": 32 },
+    "kicker": { "type": "text", "label": "Kicker", "default": "New", "maxLength": 16 }
+  },
+  "parts": { "card": "the card", "kicker": "the small label", "title": "the title", "underline": "the line under it" },
+  "beats": { "in": 0.15, "out": -0.45 }
+}

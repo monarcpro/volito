@@ -1,0 +1,73 @@
+{
+  "id": "title-card",
+  "name": "Title card",
+  "description": "A full-frame chapter or opening title: a kicker chip, the title built letter by letter, a brush underline, a subtitle — over the brand's ground with an outlined number drifting behind.",
+  "category": "title",
+  "tags": [
+    "chapter",
+    "section",
+    "intro",
+    "opening",
+    "title"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 2,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "kicker": {
+      "type": "text",
+      "label": "Kicker",
+      "description": "a small label above the title (empty for none)",
+      "default": "Chapter two",
+      "maxLength": 28
+    },
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Depth over reach",
+      "maxLength": 48
+    },
+    "subtitle": {
+      "type": "text",
+      "label": "Subtitle",
+      "default": "Why the best channels say less",
+      "maxLength": 80
+    },
+    "number": {
+      "type": "text",
+      "label": "Number behind",
+      "description": "a big outlined number behind the title (\"02\"; empty for none)",
+      "default": "02",
+      "maxLength": 3
+    },
+    "align": {
+      "type": "choice",
+      "label": "Align",
+      "options": [
+        "center",
+        "left"
+      ],
+      "default": "center"
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "ground": "the brand's ground behind it all",
+    "number": "the big outlined number",
+    "kicker": "the small label above",
+    "title": "the title, line by line",
+    "underline": "the brush underline",
+    "subtitle": "the line under the title"
+  }
+}

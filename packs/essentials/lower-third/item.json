@@ -1,0 +1,68 @@
+{
+  "id": "lower-third",
+  "name": "Lower third",
+  "description": "A name plate over footage: an accent spine grows, the plate wipes in, the name rises, the role slides in.",
+  "category": "lower-third",
+  "tags": [
+    "name",
+    "speaker",
+    "intro",
+    "interview",
+    "plate"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2.5,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Priya Sharma",
+      "maxLength": 32
+    },
+    "role": {
+      "type": "text",
+      "label": "Role or title",
+      "default": "Product designer",
+      "maxLength": 44
+    },
+    "side": {
+      "type": "choice",
+      "label": "Side",
+      "options": [
+        "left",
+        "right"
+      ],
+      "default": "left"
+    },
+    "look": {
+      "type": "choice",
+      "label": "Look",
+      "description": "plate: a card behind the text · minimal: a spine and the text on a soft scrim",
+      "options": [
+        "plate",
+        "minimal"
+      ],
+      "default": "plate"
+    }
+  },
+  "beats": {
+    "in": 0.15
+  },
+  "parts": {
+    "scrim": "the soft dark wash behind it",
+    "spine": "the accent bar",
+    "plate": "the card",
+    "name": "the name",
+    "role": "the role line and its dot"
+  }
+}

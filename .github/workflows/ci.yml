@@ -1,0 +1,28 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: ffmpeg (for the video encoders)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm build
+      - run: pnpm test
+      - name: The package installs and renders on its own
+        run: |
+          pnpm pack --pack-destination /tmp/pkg
+          mkdir /tmp/app && cd /tmp/app && npm init -y >/dev/null
+          npm install --no-audit --no-fund /tmp/pkg/*.tgz
+          npx monarc-motion list
+          npx monarc-motion render lower-third --width 480 --duration 2.5 --fps 12 --out lt.mov

@@ -1,0 +1,64 @@
+{
+  "id": "logo-sting",
+  "name": "Logo sting",
+  "description": "A brand reveal, full frame: rings burst from the centre, the logo pops, the wordmark lands letter by letter with a light sweep, the tagline spaces out under it.",
+  "category": "logo",
+  "tags": [
+    "logo",
+    "intro",
+    "outro",
+    "brand",
+    "reveal",
+    "wordmark",
+    "sting",
+    "bumper"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 3.5,
+    "min": 2,
+    "max": 10
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "wordmark": {
+      "type": "text",
+      "label": "Wordmark",
+      "default": "MONARC",
+      "maxLength": 20
+    },
+    "tagline": {
+      "type": "text",
+      "label": "Tagline",
+      "default": "Made with motion",
+      "maxLength": 40
+    },
+    "logo": {
+      "type": "image",
+      "label": "Logo",
+      "description": "a square mark (PNG with alpha or SVG) above the wordmark; none for the wordmark alone",
+      "default": ""
+    },
+    "burst": {
+      "type": "boolean",
+      "label": "Burst",
+      "default": true
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "holdFromEnd": 0.5,
+  "parts": {
+    "ground": "the brand's ground",
+    "rings": "the rings that burst out",
+    "logo": "the logo picture",
+    "wordmark": "the wordmark",
+    "tagline": "the tagline"
+  }
+}

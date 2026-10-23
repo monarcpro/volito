@@ -1,0 +1,86 @@
+{
+  "id": "callout",
+  "name": "Callout",
+  "description": "Points at something in the shot: a ring pulses on the spot, a line draws out to a label card that pops in beside it.",
+  "category": "callout",
+  "tags": [
+    "annotation",
+    "pointer",
+    "arrow",
+    "label",
+    "highlight",
+    "tutorial",
+    "product"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 2,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Export in one click",
+      "maxLength": 40
+    },
+    "detail": {
+      "type": "text",
+      "label": "Second line",
+      "default": "ProRes, WebM or MP4",
+      "maxLength": 48
+    },
+    "x": {
+      "type": "number",
+      "label": "Spot across",
+      "description": "where the spot is, 0 (left edge) to 1 (right edge)",
+      "default": 0.62,
+      "min": 0,
+      "max": 1,
+      "step": 0.01
+    },
+    "y": {
+      "type": "number",
+      "label": "Spot down",
+      "description": "where the spot is, 0 (top) to 1 (bottom)",
+      "default": 0.44,
+      "min": 0,
+      "max": 1,
+      "step": 0.01
+    },
+    "side": {
+      "type": "choice",
+      "label": "Label side",
+      "options": [
+        "auto",
+        "left",
+        "right",
+        "above",
+        "below"
+      ],
+      "default": "auto"
+    },
+    "icon": {
+      "type": "icon",
+      "label": "Icon",
+      "description": "an icon name (monarc-motion api lists them; empty for none)",
+      "default": "sparkle"
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "parts": {
+    "pulse": "the ring pulsing on the spot",
+    "dot": "the spot",
+    "line": "the line out to the card",
+    "card": "the label card"
+  }
+}

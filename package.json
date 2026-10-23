@@ -1,0 +1,105 @@
+{
+  "name": "@monarcpro/motion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MONARC Motion: brand-aware, voice-synced motion graphics as code. Packs of ready-made graphics, a CLI, a Node API and an MCP server that render them to ProRes 4444, WebM, MP4, GIF, PNG or SVG.",
+  "license": "(MIT AND LicenseRef-MONARC-Packs-1.0)",
+  "author": "MONARC STUDIOS <hello@monarcpro.app>",
+  "homepage": "https://monarcpro.app/motion",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monarcpro/motion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/monarcpro/motion/issues"
+  },
+  "keywords": [
+    "motion graphics",
+    "video",
+    "svg",
+    "animation",
+    "lower third",
+    "title",
+    "mcp",
+    "ai agents",
+    "prores",
+    "render"
+  ],
+  "bin": {
+    "monarc-motion": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "packs",
+    "fonts",
+    "skill",
+    "examples",
+    "LICENSE",
+    "PACKS-LICENSE.md",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20.10"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22.18"
+    }
+  },
+  "scripts": {
+    "fonts": "node scripts/build-fonts.mjs",
+    "build": "node scripts/build-fonts.mjs && node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node scripts/build-fonts.mjs && vitest run",
+    "sync-engine": "node scripts/sync-engine.mjs",
+    "prepack": "pnpm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@resvg/resvg-js": "2.6.2",
+    "fontkit": "2.0.4",
+    "zod": "4.6.2"
+  },
+  "devDependencies": {
+    "@fontsource/anton": "5.3.0",
+    "@fontsource/caveat": "5.2.7",
+    "@fontsource/fredoka": "5.3.0",
+    "@fontsource/gabarito": "5.3.0",
+    "@fontsource/im-fell-english": "5.3.0",
+    "@fontsource/inter": "5.2.7",
+    "@fontsource/montserrat": "5.3.0",
+    "@fontsource/outfit": "5.3.0",
+    "@fontsource/patrick-hand": "5.3.0",
+    "@fontsource/permanent-marker": "5.3.0",
+    "@fontsource/playfair-display": "5.2.7",
+    "@fontsource/poppins": "5.2.7",
+    "@fontsource/press-start-2p": "5.3.0",
+    "@fontsource/space-grotesk": "5.3.0",
+    "@fontsource/space-mono": "5.3.0",
+    "@types/node": "22.20.5",
+    "esbuild": "0.28.2",
+    "rollup": "4.64.0",
+    "rollup-plugin-dts": "6.5.1",
+    "typescript": "5.9.3",
+    "vitest": "5.0.0"
+  },
+  "packageManager": "pnpm@10.17.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

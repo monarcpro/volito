@@ -1,0 +1,66 @@
+{
+  "id": "quote",
+  "name": "Quote",
+  "description": "A pull quote, full frame: a big quotation mark pops, the words set in line by line, the speaker signs it off under an accent rule.",
+  "category": "quote",
+  "tags": [
+    "quote",
+    "testimonial",
+    "review",
+    "citation",
+    "words"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "quote": {
+      "type": "longtext",
+      "label": "Quote",
+      "default": "The best tools disappear. You stop thinking about the editor and start thinking about the story.",
+      "maxLength": 220
+    },
+    "author": {
+      "type": "text",
+      "label": "Who said it",
+      "default": "Maya Chen",
+      "maxLength": 32
+    },
+    "role": {
+      "type": "text",
+      "label": "Their role",
+      "default": "Documentary editor",
+      "maxLength": 44
+    },
+    "face": {
+      "type": "choice",
+      "label": "Typeface",
+      "description": "serif: the brand's accent face (an italic serif) · display: its headline face",
+      "options": [
+        "serif",
+        "display"
+      ],
+      "default": "serif"
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "mark": "the quotation mark",
+    "quote": "the quote, line by line",
+    "rule": "the short accent rule",
+    "author": "who said it",
+    "role": "their role"
+  }
+}

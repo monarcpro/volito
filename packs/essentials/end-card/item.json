@@ -1,0 +1,85 @@
+{
+  "id": "end-card",
+  "name": "End card",
+  "description": "An end screen, full frame: \"watch next\" slots pop in (for YouTube's end-screen elements or your own thumbnails), the subscribe button presses, the handle signs off.",
+  "category": "end-card",
+  "tags": [
+    "end screen",
+    "outro",
+    "watch next",
+    "youtube",
+    "subscribe",
+    "thumbnail"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 10,
+    "min": 4,
+    "max": 20
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Heading",
+      "default": "Watch next",
+      "maxLength": 28
+    },
+    "first": {
+      "type": "text",
+      "label": "First slot",
+      "default": "How we edit a reel in 10 minutes",
+      "maxLength": 48
+    },
+    "second": {
+      "type": "text",
+      "label": "Second slot",
+      "default": "The hook formula",
+      "maxLength": 48
+    },
+    "firstImage": {
+      "type": "image",
+      "label": "First thumbnail",
+      "description": "a 16:9 picture (an empty slot when none)",
+      "default": ""
+    },
+    "secondImage": {
+      "type": "image",
+      "label": "Second thumbnail",
+      "default": ""
+    },
+    "handle": {
+      "type": "text",
+      "label": "Handle",
+      "default": "@monarcstudio",
+      "maxLength": 30
+    },
+    "button": {
+      "type": "text",
+      "label": "Button",
+      "default": "Subscribe",
+      "maxLength": 14
+    },
+    "done": {
+      "type": "text",
+      "label": "After the press",
+      "default": "Subscribed",
+      "maxLength": 14
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "holdFromEnd": 0.6,
+  "parts": {
+    "ground": "the brand's ground",
+    "title": "the heading",
+    "slots": "each watch-next slot",
+    "footer": "the button and handle"
+  }
+}

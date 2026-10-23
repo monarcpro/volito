@@ -1,0 +1,108 @@
+{
+  "id": "bar-chart",
+  "name": "Bar chart",
+  "description": "A ranked bar chart, full frame: each bar grows in turn with its value counting up beside it; one row can stand out in the accent.",
+  "category": "chart",
+  "tags": [
+    "chart",
+    "data",
+    "ranking",
+    "comparison",
+    "bars",
+    "graph",
+    "statistics"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Heading",
+      "default": "Where viewers drop off",
+      "maxLength": 48
+    },
+    "rows": {
+      "type": "list",
+      "label": "Rows",
+      "description": "label and value per row (\"Intro: 92\")",
+      "of": {
+        "label": "text",
+        "value": "number"
+      },
+      "default": [
+        {
+          "label": "First 3 seconds",
+          "value": 92
+        },
+        {
+          "label": "First 30 seconds",
+          "value": 64
+        },
+        {
+          "label": "Halfway",
+          "value": 41
+        },
+        {
+          "label": "The end",
+          "value": 23
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 7
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before each value",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After each value",
+      "default": "%",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 2,
+      "step": 1
+    },
+    "highlight": {
+      "type": "number",
+      "label": "Row in the accent",
+      "description": "1 for the first row; 0 for the largest value; -1 for none",
+      "default": 0,
+      "min": -1,
+      "max": 7,
+      "step": 1
+    },
+    "source": {
+      "type": "text",
+      "label": "Source",
+      "default": "Retention across 300 uploads",
+      "maxLength": 60
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "title": "the heading",
+    "rows": "each row (label, bar, value)",
+    "source": "the source line"
+  }
+}

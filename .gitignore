@@ -1,0 +1,7 @@
+node_modules/
+dist/
+fonts/
+.types/
+out/
+*.tgz
+.DS_Store

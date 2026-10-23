@@ -1,0 +1,80 @@
+{
+  "id": "steps",
+  "name": "Steps",
+  "description": "A numbered list or checklist, full frame: the heading lands, then each step slides in on its own card — numbered, or ticked off one by one.",
+  "category": "list",
+  "tags": [
+    "list",
+    "steps",
+    "how to",
+    "process",
+    "checklist",
+    "agenda",
+    "tips",
+    "framework"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "kicker": {
+      "type": "text",
+      "label": "Kicker",
+      "default": "The framework",
+      "maxLength": 28
+    },
+    "title": {
+      "type": "text",
+      "label": "Heading",
+      "default": "Three steps to a better hook",
+      "maxLength": 48
+    },
+    "steps": {
+      "type": "list",
+      "label": "Steps",
+      "of": "text",
+      "default": [
+        "Open on the payoff",
+        "Cut every pause",
+        "Land one idea per shot"
+      ],
+      "minItems": 1,
+      "maxItems": 6
+    },
+    "marker": {
+      "type": "choice",
+      "label": "Marker",
+      "options": [
+        "numbers",
+        "checks"
+      ],
+      "default": "numbers"
+    },
+    "gap": {
+      "type": "number",
+      "label": "Seconds between steps",
+      "default": 0.35,
+      "min": 0.1,
+      "max": 5,
+      "step": 0.05
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "parts": {
+    "ground": "the brand's ground",
+    "kicker": "the small label",
+    "title": "the heading",
+    "steps": "each step's card"
+  }
+}

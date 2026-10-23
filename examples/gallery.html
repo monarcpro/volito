@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MONARC Motion gallery</title>
+<style>
+  :root { --bg: #0d0d11; --panel: #17171e; --line: rgba(246, 241, 231, 0.1); --fg: #f6f1e7; --mute: rgba(246, 241, 231, 0.6); --accent: #ff6a3d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 Inter, system-ui, sans-serif; }
+  header { padding: 18px 24px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: baseline; }
+  header b { font-size: 16px; letter-spacing: 0.04em; }
+  header span { color: var(--mute); }
+  main { display: grid; grid-template-columns: 240px 1fr 320px; min-height: calc(100vh - 58px); }
+  nav { border-right: 1px solid var(--line); padding: 12px; overflow: auto; }
+  nav button { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--fg); padding: 8px 10px; border-radius: 8px; cursor: pointer; font: inherit; }
+  nav button small { display: block; color: var(--mute); font-size: 12px; }
+  nav button[aria-current="true"] { background: var(--panel); outline: 1px solid var(--line); }
+  section { padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .stage { width: 100%; display: flex; justify-content: center; }
+  canvas { max-width: 100%; max-height: 68vh; border-radius: 10px; background: linear-gradient(135deg, #4a5563, #262c35); }
+  canvas.full { background: #000; }
+  .controls { display: flex; gap: 10px; align-items: center; width: min(100%, 880px); }
+  .controls input[type=range] { flex: 1; }
+  button.act { background: var(--panel); color: var(--fg); border: 1px solid var(--line); padding: 6px 12px; border-radius: 8px; cursor: pointer; font: inherit; }
+  pre { width: min(100%, 880px); background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; overflow: auto; color: var(--mute); margin: 0; white-space: pre-wrap; word-break: break-all; }
+  aside { border-left: 1px solid var(--line); padding: 16px; overflow: auto; display: flex; flex-direction: column; gap: 12px; }
+  label { display: flex; flex-direction: column; gap: 4px; color: var(--mute); font-size: 12px; }
+  input, select, textarea { background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; font: inherit; }
+  textarea { min-height: 70px; resize: vertical; }
+  .warn { color: #ffb38a; font-size: 12px; }
+  h3 { margin: 8px 0 0; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+  .row { display: flex; gap: 6px; align-items: end; }
+  .row > * { flex: 1; }
+  .parts { display: grid; grid-template-columns: auto 1fr 1fr; gap: 6px; align-items: center; font-size: 12px; color: var(--mute); }
+  .parts select { padding: 4px 6px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } nav, aside { border: 0; } }
+</style>
+</head>
+<body>
+<header><b>MONARC MOTION</b><span id="sub">loading…</span></header>
+<main>
+  <nav id="items"></nav>
+  <section>
+    <div class="stage"><canvas id="c" width="960" height="540"></canvas></div>
+    <div class="controls">
+      <button class="act" id="play">Pause</button>
+      <input type="range" id="scrub" min="0" max="1000" value="0">
+      <span id="time">0.00 s</span>
+    </div>
+    <pre id="cmd"></pre>
+    <div class="warn" id="warn"></div>
+  </section>
+  <aside>
+    <label>Style <select id="style"></select></label>
+    <label>Aspect <select id="aspect"></select></label>
+    <div id="props"></div>
+    <h3>Motion</h3>
+    <div class="row">
+      <label>Mood <select id="mood"></select></label>
+      <label>Seed <input id="seed" type="number" placeholder="—"></label>
+      <button class="act" id="shuffle" title="A new choreography">Shuffle</button>
+    </div>
+    <label>Speed <input id="speed" type="range" min="0.5" max="2" step="0.05" value="1"></label>
+    <div class="parts" id="parts"></div>
+  </aside>
+</main>
+<script type="module">
+  import { ASPECT_NAMES, BUILTIN_STYLES, MOODS, MOVES, createPlayer, findItem, loadRegistry } from "../dist/browser.js";
+
+  // The package folder this page is served from: fonts/ and dist/registry.json sit there.
+  const base = new URL("../", location.href).href;
+  const reg = await loadRegistry(base);
+  const items = reg.packs.flatMap((p) => p.entries);
+  const $ = (id) => document.getElementById(id);
+  $("sub").textContent = `${reg.package} ${reg.version} · ${items.length} graphics`;
+  for (const s of BUILTIN_STYLES) $("style").add(new Option(`${s.name} — ${s.mode}`, s.name));
+  for (const a of ASPECT_NAMES) $("aspect").add(new Option(a, a));
+  $("mood").add(new Option("the item's own", ""));
+  for (const m of MOODS) $("mood").add(new Option(m, m));
+
+  const canvas = $("c");
+  let item = items[0];
+  let props = {};
+  let motion = {};
+  let player = null;
+
+  function sizeCanvas() {
+    const [w, h] = { "16:9": [960, 540], "9:16": [405, 720], "1:1": [640, 640], "4:5": [576, 720] }[$("aspect").value];
+    canvas.width = w * devicePixelRatio;
+    canvas.height = h * devicePixelRatio;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    canvas.className = item.placement === "full" ? "full" : "";
+  }
+
+  function command() {
+    const parts = [`npx ${reg.package} render ${item.ref}`];
+    for (const [k, v] of Object.entries(props)) parts.push(`--prop ${k}=${JSON.stringify(Array.isArray(v) ? v.map((r) => (typeof r === "object" ? Object.values(r).join(": ") : r)).join("; ") : String(v))}`);
+    parts.push(`--style ${$("style").value}`, `--aspect ${$("aspect").value}`);
+    if ($("mood").value) parts.push(`--mood ${$("mood").value}`);
+    if ($("seed").value) parts.push(`--seed ${$("seed").value}`);
+    if (Number($("speed").value) !== 1) parts.push(`--speed ${$("speed").value}`);
+    for (const [part, spec] of Object.entries(motion)) for (const [k, v] of Object.entries(spec)) parts.push(`--motion ${part}.${k}=${v}`);
+    parts.push("--out out.mov");
+    $("cmd").textContent = parts.join(" \\\n  ");
+  }
+
+  async function show() {
+    sizeCanvas();
+    const seed = $("seed").value === "" ? undefined : Number($("seed").value);
+    const opts = { base, props, motion, mood: $("mood").value || undefined, seed, speed: Number($("speed").value), style: $("style").value, aspect: $("aspect").value, onWarnings: (w) => ($("warn").textContent = w.join(" · ")), onError: (e) => ($("warn").textContent = e.message), onFrame: (t) => { $("time").textContent = t.toFixed(2) + " s"; if (player) $("scrub").value = String(Math.round((t / player.duration) * 1000)); } };
+    $("warn").textContent = "";
+    if (player) await player.update(opts);
+    else player = await createPlayer(canvas, item, opts);
+    command();
+    if ($("play").textContent === "Pause") player.play();
+  }
+
+  function form() {
+    const box = $("props");
+    box.innerHTML = "";
+    props = {};
+    for (const [name, spec] of Object.entries(item.props)) {
+      if (spec.type === "image") continue;
+      const label = document.createElement("label");
+      label.textContent = spec.label || name;
+      let input;
+      if (spec.type === "choice") {
+        input = document.createElement("select");
+        for (const o of spec.options) input.add(new Option(o, o));
+        input.value = spec.default;
+      } else if (spec.type === "boolean") {
+        input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = !!spec.default;
+      } else if (spec.type === "longtext" || spec.type === "list") {
+        input = document.createElement("textarea");
+        input.value = spec.type === "list" ? (spec.default || []).map((r) => (typeof r === "object" ? Object.values(r).join(": ") : r)).join("\n") : spec.default;
+      } else {
+        input = document.createElement("input");
+        input.type = spec.type === "number" ? "number" : "text";
+        if (spec.step) input.step = spec.step;
+        input.value = spec.default ?? "";
+      }
+      input.addEventListener("change", () => {
+        props[name] = spec.type === "boolean" ? input.checked : spec.type === "list" ? input.value.split("\n").filter(Boolean) : input.value;
+        show();
+      });
+      label.append(input);
+      box.append(label);
+    }
+  }
+
+  // One row per part: its entrance and its exit, any move.
+  function partsForm() {
+    const box = $("parts");
+    box.innerHTML = "";
+    motion = {};
+    for (const [name, what] of Object.entries(item.parts || {})) {
+      const label = document.createElement("span");
+      label.textContent = name;
+      label.title = what;
+      box.append(label);
+      for (const key of ["in", "out"]) {
+        const sel = document.createElement("select");
+        sel.add(new Option(key === "in" ? "in: item's" : "out: item's", ""));
+        for (const m of MOVES) sel.add(new Option(`${key}: ${m}`, m));
+        sel.onchange = () => {
+          motion[name] = { ...(motion[name] || {}) };
+          if (sel.value) motion[name][key] = sel.value; else delete motion[name][key];
+          if (!Object.keys(motion[name]).length) delete motion[name];
+          show();
+        };
+        box.append(sel);
+      }
+    }
+  }
+
+  function pick(next) {
+    item = next;
+    for (const b of document.querySelectorAll("nav button")) b.setAttribute("aria-current", String(b.dataset.ref === item.ref));
+    form();
+    partsForm();
+    show();
+  }
+
+  for (const it of items) {
+    const b = document.createElement("button");
+    b.dataset.ref = it.ref;
+    b.innerHTML = `${it.name}<small>${it.placement} · ${it.duration.default}s</small>`;
+    b.onclick = () => pick(it);
+    $("items").append(b);
+  }
+  $("style").value = reg.packs[0]?.style ?? "ember";
+  $("style").onchange = show;
+  $("aspect").onchange = show;
+  $("mood").onchange = show;
+  $("seed").onchange = show;
+  $("speed").onchange = show;
+  // A new seed: a new choreography (the mood stays if one is picked, else the seed picks one).
+  $("shuffle").onclick = () => { $("seed").value = String(1 + Math.floor(Math.random() * 9999)); show(); if (player) player.seek(0).then(() => $("play").textContent === "Pause" && player.play()); };
+  $("play").onclick = () => {
+    if (!player) return;
+    if ($("play").textContent === "Pause") { player.pause(); $("play").textContent = "Play"; }
+    else { player.play(); $("play").textContent = "Pause"; }
+  };
+  $("scrub").oninput = () => { if (!player) return; player.pause(); $("play").textContent = "Play"; player.seek((Number($("scrub").value) / 1000) * player.duration); };
+  const want = new URLSearchParams(location.search).get("item");
+  pick(want ? findItem(reg, want) : items[0]);
+</script>
+</body>
+</html>

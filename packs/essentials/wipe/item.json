@@ -1,0 +1,75 @@
+{
+  "id": "wipe",
+  "name": "Brand wipe",
+  "description": "A transition in the brand's colours: panels sweep in to cover the frame at the midpoint — cut your clips there — and sweep out to reveal the next shot.",
+  "category": "transition",
+  "tags": [
+    "transition",
+    "wipe",
+    "swipe",
+    "cut",
+    "bars",
+    "circle",
+    "reveal"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 1.2,
+    "min": 0.6,
+    "max": 4
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "shape": {
+      "type": "choice",
+      "label": "Shape",
+      "options": [
+        "bars",
+        "diagonal",
+        "circle"
+      ],
+      "default": "bars"
+    },
+    "bars": {
+      "type": "number",
+      "label": "Bars",
+      "default": 5,
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "when": {
+        "prop": "shape",
+        "is": [
+          "bars"
+        ]
+      }
+    },
+    "label": {
+      "type": "text",
+      "label": "Word at the cut",
+      "description": "shown while the frame is covered (empty for none)",
+      "default": "",
+      "maxLength": 24
+    },
+    "direction": {
+      "type": "choice",
+      "label": "Direction",
+      "options": [
+        "right",
+        "left",
+        "up",
+        "down"
+      ],
+      "default": "right"
+    }
+  },
+  "parts": {
+    "panels": "the panels that cover the frame",
+    "label": "the word at the cut"
+  }
+}

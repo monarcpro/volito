@@ -1,0 +1,87 @@
+{
+  "id": "subscribe",
+  "name": "Subscribe",
+  "description": "A call to action over footage: the channel card springs in, a cursor glides onto the button and presses it, the bell rings.",
+  "category": "cta",
+  "tags": [
+    "subscribe",
+    "follow",
+    "youtube",
+    "cta",
+    "button",
+    "bell",
+    "channel"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4.5,
+    "min": 3,
+    "max": 15
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "channel": {
+      "type": "text",
+      "label": "Channel",
+      "default": "MONARC Studio",
+      "maxLength": 26
+    },
+    "detail": {
+      "type": "text",
+      "label": "Line under it",
+      "default": "1.2M subscribers",
+      "maxLength": 30
+    },
+    "button": {
+      "type": "text",
+      "label": "Button",
+      "default": "Subscribe",
+      "maxLength": 14
+    },
+    "done": {
+      "type": "text",
+      "label": "After the press",
+      "default": "Subscribed",
+      "maxLength": 14
+    },
+    "avatar": {
+      "type": "image",
+      "label": "Avatar",
+      "description": "a square picture for the channel (a play mark when empty)",
+      "default": ""
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "auto",
+        "bottom-left",
+        "bottom-right",
+        "center"
+      ],
+      "default": "auto"
+    },
+    "cursor": {
+      "type": "boolean",
+      "label": "Cursor",
+      "default": true
+    },
+    "bell": {
+      "type": "boolean",
+      "label": "Bell",
+      "default": true
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "parts": {
+    "card": "the channel card",
+    "cursor": "the cursor that presses the button"
+  }
+}

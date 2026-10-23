@@ -1,0 +1,70 @@
+{
+  "id": "banner",
+  "name": "News banner",
+  "description": "A broadcast strap over footage: the label block slams in, the headline bar wipes across, a ticker scrolls under it.",
+  "category": "banner",
+  "tags": [
+    "breaking news",
+    "live",
+    "strap",
+    "ticker",
+    "chyron",
+    "broadcast",
+    "headline"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 8,
+    "min": 3,
+    "max": 60
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Breaking",
+      "maxLength": 14
+    },
+    "headline": {
+      "type": "text",
+      "label": "Headline",
+      "default": "AI editors now cut a reel in under a minute",
+      "maxLength": 70
+    },
+    "ticker": {
+      "type": "longtext",
+      "label": "Ticker",
+      "description": "items separated by \" · \" scroll under the headline (empty for none)",
+      "default": "Creators report 3× more output · Open motion packs land on npm · Agents can now render graphics on their own",
+      "maxLength": 280
+    },
+    "live": {
+      "type": "boolean",
+      "label": "Live dot",
+      "default": true
+    },
+    "speed": {
+      "type": "number",
+      "label": "Ticker speed",
+      "description": "px a second at 1080 px",
+      "default": 140,
+      "min": 30,
+      "max": 600
+    }
+  },
+  "beats": {
+    "in": 0.1
+  },
+  "parts": {
+    "label": "the label block",
+    "bar": "the headline bar and ticker strip",
+    "headline": "the headline text",
+    "ticker": "the scrolling ticker text"
+  }
+}

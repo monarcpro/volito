@@ -1,0 +1,10 @@
+{
+  "from": "MONARC packages/core/src",
+  "commit": "96d3c90095262e626e6ba20e7a8d36fa1bcca5b8",
+  "files": [
+    "graphics-runtime.ts",
+    "graphic-fonts.ts",
+    "styles.ts",
+    "graphics.ts"
+  ]
+}
