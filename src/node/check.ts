@@ -1,6 +1,6 @@
 /**
  * Checking a graphic before anyone renders it: run it at every aspect asked, frame by frame,
- * and report what the MONARC editor's check would — a throw, a frame that does not parse,
+ * and report what MONARC PRO's check would — a throw, a frame that does not parse,
  * text wider than the frame, a word it waits for that is never spoken, a graphic that never
  * draws anything. What a pack test and an agent's fix loop both read.
  */

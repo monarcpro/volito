@@ -1,10 +1,10 @@
 /** How motion works — for creators setting it and for code using the kit. */
 export const MOTION_GUIDE = `Motion: any part, any move
 
-Every graphic is made of named parts (monarc-motion info <item> lists them). Each part enters, may idle
+Every graphic is made of named parts (volito info <item> lists them). Each part enters, may idle
 while it holds, may take emphasis hits, and leaves — and every one of those is yours to change:
 
-  in / out      any move (monarc-motion moves): rise, slam, wipe, iris, glitch, scramble, typewriter,
+  in / out      any move (volito moves): rise, slam, wipe, iris, glitch, scramble, typewriter,
                 spin, swing, stretch, smear, blur, flip, bounce … An exit plays the move backwards.
   ease          brand, out, inOut, expo, back, elastic, bounce, snappy, punchy, bouncy, calm, wobbly,
                 spring(freq, damping), steps(n), cubic(x1,y1,x2,y2)
@@ -70,12 +70,12 @@ Maps (Natural Earth, 177 countries). Call one and the library comes with your pr
         m.countries · m.outline (the map's edge) · m.clipId() (clip to it) · m.ring(points)
   worldGlobe(S, { r, spin, tilt, colorOf: (country) => colour }) countries on a 3D globe · worldOnSphere(lon, lat, r, spin, tilt) → a 3D point`;
 
-/** How MONARC Motion items and packs are written — what `monarc-motion guide` and the MCP motion_api tool print after the API. */
-export const AUTHORING_GUIDE = `Writing MONARC Motion graphics
+/** How Volito items and packs are written — what `volito guide` and the MCP motion_api tool print after the API. */
+export const AUTHORING_GUIDE = `Writing Volito graphics
 
 A graphic is a program: plain JavaScript that defines function frame(t, $) and returns the SVG markup of
 one frame (no <svg> root). It is a pure function of t — any frame can be drawn alone, in any order — so it
-renders the same in the MONARC editor, in a browser and from this CLI.
+renders the same in MONARC PRO, in a browser and from this CLI.
 
 Props and moments
   An item's props arrive as $.data (const p = $.data; p.name, p.role …). Never hard-code text a creator
@@ -97,7 +97,7 @@ Shape of a good item
   - Keep text inside the title-safe area: ~5% of the width at the sides on 16:9; on 9:16 leave ~13% at the
     top and ~22% at the bottom for platform UI (captions, buttons).
   - Size text to fit: measure it ($.measure) and shrink the size until it fits the box it owns; wrap long
-    text with maxW. MONARC's check reports any line that runs off the frame.
+    text with maxW. The check reports any line that runs off the frame.
   - Colour comes from the brand: $.c.bg / $.c.fg for ground and text, $.c.accent for the one thing that
     matters, $.c.accent2 for markers, $.c.surface for cards. Faces from $.font("display" | "text" | "mono").
     $.case(str) applies the brand's case. Never invent colours — a creator's DESIGN.md re-skins the item.
@@ -121,11 +121,11 @@ A pack
                         "author": "…", "license": "…", "style": "ember", "shared": "shared.js",
                         "items": ["my-item", …] }
   my-pack/shared.js   helpers prepended to every item's code (function declarations only).
-  Load extra packs with --packs <dir> or MONARC_MOTION_PACKS=<dir>.
+  Load extra packs with --packs <dir> or VOLITO_PACKS=<dir>.
 
 The loop
-  monarc-motion new my-item          a template to start from
-  monarc-motion check ./my-item      errors and warnings at every aspect
-  monarc-motion sheet ./my-item      frames across time in one PNG — look at it
-  monarc-motion render ./my-item --format mov
+  volito new my-item          a template to start from
+  volito check ./my-item      errors and warnings at every aspect
+  volito sheet ./my-item      frames across time in one PNG — look at it
+  volito render ./my-item --format mov
   Agents: motion_check, then motion_preview, fix what you see, then motion_render.`;

@@ -19,7 +19,7 @@ import { ASPECT_NAMES, MotionError, makeItem } from "../src/pack.js";
 import { HITS, IDLES, MOODS, MOVES, normalizeMotion, parseMotionArgs } from "../src/kit.js";
 import { normalizeProgram, programEnv } from "../src/engine.js";
 
-const tmp = mkdtempSync(join(tmpdir(), "monarc-motion-test-"));
+const tmp = mkdtempSync(join(tmpdir(), "volito-test-"));
 afterAll(() => rmSync(tmp, { recursive: true, force: true }));
 
 /** RGBA pixels of a PNG (drawn through resvg, premultiplied). */

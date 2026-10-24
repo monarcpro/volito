@@ -1,6 +1,6 @@
 /**
- * Bring the engine up to date with the MONARC editor's: the runtime, the sandbox source, the font
- * table and the brand styles live in MONARC's core (packages/core/src) and are copied here into
+ * Bring the engine up to date with MONARC PRO's: the runtime, the sandbox source, the font
+ * table and the brand styles live in MONARC PRO's core (packages/core/src) and are copied here into
  * src/engine/, so this repo stands alone and every graphic renders exactly as it does on a MONARC
  * timeline. graphics.ts comes without its editor-only helpers (reading words off a project's
  * timeline). Writes src/engine/SOURCE.json with the commit it came from.

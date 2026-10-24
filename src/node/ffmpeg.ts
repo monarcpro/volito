@@ -1,10 +1,10 @@
-/** The ffmpeg MONARC Motion encodes video with: MONARC_MOTION_FFMPEG, else the one on PATH. */
+/** The ffmpeg Volito encodes video with: VOLITO_FFMPEG (or the older MONARC_MOTION_FFMPEG), else the one on PATH. */
 import { execFileSync } from "node:child_process";
 
 let probed: { path: string; encoders: Set<string> } | null | undefined;
 
 export function ffmpegPath(): string {
-  return process.env.MONARC_MOTION_FFMPEG || "ffmpeg";
+  return process.env.VOLITO_FFMPEG || process.env.MONARC_MOTION_FFMPEG || "ffmpeg";
 }
 
 /** ffmpeg and the encoders it was built with; null when there is no ffmpeg. */
@@ -27,7 +27,7 @@ export function probeFfmpeg(): { path: string; encoders: Set<string> } | null {
 
 export class FfmpegMissing extends Error {
   constructor(what: string) {
-    super(`${what} needs ffmpeg — install it (macOS: brew install ffmpeg · Debian/Ubuntu: apt install ffmpeg · Windows: winget install ffmpeg) or set MONARC_MOTION_FFMPEG to its path. PNG sequences and stills need no ffmpeg.`);
+    super(`${what} needs ffmpeg — install it (macOS: brew install ffmpeg · Debian/Ubuntu: apt install ffmpeg · Windows: winget install ffmpeg) or set VOLITO_FFMPEG to its path. PNG sequences and stills need no ffmpeg.`);
     this.name = "FfmpegMissing";
   }
 }

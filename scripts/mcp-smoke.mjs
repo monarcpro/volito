@@ -1,4 +1,4 @@
-// MCP smoke test: start `monarc-motion mcp` over stdio, list tools, call each one the way an agent would.
+// MCP smoke test: start `volito mcp` over stdio, list tools, call each one the way an agent would.
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";

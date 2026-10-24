@@ -1,5 +1,5 @@
 /**
- * Brand styles MONARC Motion ships beyond the MONARC editor's built-ins: colour-field grounds (cobalt,
+ * Brand styles Volito ships beyond MONARC PRO's built-ins: colour-field grounds (cobalt,
  * tomato, acid yellow, mint), neo-brutal candy, risograph, aurora light, editorial serif, synthwave…
  * each with one of the package's animated patterns as its texture. Same shape as the engine's styles
  * (a DESIGN.md's tokens), merged after them; kept out of src/engine/, which is synced from MONARC core.

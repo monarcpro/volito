@@ -1,13 +1,13 @@
 /**
- * monarc-motion — the command line: find a graphic, fill it with your words and brand, render it.
+ * volito — the command line: find a graphic, fill it with your words and brand, render it.
  *
- *   monarc-motion list
- *   monarc-motion info lower-third
- *   monarc-motion render lower-third --prop name="Priya Sharma" --prop role="Product designer" --style ember --out priya.mov
- *   monarc-motion still title-card --aspect 9:16 --t 1.2 --out frame.png
- *   monarc-motion sheet stat --prop value=3.2 --prop suffix=×
- *   monarc-motion check ./my-graphic.js
- *   monarc-motion mcp            (an MCP server on stdio for Claude Code, Cursor, …)
+ *   volito list
+ *   volito info lower-third
+ *   volito render lower-third --prop name="Priya Sharma" --prop role="Product designer" --style ember --out priya.mov
+ *   volito still title-card --aspect 9:16 --t 1.2 --out frame.png
+ *   volito sheet stat --prop value=3.2 --prop suffix=×
+ *   volito check ./my-graphic.js
+ *   volito mcp            (an MCP server on stdio for Claude Code, Cursor, …)
  */
 import { availableParallelism } from "node:os";
 process.env.UV_THREADPOOL_SIZE ??= String(Math.max(4, Math.min(16, availableParallelism())));
@@ -29,9 +29,9 @@ import { findItem, library, searchItems } from "./node/packs.js";
 import { packageVersion, packsDir } from "./node/paths.js";
 import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderStill, renderVideo } from "./node/render.js";
 
-const HELP = `MONARC Motion ${packageVersion()} — brand-aware, voice-synced motion graphics as code
+const HELP = `Volito ${packageVersion()} — brand-aware, voice-synced motion graphics as code
 
-Usage: monarc-motion <command> [item] [options]
+Usage: volito <command> [item] [options]
 
 Commands
   list [--search words] [--category c] [--json]   the graphics in the packs
@@ -66,11 +66,11 @@ Options
   --beat name=seconds    move a named moment (negative counts from the end)
   --motion part.key=value  how a part moves (repeat): name.in=pop, *.ease=bouncy, plate.out=wipe,
                          role.emphasis=pulse@2, title.split=letters, name.keys='[{"t":0,"x":-200},{"t":1,"x":0}]'
-                         ("in=pop" alone means every part; "monarc-motion info <item>" lists the parts)
+                         ("in=pop" alone means every part; "volito info <item>" lists the parts)
   --mood <m>             a choreography: ${MOODS.join(", ")}
   --seed <n>             a new choreography for every number (with or without a mood)
   --speed <x>            every move faster (2) or slower (0.5)
-  --packs <dir>          more packs (also MONARC_MOTION_PACKS)
+  --packs <dir>          more packs (also VOLITO_PACKS)
   --format <f>           render: ${VIDEO_FORMATS.join(", ")} · still: png, svg
   --json                 machine-readable output
 
@@ -214,7 +214,7 @@ async function main(argv: string[]): Promise<number> {
   if (rest.length) throw new MotionError(`unexpected "${rest.join(" ")}" — options start with --`);
   const lib = library(v.packs ?? []);
   const need = () => {
-    if (!target) throw new MotionError(`${cmd} needs an item (see: monarc-motion list)`);
+    if (!target) throw new MotionError(`${cmd} needs an item (see: volito list)`);
     return findItem(target, lib);
   };
 
@@ -306,7 +306,7 @@ async function main(argv: string[]): Promise<number> {
       const { code, pack: _p, ref: _r, ...manifest } = item;
       writeFileSync(join(dir, "item.json"), `${JSON.stringify(manifest, null, 2)}\n`);
       writeFileSync(join(dir, "frame.js"), code);
-      process.stdout.write(`${dir}\n  edit frame.js, then: monarc-motion still ${JSON.stringify(dir)} — or render it the same way\n`);
+      process.stdout.write(`${dir}\n  edit frame.js, then: volito still ${JSON.stringify(dir)} — or render it the same way\n`);
       return 0;
     }
     case "new": {
@@ -318,7 +318,7 @@ async function main(argv: string[]): Promise<number> {
       manifest.id = target;
       manifest.name = target.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
       writeFileSync(join(dir, "item.json"), `${JSON.stringify(manifest, null, 2)}\n`);
-      process.stdout.write(`${dir}\n  edit item.json and frame.js, then: monarc-motion sheet ${JSON.stringify(dir)}\n`);
+      process.stdout.write(`${dir}\n  edit item.json and frame.js, then: volito sheet ${JSON.stringify(dir)}\n`);
       return 0;
     }
     case "api":
@@ -333,7 +333,7 @@ async function main(argv: string[]): Promise<number> {
       return -1;
     }
     default:
-      throw new MotionError(`unknown command "${cmd}" — see monarc-motion --help`);
+      throw new MotionError(`unknown command "${cmd}" — see volito --help`);
   }
 }
 
@@ -344,7 +344,7 @@ main(process.argv.slice(2)).then(
   (err: unknown) => {
     const e = err as Error;
     const known = e instanceof MotionError || e?.name === "ProgramError" || e?.name === "FfmpegMissing" || (e as { code?: string })?.code?.startsWith?.("ERR_PARSE_ARGS");
-    process.stderr.write(`monarc-motion: ${known ? e.message : (e?.stack ?? String(err))}\n`);
+    process.stderr.write(`volito: ${known ? e.message : (e?.stack ?? String(err))}\n`);
     process.exitCode = 2;
   },
 );

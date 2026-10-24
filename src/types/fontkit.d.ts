@@ -1,4 +1,4 @@
-/** The slice of fontkit MONARC Motion uses (fontkit ships no types). */
+/** The slice of fontkit Volito uses (fontkit ships no types). */
 declare module "fontkit" {
   export interface PathCommand {
     command: "moveTo" | "lineTo" | "quadraticCurveTo" | "bezierCurveTo" | "closePath";

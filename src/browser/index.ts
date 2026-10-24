@@ -1,9 +1,9 @@
 /**
- * MONARC Motion in the browser: play any item (or your own program) live on a canvas — the same
- * sandboxed worker and SVG → image → canvas path the MONARC editor's player uses, so a web page
+ * Volito in the browser: play any item (or your own program) live on a canvas — the same
+ * sandboxed worker and SVG → image → canvas path MONARC PRO's player uses, so a web page
  * shows exactly what a render will be.
  *
- *   import { loadRegistry, findItem, createPlayer } from "@monarcpro/motion/browser";
+ *   import { loadRegistry, findItem, createPlayer } from "volito/browser";
  *   const reg = await loadRegistry();
  *   const player = await createPlayer(canvas, findItem(reg, "essentials/lower-third"), { props: { name: "Priya" }, style: "ember" });
  *   player.play();

@@ -1,5 +1,5 @@
 /**
- * Display faces MONARC Motion ships beyond the MONARC editor's set (all SIL Open Font License, from
+ * Display faces Volito ships beyond MONARC PRO's set (all SIL Open Font License, from
  * Fontsource). They join the engine's font table when the package loads, so styles, DESIGN.md files
  * and programs can name them like any bundled face. Kept out of src/engine/, which is synced from
  * MONARC core.
@@ -48,7 +48,7 @@ export function withExtraFamilies(runtime: string, fonts: Record<string, { weigh
   ];
   let out = runtime;
   for (const [re, line] of lines) {
-    if (!re.test(out)) throw new Error(`MONARC Motion: the engine runtime changed shape (${re.source}) — update src/fonts-extra.ts`);
+    if (!re.test(out)) throw new Error(`Volito: the engine runtime changed shape (${re.source}) — update src/fonts-extra.ts`);
     out = out.replace(re, () => line);
   }
   return out;

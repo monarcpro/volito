@@ -1,7 +1,7 @@
 /**
- * The faces MONARC Motion draws with (fonts/, built from Fontsource by scripts/build-fonts.mjs):
+ * The faces Volito draws with (fonts/, built from Fontsource by scripts/build-fonts.mjs):
  * the text measure programs lay out with — the same advance widths a browser's canvas gives, so a
- * line that fits in the MONARC editor fits here — and which faces resvg sets each character in.
+ * line that fits in MONARC PRO fits here — and which faces resvg sets each character in.
  *
  * Every script subset is its own family inside its file ("Inter latin-ext", "Inter cyrillic"):
  * resvg falls back glyph by glyph to the first face holding a glyph whatever its weight. So resvg
@@ -31,7 +31,7 @@ let faces: Face[] | null = null;
 export function allFaces(): Face[] {
   if (faces) return faces;
   const index = join(fontsDir(), "faces.json");
-  if (!existsSync(index)) throw new Error(`MONARC Motion: no fonts at ${fontsDir()} — run "pnpm -C packages/motion fonts" (or reinstall the package)`);
+  if (!existsSync(index)) throw new Error(`Volito: no fonts at ${fontsDir()} — run "pnpm run fonts" (or reinstall the package)`);
   faces = (JSON.parse(readFileSync(index, "utf8")) as { faces: Face[] }).faces;
   return faces;
 }

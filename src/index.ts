@@ -1,8 +1,8 @@
 /**
- * MONARC Motion for Node: list the packs, build a graphic from an item with your text, brand
+ * Volito for Node: list the packs, build a graphic from an item with your text, brand
  * and aspect, and render it — a still, a contact sheet, or a video with alpha.
  *
- *   import { findItem, renderVideo } from "@monarcpro/motion";
+ *   import { findItem, renderVideo } from "volito";
  *   const item = findItem("essentials/lower-third");
  *   await renderVideo(item, { props: { name: "Priya Sharma", role: "Product designer" }, style: "ember", aspect: "16:9", out: "priya.mov" });
  */

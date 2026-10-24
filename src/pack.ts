@@ -493,7 +493,7 @@ export function buildProgram(item: MotionItem, opts: BuildOptions = {}): BuiltPr
       ...(Object.keys(media).length ? { media: Object.keys(media) } : {}),
       ...(item.holdFromEnd !== undefined ? { holdAfter: Math.max(0, duration - item.holdFromEnd) } : {}),
       brief: item.description,
-      author: `MONARC Motion · ${item.ref}`,
+      author: `Volito · ${item.ref}`,
       layout: item.placement === "full" ? "full" : "overlay",
     },
     { width, height },
@@ -541,7 +541,7 @@ export function customItem(code: string, opts: { id?: string; placement?: Placem
   const manifest: ItemManifest = {
     id: opts.id && SLUG.test(opts.id) ? opts.id : "custom",
     name: "Custom program",
-    description: opts.description?.trim() || "A program written against the MONARC Motion API",
+    description: opts.description?.trim() || "A program written against the Volito API",
     category: "scene",
     placement: opts.placement ?? "overlay",
     duration: { default: opts.duration && opts.duration > 0 ? opts.duration : 4, min: 0.1, max: 600 },

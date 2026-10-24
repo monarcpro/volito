@@ -34,7 +34,7 @@ export function loadPack(dir: string): MotionPack {
 
 let builtin: MotionPack[] | null = null;
 
-/** The packs that ship with MONARC Motion. */
+/** The packs that ship with Volito. */
 export function builtinPacks(): MotionPack[] {
   if (builtin) return builtin;
   const dir = packsDir();
@@ -66,9 +66,9 @@ export interface Library {
   items: MotionItem[];
 }
 
-/** The built-in packs plus any extra folders (MONARC_MOTION_PACKS, ":"-separated, adds more). */
+/** The built-in packs plus any extra folders (VOLITO_PACKS, or the older MONARC_MOTION_PACKS; ":"-separated, adds more). */
 export function library(extraDirs: string[] = []): Library {
-  const env = (process.env.MONARC_MOTION_PACKS ?? "").split(":").filter(Boolean);
+  const env = (process.env.VOLITO_PACKS ?? process.env.MONARC_MOTION_PACKS ?? "").split(":").filter(Boolean);
   const packs = [...builtinPacks(), ...packsIn([...env, ...extraDirs])];
   const seen = new Set<string>();
   for (const p of packs) {
@@ -99,7 +99,7 @@ export function findItem(name: string, lib: Library = library()): MotionItem {
   const q = n.toLowerCase();
   const score = (i: MotionItem) => (i.id.startsWith(q) ? 0 : i.id.includes(q) || q.includes(i.id) ? 1 : i.name.toLowerCase().includes(q) ? 2 : (i.tags ?? []).some((t) => t.includes(q)) ? 3 : 9);
   const near = lib.items.map((i) => ({ ref: i.ref, s: score(i) })).filter((r) => r.s < 9).sort((a, b) => a.s - b.s).map((r) => r.ref);
-  throw new MotionError(`no item "${n}"${near.length ? ` — did you mean ${near.slice(0, 4).join(", ")}?` : ""} (list them with: monarc-motion list)`);
+  throw new MotionError(`no item "${n}"${near.length ? ` — did you mean ${near.slice(0, 4).join(", ")}?` : ""} (list them with: volito list)`);
 }
 
 export interface ItemQuery {

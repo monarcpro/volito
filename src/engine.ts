@@ -1,7 +1,6 @@
 /**
- * The engine MONARC Motion is built on — the same runtime, sandbox and brand styles the MONARC
- * editor draws its code graphics with, so a pack item renders here exactly as it does on a MONARC
- * timeline. src/engine/ is a copy of MONARC core's engine files (scripts/sync-engine.mjs keeps it in
+ * The engine Volito is built on — the same runtime, sandbox and brand styles MONARC PRO draws its
+ * code graphics with, so a pack item renders here exactly as it does on a MONARC PRO timeline. src/engine/ is a copy of MONARC core's engine files (scripts/sync-engine.mjs keeps it in
  * step; SOURCE.json names the commit), so this package depends on nothing of MONARC's.
  */
 import { MG_RUNTIME as ENGINE_RUNTIME } from "./engine/graphics-runtime.js";
@@ -35,20 +34,20 @@ for (const p of PATTERN_NAMES) if (!(BRAND_TEXTURES as readonly string[]).includ
 export const MG_RUNTIME = withPatterns(withExtraFamilies(ENGINE_RUNTIME, GRAPHIC_FONTS));
 const addedLines = MG_RUNTIME.split("\n").length - ENGINE_RUNTIME.split("\n").length;
 
-/** A program's worker source (see the engine's programWorkerSource), on MONARC Motion's runtime. */
+/** A program's worker source (see the engine's programWorkerSource), on Volito's runtime. */
 export function programWorkerSource(code: string): { source: string; codeLine: number } {
   const built = engineWorkerSource(code);
   return { source: built.source.replace(ENGINE_RUNTIME, () => MG_RUNTIME), codeLine: built.codeLine + addedLines };
 }
 
-/** The MONARC editor's built-in styles, then the ones MONARC Motion adds. */
+/** MONARC PRO's built-in styles, then the ones Volito adds. */
 export const BUILTIN_STYLES: readonly BrandStyle[] = [...ENGINE_STYLES, ...MOTION_STYLES];
 /** A style as a DESIGN.md file (the engine's composeDesignMd, with words for the package's patterns). */
 export function composeDesignMd(s: BrandStyle): string {
   return engineComposeDesignMd(s.body.trim() ? s : { ...s, body: styleBody(s) });
 }
 
-/** Styles the MONARC editor knows (a pack item meant for the editor can stay within these). */
+/** Styles MONARC PRO knows (a pack item meant for the editor can stay within these). */
 export const EDITOR_STYLES = ENGINE_STYLES;
 
 export { GRAPHIC_FONTS, type FontSpec, fontSpecKey, parseFontSpec } from "./engine/graphic-fonts.js";

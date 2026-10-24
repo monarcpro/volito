@@ -1,5 +1,5 @@
 /**
- * Patterns MONARC Motion adds to the runtime: sixteen animated grounds (dots, halftone, dither,
+ * Patterns Volito adds to the runtime: sixteen animated grounds (dots, halftone, dither,
  * Bauhaus tiles, mesh gradients, confetti…). Each is a pure function of t like everything else, so it
  * renders the same in Node and the browser and never needs a GPU.
  *
@@ -34,7 +34,7 @@ export const PATTERN_NAMES = Object.keys(PATTERN_WORDS) as PatternName[];
 
 /** Runtime code (ES5, the runtime's own idiom): defines `pattern` and `PATTERNS` in the runtime scope. */
 export const PATTERN_CODE = String.raw`
-    // ———— MONARC Motion patterns ————
+    // ———— Volito patterns ————
     var PATTERNS = { dots: 1, plus: 1, graph: 1, hatch: 1, stripes: 1, checker: 1, halftone: 1, dither: 1, waves: 1, rings: 1, mesh: 1, confetti: 1, bauhaus: 1, tiles: 1, pills: 1, sunburst: 1 };
     var BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
     /**
@@ -204,7 +204,7 @@ export function withPatterns(runtime: string): string {
   ];
   let out = runtime;
   for (const [re, put] of steps) {
-    if (!re.test(out)) throw new Error(`MONARC Motion: the engine runtime changed shape (${re.source}) — update src/patterns.ts`);
+    if (!re.test(out)) throw new Error(`Volito: the engine runtime changed shape (${re.source}) — update src/patterns.ts`);
     out = out.replace(re, put);
   }
   return out;

@@ -1,6 +1,6 @@
 /**
  * Rendering in Node: every frame of a program run in its sandbox, wrapped in the same SVG
- * document the MONARC editor decodes, rasterised by resvg with the package's own faces, and
+ * document MONARC PRO decodes, rasterised by resvg with the package's own faces, and
  * either written as stills or piped as raw RGBA to ffmpeg — ProRes 4444 and HEVC keep the
  * alpha (overlays drop straight onto footage in Premiere, Resolve, Final Cut), WebM VP9 keeps it
  * for the web, MP4 and GIF draw on a background. Frames that do not change are drawn once.

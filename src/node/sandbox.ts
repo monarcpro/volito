@@ -1,6 +1,6 @@
 /**
  * Where programs run in Node: a fresh `vm` context per program holding the same worker source
- * the MONARC editor runs in a blob worker (core programWorkerSource — the runtime, the program
+ * MONARC PRO runs in a blob worker (core programWorkerSource — the runtime, the program
  * inside a function that shadows every outside name, the network taken away). Only strings and
  * numbers cross between the context and the host: messages go in as JSON text and come back as
  * JSON text, and the one host function the runtime calls (text measure) is captured in a closure

@@ -70,7 +70,7 @@
     "icon": {
       "type": "icon",
       "label": "Icon",
-      "description": "an icon name (monarc-motion api lists them; empty for none)",
+      "description": "an icon name (volito api lists them; empty for none)",
       "default": "sparkle"
     }
   },

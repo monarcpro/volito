@@ -124,7 +124,7 @@ const aliases = {
   holland: "Netherlands", burma: "Myanmar", persia: "Iran", "viet nam": "Vietnam", "lao pdr": "Laos",
 };
 
-const lib = String.raw`// ———————— MONARC Motion world ————————
+const lib = String.raw`// ———————— Volito world ————————
 var MM_WORLD = ${JSON.stringify(countries)};
 var MM_WORLD_ALIASES = ${JSON.stringify(aliases)};
 var MM_WORLD_CACHE = null;

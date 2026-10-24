@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const PACKAGE_NAME = "@monarcpro/motion";
+export const PACKAGE_NAME = "volito";
 
 let root: string | null = null;
 

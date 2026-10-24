@@ -1,7 +1,7 @@
 /**
  * The motion kit: any element of a graphic, any move. Plain JavaScript prepended to every program
  * (pack items and code someone writes), so it runs wherever programs run — the CLI, the browser
- * player, the MONARC editor. A program asks `motion($, t)` for an animator and draws its elements as
+ * player, MONARC PRO. A program asks `motion($, t)` for an animator and draws its elements as
  * named parts; each part enters, idles, takes emphasis hits and leaves with a move from the
  * vocabulary below (any move as an entrance or, played backwards, as an exit), on any ease, from
  * any direction, with text split by line, word or letter in any order, or follows its own
@@ -11,7 +11,7 @@
  * It is a string, not a module, like the runtime: no template literals and no dollar-brace inside.
  */
 export const MOTION_KIT = String.raw`
-// ———————— MONARC Motion kit ————————
+// ———————— Volito kit ————————
 // UI helpers: a person's picture (or their initials), an app's icon tile.
 /** Up to two capital letters for a name ("Priya Sharma" -> "PS"). */
 function initials(name) {

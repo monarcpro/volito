@@ -1,5 +1,5 @@
 /**
- * The faces MONARC Motion ships: every face the runtime knows (core GRAPHIC_FONTS plus EXTRA_FONTS), every
+ * The faces Volito ships: every face the runtime knows (core GRAPHIC_FONTS plus EXTRA_FONTS), every
  * script subset Fontsource cuts it in, converted to TTF (resvg reads TTF/OTF only; browsers
  * read TTF too) with one family name across weights. Writes fonts/*.ttf, fonts/faces.json
  * (family, weight, italic, subset, unicode-range, file) and each family's OFL licence.
@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 import { GRAPHIC_FONTS as ENGINE_FONTS } from "../src/engine/graphic-fonts.ts";
 import { EXTRA_FONTS } from "../src/fonts-extra.ts";
 
-// The engine's faces and the ones MONARC Motion adds (src/fonts-extra.ts).
+// The engine's faces and the ones Volito adds (src/fonts-extra.ts).
 const GRAPHIC_FONTS = { ...ENGINE_FONTS, ...EXTRA_FONTS };
 import { woffToSfnt } from "./woff.mjs";
 

@@ -1,8 +1,8 @@
-// A MONARC Motion item: frame(t, $) returns the SVG of one frame — a pure function of t.
+// A Volito item: frame(t, $) returns the SVG of one frame — a pure function of t.
 // Props arrive as $.data; sizes scale by $.k so one design fits 16:9, 9:16, 1:1 and 4:5.
 // Each element is a named part of the motion kit, so a creator can give it any move:
-//   monarc-motion sheet ./my-graphic --motion title.in=typewriter --mood playful --seed 7
-// Run: monarc-motion api (the $ runtime) · monarc-motion moves (every move) · monarc-motion guide
+//   volito sheet ./my-graphic --motion title.in=typewriter --mood playful --seed 7
+// Run: volito api (the $ runtime) · volito moves (every move) · volito guide
 function frame(t, $) {
   const p = $.data, c = $.c, k = $.k, W = $.W, H = $.H;
   const M = motion($, t);

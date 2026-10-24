@@ -1,8 +1,9 @@
-# MONARC Motion
+# Volito
 
 **Brand-aware, voice-synced motion graphics as code — for developers and AI agents.**
 
-MONARC Motion is the motion graphics engine inside the [MONARC](https://monarcpro.app) video editor, opened up.
+By [MONARC STUDIOS](https://monarcpro.app), the team behind MONARC PRO. Volito is the motion graphics engine
+inside the [MONARC PRO](https://monarcpro.app) video editor, opened up; the name is Latin for “to flutter”.
 Every graphic is a small program — `function frame(t, $)` returns the SVG of one frame — so it is
 readable, diffable, seekable to any frame, and something an AI agent can write and fix. It ships with
 96 ready-made graphics in ten packs (3D, maps, transitions and kinetic type among them), 36 brand styles,
@@ -20,7 +21,7 @@ sixteen animated patterns, a CLI, a Node API, a browser player and an MCP server
 - **Many scripts.** Latin, Latin Extended, Vietnamese, Cyrillic, Greek and Devanagari (Hindi), shaped properly.
 
 ```bash
-npx @monarcpro/motion render lower-third \
+npx volito render lower-third \
   --prop name="Priya Sharma" --prop role="Product designer" \
   --style ember --aspect 16:9 --out priya.mov
 ```
@@ -28,10 +29,12 @@ npx @monarcpro/motion render lower-third \
 ## Install
 
 ```bash
-npm install @monarcpro/motion      # or run it with npx, nothing to install
+npm install volito      # or run it with npx, nothing to install
 ```
 
-Node 20.10 or newer. Video formats need [ffmpeg](https://ffmpeg.org) on your `PATH` (or `MONARC_MOTION_FFMPEG`);
+Volito was first published as `@monarcpro/motion`; that package is deprecated in favour of this one.
+
+Node 20.10 or newer. Video formats need [ffmpeg](https://ffmpeg.org) on your `PATH` (or `VOLITO_FFMPEG`);
 stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with libvpx.
 
 ## The packs
@@ -51,16 +54,16 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 | **Backdrops** (9) | Moving grounds: `pattern` (any of the sixteen) · `aurora` · `tiles` (Bauhaus field) · `retro-grid` (synthwave) · `blobs` (lava goo) · `gradient` · `starfield` · `bokeh` · `topo` |
 | **Promo** (8) | `sale-badge` (starburst) · `price-card` (counts down, strike, click) · `coupon` (copy the code) · `offer-countdown` (D:H:M:S) · `features` (checklist) · `cta` (button and cursor) · `launch` · `ribbon` (crossing tapes) |
 
-`monarc-motion info <item>` lists every prop. To see them all live, serve this package's folder and
+`volito info <item>` lists every prop. To see them all live, serve this package's folder and
 open `examples/gallery.html`.
 
 ## Motion without limits
 
-Every item is made of named **parts** (`monarc-motion info lower-third` lists them: `scrim`, `spine`, `plate`,
+Every item is made of named **parts** (`volito info lower-third` lists them: `scrim`, `spine`, `plate`,
 `name`, `role`). Any part takes any move, and the moves combine freely:
 
 ```bash
-monarc-motion render lower-third \
+volito render lower-third \
   --motion name.in=typewriter --motion plate.in=iris --motion "*.ease=bouncy" \
   --motion role.emphasis=pulse@2 --motion spine.idle=pulse --out priya.mov
 ```
@@ -78,7 +81,7 @@ monarc-motion render lower-third \
 
 Or let it choreograph itself: `--mood energetic | elegant | playful | cinematic | glitchy | minimal | retro | kinetic`,
 and `--seed <n>` for a new take on every number (the same number always moves the same way). `--speed 2` plays
-it all twice as fast. `monarc-motion moves` lists everything. Programs you write get the same kit:
+it all twice as fast. `volito moves` lists everything. Programs you write get the same kit:
 `const M = motion($, t); M.part("card", { at, in: "pop", box }, markup)`.
 
 ## 3D and maps
@@ -91,27 +94,27 @@ bundled faces (read straight from the font files), so a logo turns in the brand'
 ```js
 function frame(t, $) {
   const S = scene3d($, { camera: { yaw: -20 + 40 * (t / $.dur), pitch: -8 } });
-  S.add(S.text("MONARC", { face: $.font("display"), size: 220 * $.k, depth: 60 * $.k, color: $.c.fg, side: $.c.accent }));
+  S.add(S.text("VOLITO", { face: $.font("display"), size: 220 * $.k, depth: 60 * $.k, color: $.c.fg, side: $.c.accent }));
   return S.render();
 }
 ```
 
 Maps use Natural Earth's countries (177, packed into 30 KB): `worldMap($, { center, zoom })` projects them
 flat (Equal Earth), `worldGlobe(S, …)` puts them on a 3D globe, and `worldFind("UK")` finds one by name,
-short name or ISO number. `monarc-motion api` documents both.
+short name or ISO number. `volito api` documents both.
 
 ## CLI
 
 ```bash
-monarc-motion list                                   # every item
-monarc-motion info stat                              # what it is, every prop
-monarc-motion styles                                 # the built-in brand styles
-monarc-motion moves                                  # every move, ease, idle, hit and mood
-monarc-motion sheet title-card --mood playful --seed 7   # a new choreography
-monarc-motion sheet stat --prop value=72 --prop suffix=% --prop chart=ring   # frames across time, one PNG
-monarc-motion still title-card --aspect 9:16 --t 1.5 --out frame.png
-monarc-motion render banner --prop headline="Doors open at 9" --format webm --out banner.webm
-monarc-motion check ./my-graphic.js                  # run it at every aspect, report problems
+volito list                                   # every item
+volito info stat                              # what it is, every prop
+volito styles                                 # the built-in brand styles
+volito moves                                  # every move, ease, idle, hit and mood
+volito sheet title-card --mood playful --seed 7   # a new choreography
+volito sheet stat --prop value=72 --prop suffix=% --prop chart=ring   # frames across time, one PNG
+volito still title-card --aspect 9:16 --t 1.5 --out frame.png
+volito render banner --prop headline="Doors open at 9" --format webm --out banner.webm
+volito check ./my-graphic.js                  # run it at every aspect, report problems
 ```
 
 | Option | |
@@ -127,7 +130,7 @@ monarc-motion check ./my-graphic.js                  # run it at every aspect, r
 | `--motion part.setting=value` | how a part moves (repeat; `*` for every part) — see *Motion without limits* |
 | `--mood m` · `--seed n` · `--speed x` | a choreography, a new take per seed, faster or slower |
 | `--beat in=0.4 --beat out=-0.6` | move the entrance and exit (negative counts from the end) |
-| `--packs <dir>` | more packs (also `MONARC_MOTION_PACKS`) |
+| `--packs <dir>` | more packs (also `VOLITO_PACKS`) |
 | `--format mov\|webm\|mp4\|hevc\|gif\|png` | for `render`; `png`/`svg` for `still` |
 
 | Format | |
@@ -142,13 +145,13 @@ monarc-motion check ./my-graphic.js                  # run it at every aspect, r
 ## AI agents (MCP)
 
 ```bash
-claude mcp add monarc-motion -- npx -y @monarcpro/motion mcp
+claude mcp add volito -- npx -y volito mcp
 ```
 
 Cursor, Windsurf and other MCP clients:
 
 ```json
-{ "mcpServers": { "monarc-motion": { "command": "npx", "args": ["-y", "@monarcpro/motion", "mcp"] } } }
+{ "mcpServers": { "volito": { "command": "npx", "args": ["-y", "volito", "mcp"] } } }
 ```
 
 | Tool | |
@@ -164,12 +167,12 @@ Cursor, Windsurf and other MCP clients:
 | `motion_api` | the program API and the motion kit, for writing new graphics |
 
 Every tool takes an `item` or your own `code`, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skill/SKILL.md` — copy it
-to `~/.claude/skills/monarc-motion/` for Claude Code.
+to `~/.claude/skills/volito/` for Claude Code.
 
 ## Node API
 
 ```js
-import { findItem, renderVideo, renderStill, renderSheet, checkItem } from "@monarcpro/motion";
+import { findItem, renderVideo, renderStill, renderSheet, checkItem } from "volito";
 
 const item = findItem("essentials/lower-third");
 const result = await renderVideo(item, {
@@ -185,7 +188,7 @@ console.log(result.file, result.frames, result.warnings);
 ## Browser
 
 ```js
-import { loadRegistry, findItem, createPlayer } from "@monarcpro/motion/browser";
+import { loadRegistry, findItem, createPlayer } from "volito/browser";
 
 const registry = await loadRegistry();       // the packs, from jsDelivr (or pass your own base URL)
 const player = await createPlayer(canvas, findItem(registry, "headline"), {
@@ -202,9 +205,9 @@ renderer, so what plays on the page is what renders. Fonts load from `base` (the
 
 ## Brand styles
 
-36 built in. The MONARC editor's: `ember`, `cream`, `mono`, `neon`, `pop`, `studio`, and the explainer art
-styles `whiteboard`, `sketch`, `pastel`, `pixel`, `collage`, `diorama`, `clay`, `storybook`. And MONARC
-Motion's own, each with an animated pattern for a ground:
+36 built in. MONARC PRO's: `ember`, `cream`, `mono`, `neon`, `pop`, `studio`, and the explainer art
+styles `whiteboard`, `sketch`, `pastel`, `pixel`, `collage`, `diorama`, `clay`, `storybook`. And Volito's
+own, each with an animated pattern for a ground:
 
 | Style | Look | Pattern |
 | --- | --- | --- |
@@ -231,7 +234,7 @@ Motion's own, each with an animated pattern for a ground:
 | `mint` | mint sheet, coral pop | `dots` |
 | `editorial` | magazine black and red, didone | `hatch` |
 
-`monarc-motion styles` lists them all. Or pass a `DESIGN.md`:
+`volito styles` lists them all. Or pass a `DESIGN.md`:
 
 ```markdown
 ---
@@ -273,10 +276,10 @@ halftone, sunburst), `count`, `seed`, `r`. They are pure functions of time like 
 ## Write your own
 
 ```bash
-monarc-motion new promo-card        # item.json + frame.js from a template
-monarc-motion sheet ./motion/promo-card
-monarc-motion api                   # the whole $ runtime
-monarc-motion guide                 # how items and packs are laid out
+volito new promo-card        # item.json + frame.js from a template
+volito sheet ./motion/promo-card
+volito api                   # the whole $ runtime
+volito guide                 # how items and packs are laid out
 ```
 
 ```js
@@ -296,7 +299,7 @@ A pack is a folder with `pack.json`, a `shared.js` of helpers and one folder per
 
 ## How it renders
 
-Node runs each program in a fresh `vm` context holding the same worker source the MONARC editor uses.
+Node runs each program in a fresh `vm` context holding the same worker source MONARC PRO uses.
 Only strings and numbers cross into it, and eval, `Function`, `require`, `process` and the network are
 out of reach. Text is measured with fontkit against the bundled faces; frames are rasterised by
 [resvg](https://github.com/RazrFalcon/resvg); text beyond a face's Latin cut is shaped by fontkit and
@@ -324,8 +327,8 @@ node dist/cli.js sheet lower-third --mood playful --seed 7 --out sheet.png
 video of nine choreographies.
 
 The engine in `src/engine/` (the runtime every program draws with, its sandbox and the brand styles) is the
-same code the MONARC editor uses, copied from MONARC's core so this repo stands alone; `src/engine/SOURCE.json`
-names the commit. With a MONARC checkout next to this one, `pnpm sync-engine` brings it up to date and
+same code MONARC PRO uses, copied from MONARC PRO's core so this repo stands alone; `src/engine/SOURCE.json`
+names the commit. With a MONARC PRO checkout (`../monarc`) next to this one, `pnpm sync-engine` brings it up to date and
 `node scripts/sync-engine.mjs --check` reports drift. Packs, the motion kit (`src/kit.ts`), the extra
 faces (`src/fonts-extra.ts`), styles (`src/styles-extra.ts`) and patterns (`src/patterns.ts`) live here;
 `src/engine.ts` splices the faces and patterns into the runtime without editing the copy.
@@ -337,4 +340,4 @@ faces (`src/fonts-extra.ts`), styles (`src/styles-extra.ts`) and patterns (`src/
   commercial, with no attribution required. Don't resell them as templates.
 - The fonts: each family's SIL Open Font License, in `fonts/licenses/`.
 
-Made by [MONARC STUDIOS](https://monarcpro.app).
+Made by [MONARC STUDIOS](https://monarcpro.app), the team behind [MONARC PRO](https://monarcpro.app).

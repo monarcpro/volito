@@ -11,7 +11,7 @@
  * It is a string, not a module: no template literals and no dollar-brace inside.
  */
 export const MOTION_3D = String.raw`
-// ———————— MONARC Motion 3D ————————
+// ———————— Volito 3D ————————
 var M3_D2R = Math.PI / 180;
 function m3hex(c) {
   var s = String(c || "#888888").trim();

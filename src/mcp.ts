@@ -1,8 +1,8 @@
 /**
- * The MCP server: MONARC Motion as tools an agent can call — find a graphic, read its props, see
+ * The MCP server: Volito as tools an agent can call — find a graphic, read its props, see
  * it (a contact sheet comes back as an image), check it, render it to a file. An agent can also
  * write its own program against the API (motion_api) and preview, check and render that the same
- * way. Runs on stdio:  monarc-motion mcp   (claude mcp add monarc-motion -- npx -y @monarcpro/motion mcp)
+ * way. Runs on stdio:  volito mcp   (claude mcp add volito -- npx -y volito mcp)
  */
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -102,7 +102,7 @@ const warnings = (w: string[]) => (w.length ? `\nWarnings:\n${w.map((x) => `- ${
 
 export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
   const lib = () => library(opts.packs ?? []);
-  const server = new McpServer({ name: "monarc-motion", version: packageVersion() }, { instructions: "MONARC Motion renders brand-aware motion graphics (lower thirds, titles, CTAs, stats, lists, end cards…) to video files with alpha. Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), then motion_render to a file. Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed. Packs: essentials, broadcast (lower thirds, tickers, score bugs), social (follow cards, notifications, chat), data (charts, maps, flight routes) and 3d (extruded logos and titles, card flips, globes). To make something no item covers, write a program against motion_api (it includes 3D scenes and world maps) and use the same tools with `code`." });
+  const server = new McpServer({ name: "volito", version: packageVersion() }, { instructions: "Volito renders brand-aware motion graphics (lower thirds, titles, CTAs, stats, lists, end cards…) to video files with alpha. Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), then motion_render to a file. Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed. Packs: essentials, broadcast (lower thirds, tickers, score bugs), social (follow cards, notifications, chat), data (charts, maps, flight routes) and 3d (extruded logos and titles, card flips, globes). To make something no item covers, write a program against motion_api (it includes 3D scenes and world maps) and use the same tools with `code`." });
 
   server.registerTool(
     "motion_list",
