@@ -1,0 +1,21 @@
+name: Graphic, style or move request
+description: A graphic, pack, brand style or move you'd like Volito to have.
+labels: [request]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What should it do
+      description: Describe it the way you'd say it to an agent. Links to references are welcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [A new graphic, A new pack, A brand style or pattern, A move, ease or idle, Something else]
+  - type: textarea
+    id: use
+    attributes:
+      label: Where you'd use it
+      description: The video, aspect and platform it's for.

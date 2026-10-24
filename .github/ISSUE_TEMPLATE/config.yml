@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Docs
+    url: https://volito.dev/docs
+    about: Getting started, the CLI, every pack and style, and the agent setup.
+  - name: Security problem
+    url: https://github.com/monarcpro/volito/security/policy
+    about: Report it privately, not in an issue.

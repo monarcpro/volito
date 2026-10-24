@@ -6,7 +6,7 @@
   "description": "Lower thirds in five looks, a news ticker, a live badge, a score bug, a location pin and a countdown \u2014 broadcast graphics in any brand, any aspect.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
-  "homepage": "https://monarcpro.app/motion",
+  "homepage": "https://volito.dev/docs/packs/broadcast",
   "style": "ember",
   "items": [
     "lt-bars",

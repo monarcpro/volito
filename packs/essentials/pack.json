@@ -6,7 +6,7 @@
   "description": "The graphics every video needs — name plates, titles, calls to action, stats, lists, quotes, end screens — in any brand, any aspect.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
-  "homepage": "https://monarcpro.app/motion",
+  "homepage": "https://volito.dev/docs/packs/essentials",
   "style": "ember",
   "shared": "shared.js",
   "items": [

@@ -1,0 +1,6 @@
+# Keep GitHub's language stats and diffs about the code written here.
+libs/** linguist-generated=true
+src/engine/** linguist-vendored=true
+pnpm-lock.yaml linguist-generated=true
+*.jpg binary
+*.gif binary

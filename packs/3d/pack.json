@@ -6,7 +6,7 @@
   "description": "Extruded logos, titles and numbers, a card that flips, a word cube, a 3D bar chart and a globe \u2014 real depth, light and camera moves, rendered without a GPU, in any brand.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
-  "homepage": "https://monarcpro.app/motion",
+  "homepage": "https://volito.dev/docs/packs/3d",
   "style": "ember",
   "shared": "shared.js",
   "items": [

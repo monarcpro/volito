@@ -5,7 +5,7 @@
   "description": "Volito by MONARC STUDIOS: brand-aware, voice-synced motion graphics as code. Packs of ready-made graphics, a CLI, a Node API and an MCP server that render them to ProRes 4444, WebM, MP4, GIF, PNG or SVG.",
   "license": "(MIT AND LicenseRef-MONARC-Packs-1.0)",
   "author": "MONARC STUDIOS <hello@monarcpro.app>",
-  "homepage": "https://github.com/monarcpro/volito#readme",
+  "homepage": "https://volito.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/monarcpro/volito.git"

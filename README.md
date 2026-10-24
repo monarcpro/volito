@@ -1,6 +1,26 @@
-# Volito
+<p align="center">
+  <a href="https://volito.dev"><img src=".github/assets/banner.jpg" alt="Volito: motion graphics, from one sentence. Motion graphics as code for developers and AI agents, by MONARC PRO." width="100%"></a>
+</p>
 
-**Brand-aware, voice-synced motion graphics as code — for developers and AI agents.**
+<h1 align="center">Volito</h1>
+
+<p align="center"><strong>Brand-aware, voice-synced motion graphics as code — for developers and AI agents.</strong></p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/volito"><img src="https://img.shields.io/npm/v/volito?color=2433e8&label=npm" alt="npm version"></a>
+  <a href="https://github.com/monarcpro/volito/actions/workflows/ci.yml"><img src="https://github.com/monarcpro/volito/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/engine-MIT-dfff4f?labelColor=15140f" alt="Engine licence: MIT"></a>
+  <a href="https://volito.dev/docs"><img src="https://img.shields.io/badge/docs-volito.dev-ff6a3d?labelColor=15140f" alt="Docs on volito.dev"></a>
+</p>
+
+<p align="center">
+  <a href="https://volito.dev">Website</a> ·
+  <a href="https://volito.dev/docs">Docs</a> ·
+  <a href="https://volito.dev/docs/packs">Packs</a> ·
+  <a href="https://volito.dev/docs/agents">For agents</a> ·
+  <a href="https://www.npmjs.com/package/volito">npm</a> ·
+  <a href="CHANGELOG.md">Changelog</a>
+</p>
 
 By [MONARC STUDIOS](https://monarcpro.app), the team behind MONARC PRO. Volito is the motion graphics engine
 inside the [MONARC PRO](https://monarcpro.app) video editor, opened up; the name is Latin for “to flutter”.
@@ -20,6 +40,11 @@ sixteen animated patterns, a CLI, a Node API, a browser player and an MCP server
   image they can see), check and render graphics — or to write their own.
 - **Many scripts.** Latin, Latin Extended, Vietnamese, Cyrillic, Greek and Devanagari (Hindi), shaped properly.
 
+<p align="center">
+  <img src=".github/assets/intro.gif" alt="A 10-second Volito intro: kinetic type, the logo dropping in, an extruded 3D wordmark and an end card" width="420"><br>
+  <sub>This intro is a Volito program: kinetic type, a 3D wordmark and an end card, rendered in Node.</sub>
+</p>
+
 ```bash
 npx volito render lower-third \
   --prop name="Priya Sharma" --prop role="Product designer" \
@@ -38,6 +63,8 @@ Node 20.10 or newer. Video formats need [ffmpeg](https://ffmpeg.org) on your `PA
 stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with libvpx.
 
 ## The packs
+
+<img src=".github/assets/packs.jpg" alt="96 graphics in 10 packs: a render from each of Essentials, Broadcast, Social, Data, 3D, Transitions, Annotate, Type, Backdrops and Promo" width="100%">
 
 96 graphics in ten packs. Every one takes any brand style and any aspect, and every part of it takes any move.
 
@@ -143,6 +170,8 @@ volito check ./my-graphic.js                  # run it at every aspect, report p
 | `png` | a folder of PNG frames with alpha |
 
 ## AI agents (MCP)
+
+<img src=".github/assets/agents.jpg" alt="An agent adds the Volito MCP server, then calls motion_list, motion_preview, motion_check and motion_render to make a lower third in 16:9 and 9:16" width="100%">
 
 ```bash
 claude mcp add volito -- npx -y volito mcp
@@ -338,6 +367,12 @@ faces (`src/fonts-extra.ts`), styles (`src/styles-extra.ts`) and patterns (`src/
 - The engine: [MIT](LICENSE).
 - The MONARC packs: the [MONARC Packs License](PACKS-LICENSE.md). Use them in any video, personal or
   commercial, with no attribution required. Don't resell them as templates.
-- The fonts: each family's SIL Open Font License, in `fonts/licenses/`.
+- The fonts: each family's SIL Open Font License, in `fonts/licenses/` of the installed package
+  (`pnpm build` writes that folder in a checkout).
+
+## Contributing
+
+Issues and pull requests are welcome: [CONTRIBUTING.md](CONTRIBUTING.md) covers the setup, the tests and
+how items and packs are written. Report security problems privately, as [SECURITY.md](SECURITY.md) says.
 
 Made by [MONARC STUDIOS](https://monarcpro.app), the team behind [MONARC PRO](https://monarcpro.app).

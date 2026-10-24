@@ -6,7 +6,7 @@
   "description": "Point things out in footage: hand-drawn arrows and circles, a spotlight, focus brackets, highlighter marks, a rubber stamp, live reactions, a tech pointer, emphasis marks and numbered markers.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
-  "homepage": "https://monarcpro.app/motion",
+  "homepage": "https://volito.dev/docs/packs/annotate",
   "style": "candy",
   "shared": "shared.js",
   "items": [

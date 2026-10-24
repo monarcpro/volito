@@ -1,0 +1,36 @@
+name: Bug report
+description: Something renders wrong, crashes or doesn't install.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you ran, what you expected and what you got. A still or sheet helps (`volito still …` / `volito sheet …`).
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command or code
+      description: The CLI command, MCP call or Node code, with the item, props, style and aspect.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Volito version
+      placeholder: "npx volito --version"
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Node, ffmpeg and OS
+      placeholder: "Node 22.18, ffmpeg 8.0, macOS 26"
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where
+      options: [CLI, MCP server (agent), Node API, Browser player]
