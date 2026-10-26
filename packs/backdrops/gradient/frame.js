@@ -8,3 +8,8 @@ function frame(t, $) {
   if (p.vignette) s += vignetteOf($, 0.5);
   return s;
 }
+
+/** A backdrop has no moments: just soft air as it comes up. */
+function sound($) {
+  return [{ at: 0, kind: "swell", level: 0.6 }];
+}

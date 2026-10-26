@@ -39,3 +39,17 @@ function frame(t, $) {
   }
   return s;
 }
+
+/** A glitch cuts on static: zaps into the cut, on it, and one more as it clears. */
+function sound($) {
+  const mid = cutAt($);
+  return {
+    cues: [
+      { at: Math.max(0, mid - 0.3), kind: "zap", level: 0.8 },
+      { at: mid, kind: "zap", level: 1.1, pitch: 4 },
+      { at: mid, kind: "sub", level: 0.4 },
+      { at: Math.min($.dur - 0.1, mid + 0.14), kind: "zap", level: 0.6, pitch: -3 },
+    ],
+    auto: true,
+  };
+}

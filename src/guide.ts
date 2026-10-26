@@ -70,6 +70,48 @@ Maps (Natural Earth, 177 countries). Call one and the library comes with your pr
         m.countries · m.outline (the map's edge) · m.clipId() (clip to it) · m.ring(points)
   worldGlobe(S, { r, spin, tilt, colorOf: (country) => colour }) countries on a 3D globe · worldOnSphere(lon, lat, r, spin, tilt) → a 3D point`;
 
+/** Sound design: what a program may return from sound($), and what --sound does to a graphic that returns none. */
+export const SOUND_GUIDE = `Sound: every graphic can carry its own
+
+A render with --sound (API: sound: true, MCP: sound) gets a stereo track synthesised by Volito itself — no
+samples, no files to find — muxed into the .mp4 / .mov / .webm (PNG frames and GIF carry none; --sound-out
+file.wav writes the track alone, for an editor's timeline). Two sources, both deterministic:
+
+  1. The graphic's own motion. Every part's move leaves a mark the sound design reads: a spring pops, a move
+     across the frame whooshes (louder the further it travels), a slam hits, letters tick, a typewriter types,
+     a glitch zaps, a burst sparkles. Items nobody wrote sound for sound right out of the box.
+  2. A program's sound($). Beside frame(t, $) a program may define
+
+       function sound($) {
+         return {
+           cues: [
+             { at: 0.2, kind: "riser", dur: 1.1 },               // seconds into the clip; -1 counts from the end
+             { at: $.beat("in", 1.3), kind: "hit", level: 1.1 },  // lands with the motion: use the same times
+             { at: 1.5, kind: "shimmer", dur: 1.2, pan: 0.3 },
+             { at: 2.0, kind: "ding", note: "A5", level: 0.6 },
+           ],
+           bed: { key: "D", mode: "minor", from: 0.8, to: -0.4, level: 0.5, tone: 0.4 },  // a pad under it all (true, "Dm", or none)
+           auto: false,      // true adds the cues read from the motion on top (the default only when no cues are given)
+           level: 1,         // master, 0–2
+           room: 0.25,       // the reverb, 0 dry … 1 wet
+         };
+       }
+
+     It runs once with $ at t = 0, so $.dur, $.beat(name), $.at(word), $.data and $.words are all there — time
+     the sound off the same beats the picture uses. Returning just an array of cues is fine too.
+
+Cues: { at, kind, dur, level (0–2, 1 = the kind's own), pitch (semitones), note ("A4", tone/chord/ding), pan (-1…1), seed }
+Kinds: whoosh (air past, dur .45) · hit (impact) · stamp (heavy slam) · pop (bubble) · tick (tiny click) · click (UI)
+       riser (climbs into a moment, dur 1) · fall (downlifter, dur .8) · sub (low drop) · shimmer (sparkle, dur 1.2)
+       ding (bell) · swell (soft air, dur .8) · zap (glitch, dur .28) · type (keys for dur) · scratch (pencil for dur)
+       tone (a note for dur) · chord (the bed's chord for dur)
+The bed steps back under every hit, stamp, sub and pop and comes back on its own. Keep a graphic's sound honest:
+one riser into its biggest moment, a hit or a sub when it lands, ticks for the small things, silence between.
+
+CLI   volito render <item> --sound [--bed Dm] [--sound-level 1.2] [--sound-out track.wav]
+      volito sound <item> --out track.wav     the track alone, with its cue list
+API   renderVideo(item, { sound: true, bed: "Dm" })  ·  renderSoundFile(item, { out: "track.wav" })`;
+
 /** How Volito items and packs are written — what `volito guide` and the MCP motion_api tool print after the API. */
 export const AUTHORING_GUIDE = `Writing Volito graphics
 

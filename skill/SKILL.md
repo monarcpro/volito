@@ -11,7 +11,7 @@ render with alpha so the result drops straight onto footage in any editor.
 
 Everything below runs through the CLI (`npx -y volito …`, or just `volito …` once installed). If the
 `volito` MCP server is connected, its tools do the same: `motion_list`, `motion_info`,
-`motion_preview`, `motion_check`, `motion_render`, `motion_moves`, `motion_api` — each takes `motion`, `mood`,
+`motion_preview`, `motion_check`, `motion_render`, `motion_sound`, `motion_moves`, `motion_api` — each takes `motion`, `mood`,
 `seed` and `speed`.
 
 ## The loop
@@ -55,6 +55,19 @@ npx -y volito render lower-third --prop name="Priya Sharma" --prop role="Product
 Give a transcript and items land their text on the spoken words: `--words transcript.json` (`[{w, s, e}]`
 or Whisper JSON; `--offset 12.5` when the graphic starts 12.5 s into it). Without one, `--beat in=0.4`
 and `--beat out=-0.6` move the entrance and exit.
+
+## Sound
+
+Any render can carry a sound track Volito synthesises itself (no sample library): `--sound` reads the
+graphic's motion and gives every move its sound — a spring pops, a move across the frame whooshes, letters
+tick, a typewriter types, a slam hits, a glitch zaps. `--bed Dm` lays a pad under it in a key (it ducks under
+hits on its own); `--sound-level 1.2` sets the level; `--sound-out track.wav` also writes the track alone for
+an editor's timeline (ProRes overlays carry PCM, MP4 AAC, WebM Opus; PNG and GIF none). `volito sound <item>
+--out track.wav` renders the track by itself and prints the cue list. A program you write designs its own:
+define `function sound($)` beside `frame` and return `{ cues: [{ at, kind, dur, level, pitch, pan, note }],
+bed, auto }` — `volito api` lists the kinds (whoosh, hit, stamp, pop, tick, click, riser, fall, sub, shimmer,
+ding, swell, zap, type, scratch, tone, chord). Time cues off the same beats the picture uses; one riser into
+the biggest moment, a hit when it lands, ticks for small things, silence between.
 
 ## When no item fits: write one
 

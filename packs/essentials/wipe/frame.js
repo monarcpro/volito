@@ -46,3 +46,16 @@ function frame(t, $) {
   }
   return s;
 }
+
+/** Air as the wipe covers the frame, a soft drop at the cut (the midpoint), air going as it uncovers. */
+function sound($) {
+  const mid = $.dur / 2;
+  return {
+    cues: [
+      { at: Math.max(0, mid - 0.4), kind: "whoosh", dur: Math.min(0.45, mid), level: 0.9 },
+      { at: mid, kind: "sub", level: 0.5 },
+      { at: mid + 0.04, kind: "whoosh", dur: Math.min(0.45, $.dur - mid), level: 0.55, pitch: -3 },
+    ],
+    auto: true,
+  };
+}

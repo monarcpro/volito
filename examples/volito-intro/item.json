@@ -1,0 +1,43 @@
+{
+  "id": "volito-intro",
+  "name": "Volito intro",
+  "description": "The Volito intro, 1:1, with its own sound design: a sentence lands word by word, the mark assembles out of its three shapes and blows up into a cobalt field, the extruded wordmark swings in under a light sweep, and the lockup types itself onto paper. Every sound is synthesised by Volito from the same beats.",
+  "category": "logo",
+  "tags": ["volito", "intro", "logo", "sting", "brand", "sound", "3d"],
+  "placement": "full",
+  "libs": ["3d"],
+  "style": "cobalt",
+  "duration": { "default": 10, "min": 10, "max": 10 },
+  "aspects": ["1:1"],
+  "props": {
+    "sentence": { "type": "longtext", "label": "The sentence", "description": "one word or two a line", "default": "Motion\ngraphics,\nfrom one\nsentence.", "maxLength": 60 },
+    "marked": { "type": "text", "label": "Marked word", "description": "the word the lime marker swipes under", "default": "sentence.", "maxLength": 20 },
+    "wordmark": { "type": "text", "label": "Wordmark", "default": "VOLITO", "maxLength": 10 },
+    "tagline": { "type": "text", "label": "Tagline", "default": "MOTION GRAPHICS AS CODE", "maxLength": 32 },
+    "chips": { "type": "text", "label": "Chips", "description": "three short facts, \"a; b; c\"", "default": "96 graphics; 36 styles; any aspect", "maxLength": 60 },
+    "cmd": { "type": "text", "label": "Command", "default": "$ npx volito", "maxLength": 24 },
+    "name": { "type": "text", "label": "Name", "default": "Volito", "maxLength": 12 },
+    "byline": { "type": "text", "label": "Byline", "default": "by MONARC PRO", "maxLength": 30 },
+    "url": { "type": "text", "label": "URL", "default": "volito.dev", "maxLength": 24 }
+  },
+  "parts": {
+    "ground": "paper and the faint graph",
+    "opening": "the whole opening block, which collapses into the mark",
+    "sentence": "the opening sentence, word by word",
+    "marker": "the lime marker under the marked word",
+    "square": "the mark's cobalt square",
+    "quarter": "the mark's lime quarter disc",
+    "dot": "the mark's orange square",
+    "field": "the cobalt field the mark becomes",
+    "wordmark": "the extruded wordmark",
+    "tagline": "the tagline under it",
+    "chip1": "the first chip",
+    "chip2": "the second chip",
+    "chip3": "the third chip",
+    "cmd": "the typed command",
+    "logo": "the mark in the lockup",
+    "name": "the name in the lockup",
+    "byline": "the byline",
+    "url": "the URL chip"
+  }
+}

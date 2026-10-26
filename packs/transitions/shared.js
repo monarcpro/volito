@@ -6,6 +6,18 @@ function phases($, t) {
   const mid = cutAt($);
   return { mid: mid, cover: $.clamp(t / mid), uncover: $.clamp((t - mid) / ($.dur - mid)), before: t < mid };
 }
+/** The sound of a cut: air as the cover arrives, a soft low drop on the cut, air going as it opens (and the label's pop). */
+function sound($) {
+  const mid = cutAt($);
+  return {
+    cues: [
+      { at: Math.max(0, mid - 0.45), kind: "whoosh", dur: Math.min(0.5, mid), level: 0.9 },
+      { at: mid, kind: "sub", level: 0.55 },
+      { at: mid + 0.04, kind: "whoosh", dur: Math.min(0.5, $.dur - mid), level: 0.55, pitch: -3, pan: 0.2 },
+    ],
+    auto: true,
+  };
+}
 /** The paints: lead (the edge that arrives first), lead2, and cover (what fills the frame at the cut). */
 function paints($, scheme) {
   const c = $.c;

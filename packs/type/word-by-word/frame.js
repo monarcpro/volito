@@ -19,3 +19,13 @@ function frame(t, $) {
   s += M.part("words", { at: tin, in: "none" }, fr);
   return s;
 }
+
+/** A tick for every word as it lands, a hit for a marked one. */
+function sound($) {
+  const p = $.data, tin = $.beat("in", 0.2), ws = markedWords($.case(p.text));
+  if (!ws.length) return [];
+  const pace = Math.max(0.15, Math.min(p.pace, (motion($, 0).outAt - tin) / ws.length));
+  return ws.map(function (w, i) {
+    return w.marked ? { at: tin + i * pace, kind: "hit", level: 0.8 } : { at: tin + i * pace, kind: "tick", level: 0.9, pitch: (i % 3) - 1 };
+  });
+}

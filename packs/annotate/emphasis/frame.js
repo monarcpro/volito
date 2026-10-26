@@ -28,3 +28,11 @@ function frame(t, $) {
   }
   return s;
 }
+
+/** A pop as the lines burst out, a shimmer as the sparkles turn up. */
+function sound($) {
+  const p = $.data, tin = $.beat("in", 0.1), out = [];
+  if (p.kind !== "sparkles") out.push({ at: tin, kind: "pop", level: 0.9, pan: (p.x / 50 - 1) * 0.6 });
+  if (p.kind !== "lines") out.push({ at: tin + 0.15, kind: "shimmer", dur: 0.7, level: 0.6, pan: (p.x / 50 - 1) * 0.6 });
+  return out;
+}

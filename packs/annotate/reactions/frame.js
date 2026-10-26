@@ -20,3 +20,15 @@ function frame(t, $) {
   }
   return s + M.part("stream", { in: "none", out: "none", vary: false }, out);
 }
+
+/** A small pop as each reaction is born, panned with it and pitched a little differently. */
+function sound($) {
+  const p = $.data, tin = $.beat("in", 0.1), end = motion($, 0).outAt, n = Math.ceil(($.dur - tin) * p.rate);
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const born = tin + i / p.rate + ($.hash(i * 1.7) - 0.5) * 0.15;
+    if (born > end) continue;
+    out.push({ at: Math.max(0, born), kind: "pop", level: 0.45, pitch: Math.round(($.hash(i * 3.3) - 0.5) * 8), pan: (p.x / 50 - 1) * 0.6 });
+  }
+  return out;
+}

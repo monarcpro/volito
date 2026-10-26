@@ -36,6 +36,9 @@ sixteen animated patterns, a CLI, a Node API, a browser player and an MCP server
 - **On the voice.** Give a transcript and text lands on the words that say it.
 - **Drops onto footage.** Overlays render with real alpha for Premiere, Resolve, Final Cut, After
   Effects and CapCut.
+- **Sounds like it moves.** `--sound` gives any render a sound track Volito synthesises itself — a pop for
+  every spring, a whoosh for every move across the frame, ticks for letters, a hit for a slam, a bed in a
+  key — and a program can design its own cues beside its frames.
 - **Agent-native.** An MCP server gives Claude Code, Cursor and other agents tools to find, preview (as an
   image they can see), check and render graphics — or to write their own.
 - **Many scripts.** Latin, Latin Extended, Vietnamese, Cyrillic, Greek and Devanagari (Hindi), shaped properly.
@@ -130,6 +133,50 @@ Maps use Natural Earth's countries (177, packed into 30 KB): `worldMap($, { cent
 flat (Equal Earth), `worldGlobe(S, …)` puts them on a 3D globe, and `worldFind("UK")` finds one by name,
 short name or ISO number. `volito api` documents both.
 
+## Sound design
+
+Every render can carry sound, and Volito makes it the way it makes pictures: from code, from nothing. No
+sample library, no files to find. `--sound` reads the graphic's own motion — every part's move leaves a
+mark — and gives each its sound: a spring pops, a move across the frame whooshes (louder the further it
+travels), letters tick, a typewriter types, a slam hits, a glitch zaps, a burst sparkles. `--bed Dm` lays
+a pad under it in a key, and it steps back under every hit on its own.
+
+```bash
+volito render logo-sting --prop wordmark=VOLITO --sound --bed Dm --format mp4 --out sting.mp4
+volito sound lower-third --prop name="Priya Sharma" --out priya.wav     # the track alone, with its cue list
+```
+
+A program designs its own sound beside its frames — `function sound($)` runs once with the same `$`
+(`$.dur`, `$.beat`, `$.at(word)`, `$.data`), so cues land on the same beats the picture uses:
+
+```js
+function sound($) {
+  return {
+    cues: [
+      { at: 0.2, kind: "riser", dur: 1.1 },
+      { at: $.beat("in", 1.3), kind: "hit", level: 1.1 },
+      { at: 1.5, kind: "shimmer", dur: 1.2, pan: 0.3 },
+      { at: -0.6, kind: "ding", note: "A5", level: 0.6 },   // negative counts from the end
+    ],
+    bed: { key: "D", mode: "minor", from: 0.8, to: -0.4, level: 0.5 },
+    auto: false,   // true adds the motion's own cues on top
+  };
+}
+```
+
+| Kind | |
+| --- | --- |
+| `whoosh` `swell` `riser` `fall` | air past, soft air rising, a climb into a moment, the fall after it |
+| `hit` `stamp` `sub` `pop` | an impact, a heavy slam, a low drop, a bubble pop |
+| `tick` `click` `type` `scratch` | one letter or step, a UI click, keys for a while, pencil on paper |
+| `shimmer` `ding` `zap` | sparkle, a bell (`note: "A5"`), a glitch |
+| `tone` `chord` | a note, the bed's chord — for a sting that resolves |
+
+Each cue takes `at`, `dur`, `level` (0–2), `pitch` (semitones), `pan` (-1…1) and `seed`. The track is
+stereo 48 kHz, limited, with a room; `--sound-out track.wav` writes it alone for an editor's timeline
+beside a ProRes overlay. MP4 and HEVC carry AAC, ProRes carries PCM, WebM carries Opus; PNG and GIF carry
+none. `volito api` prints the whole sound reference.
+
 ## CLI
 
 ```bash
@@ -157,6 +204,7 @@ volito check ./my-graphic.js                  # run it at every aspect, report p
 | `--motion part.setting=value` | how a part moves (repeat; `*` for every part) — see *Motion without limits* |
 | `--mood m` · `--seed n` · `--speed x` | a choreography, a new take per seed, faster or slower |
 | `--beat in=0.4 --beat out=-0.6` | move the entrance and exit (negative counts from the end) |
+| `--sound` · `--bed Dm` · `--sound-level x` · `--sound-out file.wav` | a sound track synthesised by Volito (see *Sound design*), a pad in a key, its level, the track alone |
 | `--packs <dir>` | more packs (also `VOLITO_PACKS`) |
 | `--format mov\|webm\|mp4\|hevc\|gif\|png` | for `render`; `png`/`svg` for `still` |
 
@@ -191,7 +239,8 @@ Cursor, Windsurf and other MCP clients:
 | `motion_preview` | a contact sheet as an image — the agent sees how it moves and whether text fits |
 | `motion_still` | one frame as an image |
 | `motion_check` | errors and warnings at every aspect |
-| `motion_render` | render to a file and return its path |
+| `motion_render` | render to a file and return its path (`sound: true` muxes a synthesised track, `bed: "Dm"` a pad) |
+| `motion_sound` | the graphic's sound alone as a .wav, with its cue list |
 | `motion_moves` | every move, ease, idle, hit and mood the `motion` settings take |
 | `motion_api` | the program API and the motion kit, for writing new graphics |
 

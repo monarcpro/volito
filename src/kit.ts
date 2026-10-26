@@ -496,6 +496,36 @@ function motion($, t) {
     return [x, y];
   }
 
+  /** Moves that read as a spring (a pop in the sound design) rather than travel across the frame. */
+  var MM_SPRINGY = { pop: 1, zoom: 1, push: 1, grow: 1, spin: 1, swing: 1, elastic: 1, bounce: 1, squash: 1, stretch: 1, flip: 1, turn: 1, unfold: 1, "grow-x": 1, "grow-y": 1 };
+  /**
+   * Tells the sound trace what a part does, through the runtime's timing helpers (they leave the marks a
+   * sound design reads): a slam shakes, a spring pops, a move across the frame enters from a distance, a
+   * fade fades, a typewriter types, a glitch flashes, and every emphasis hit bumps. One cheap call a frame;
+   * nothing is drawn.
+   */
+  function note(s, tm, c, text) {
+    if (tm.mv.always || typeof $.enter !== "function") return;
+    var mv = s["in"];
+    if (mv === "slam") $.shake(t, tm.at + tm.dur * 0.55, 24);
+    else if (mv === "typewriter") $.typed(t, tm.at, text || "", speed / (s.stagger > 0 ? Number(s.stagger) : 0.055));
+    else if (mv === "scramble") $.typed(t, tm.at, text || "", (text ? Array.from(text).length : 8) / Math.max(0.1, tm.dur));
+    else if (mv === "glitch" || mv === "flicker") $.flash(t, tm.at, { a: 0 });
+    else if (mv === "fade" || mv === "blur" || mv === "appear" || mv === "float") $.fadeIn(t, tm.at);
+    else if (MM_SPRINGY[mv]) $.pop(t, tm.at);
+    else {
+      var p0 = tm.mv.pose(0, 0, c) || {};
+      var dx = p0.x || 0, dy = p0.y || 0;
+      if (!dx && !dy && tm.mv.box && c.box) dx = c.box.w * 0.5;
+      if (dx || dy) $.enter(t, tm.at, { dx: dx, dy: dy }); else $.pop(t, tm.at);
+    }
+    hits(s).forEach(function (h) {
+      var at = hitTime(h.at, tm.at);
+      if (!isFinite(at)) return;
+      if (h.fx === "shake") $.shake(t, at, 16); else if (h.fx === "flash") $.flash(t, at, { a: 0 }); else $.bump(t, at);
+    });
+  }
+
   var api = {};
   api.mood = mood;
   api.seed = seed;
@@ -510,6 +540,7 @@ function motion($, t) {
     var tm = timing(s);
     var pv = pivot(o.box, s.origin, o, tm.mv.origin);
     var c = context(s, tm, o.box, pv[0], pv[1], salt(name) % 97);
+    note(s, tm, c);
     return render(kids, poseAt(s, tm, c, t), c);
   };
 
@@ -576,6 +607,7 @@ function motion($, t) {
     if (!lay.units.length || lay.mode === "none") {
       var pv = pivot(lay.box, s.origin, o, tm.mv.origin);
       var c = context(s, tm, lay.box, pv[0], pv[1], salt(name) % 97);
+      note(s, tm, c, lay.text);
       return render($.text(lay.text, font), poseAt(s, tm, c, t), c);
     }
     var n = lay.units.length;
@@ -600,6 +632,9 @@ function motion($, t) {
         shown = pool.charAt(Math.floor(mmHash(i * 7.7 + Math.floor(t * 18) * 1.9 + vseed) * pool.length));
       }
       if (t >= ut.at) lastShown = u;
+      // The sound trace: typing and scrambles once for the whole text, else the first unit with its move and every other one a tick.
+      if (behave === "type" || behave === "scramble") { if (i === 0) note(s, tm, c2, lay.text); }
+      else if (rk === 0) note(s, ut, c2, u.text); else if (typeof $.bump === "function") $.bump(t, ut.at);
       out += render(draw(shown, u.x, u), poseAt(s, ut, c2, t), c2);
     });
     var typed = tm.at + n * (s.stagger > 0 ? Number(s.stagger) : 0.055) / speed;

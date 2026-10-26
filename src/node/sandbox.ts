@@ -49,6 +49,15 @@ self.postMessage = function (m) { self.__out = m; };
 })();
 `;
 
+/** The worker's hand-back of the program's functions, as MONARC core writes it, and with Volito's `sound` beside them. */
+const RETURN_LINE = "return { frame: typeof frame === 'function' ? frame : null, setup: typeof setup === 'function' ? setup : null };";
+const RETURN_WITH_SOUND = "return { frame: typeof frame === 'function' ? frame : null, setup: typeof setup === 'function' ? setup : null, sound: typeof sound === 'function' ? sound : null };";
+
+/** Whether this engine's worker source still has the line the sound hook patches (a test keeps it true). */
+export function soundHookAvailable(): boolean {
+  return programWorkerSource("function frame() { return ''; }").source.includes(RETURN_LINE);
+}
+
 interface Out {
   type: string;
   svg?: string;
@@ -75,7 +84,10 @@ export class ProgramRunner {
    * start. `lineOffset` is how many lines of the code come before the author's own (the kit, a pack's helpers).
    */
   static async create(program: TitleProgram, env: ProgramEnv, timeoutMs = 5000, lineOffset = 0): Promise<ProgramRunner> {
-    const { source, codeLine } = programWorkerSource(program.code);
+    const built = programWorkerSource(program.code);
+    const codeLine = built.codeLine;
+    // Volito's own hook: a program may define `function sound($)` beside frame and setup.
+    const source = built.source.includes(RETURN_LINE) ? built.source.replace(RETURN_LINE, RETURN_WITH_SOUND) : built.source;
     const measure = (font: unknown, text: unknown): number => {
       try {
         const w = measureText(String(font), String(text));
@@ -150,6 +162,28 @@ export class ProgramRunner {
     if (!out) throw new ProgramError("the program returned nothing");
     if (out.error) throw new ProgramError(out.error, this.mapLine(out.line));
     return { svg: out.svg ?? "", defs: out.defs ?? "", warnings: out.warnings ?? [], ms: performance.now() - started };
+  }
+
+  /**
+   * The program's own sound design: what `function sound($)` returns, read once with `$` at t = 0 ($.dur,
+   * $.beat, $.at and $.data are there). `spec` is null when the program defines none; `error` when it threw.
+   */
+  sound(timeoutMs = 5000): { spec: unknown; error?: string } {
+    if (this.dead) throw this.dead;
+    let raw: string | null;
+    try {
+      raw = vm.runInContext(
+        "(function () { if (!__program.sound) return null; var $ = MG.make(__env, 0); $.state = __state; try { return JSON.stringify({ spec: __program.sound($) }); } catch (err) { return JSON.stringify({ error: String(err && err.message || err), line: __line(err) }); } })()",
+        this.ctx,
+        { timeout: timeoutMs },
+      ) as string | null;
+    } catch (err) {
+      return { spec: null, error: `sound: ${this.message(err)}` };
+    }
+    if (!raw) return { spec: null };
+    const out = JSON.parse(raw) as { spec?: unknown; error?: string; line?: number | null };
+    if (out.error) return { spec: null, error: new ProgramError(`sound: ${out.error}`, this.mapLine(out.line)).message };
+    return { spec: out.spec ?? null };
   }
 
   /** Every frame run once with the runtime's trace on: when each element pops, slides, stamps or types in. */

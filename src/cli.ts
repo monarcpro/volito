@@ -19,7 +19,8 @@ process.stdout.on("error", (e: NodeJS.ErrnoException) => {
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
-import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE } from "./guide.js";
+import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE, SOUND_GUIDE } from "./guide.js";
+import { describeCues } from "./sound.js";
 import { BUILTIN_STYLES, MG_API_REFERENCE } from "./engine.js";
 import { ASPECT_NAMES, type BuildOptions, CATEGORIES, type MotionItem, MotionError, describeItem, parseAspect } from "./pack.js";
 import { DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS, parseMotionArgs } from "./kit.js";
@@ -27,7 +28,7 @@ import { checkItem, describeReport } from "./node/check.js";
 import { loadMedia, readStyleArg, readWords } from "./node/inputs.js";
 import { findItem, library, searchItems } from "./node/packs.js";
 import { packageVersion, packsDir } from "./node/paths.js";
-import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderStill, renderVideo } from "./node/render.js";
+import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderSoundFile, renderStill, renderVideo } from "./node/render.js";
 
 const HELP = `Volito ${packageVersion()} — brand-aware, voice-synced motion graphics as code
 
@@ -41,6 +42,7 @@ Commands
   render <item> [--out file] [--format f]         render to video (ProRes 4444 .mov by default)
   still <item> [--t seconds] [--out file.png|.svg] one frame
   sheet <item> [--out sheet.png]                  frames across its time in one picture
+  sound <item> [--out track.wav]                  its sound alone, as a WAV, with the cue list
   check <item|file.js> [--aspect a]               run it at every aspect and report problems
   add <item> [--dir ./motion]                     copy an item's source into your project to edit
   new <id> [--dir ./motion]                       start a new item from a template
@@ -70,6 +72,11 @@ Options
   --mood <m>             a choreography: ${MOODS.join(", ")}
   --seed <n>             a new choreography for every number (with or without a mood)
   --speed <x>            every move faster (2) or slower (0.5)
+  --sound                a sound track, synthesised by Volito, muxed into the video (not png/gif): the program's own
+                         sound($) cues, else cues read from its motion — pops, whooshes, ticks, hits
+  --bed <key>            a pad under it all, in a key: Dm, "F major", C#m
+  --sound-level <x>      the track's level (1)
+  --sound-out <file.wav> also write the track alone (for an editor's timeline, next to a ProRes overlay)
   --packs <dir>          more packs (also VOLITO_PACKS)
   --format <f>           render: ${VIDEO_FORMATS.join(", ")} · still: png, svg
   --json                 machine-readable output
@@ -105,6 +112,10 @@ const OPTIONS = {
   seed: { type: "string" },
   speed: { type: "string" },
   packs: { type: "string", multiple: true },
+  sound: { type: "boolean" },
+  bed: { type: "string" },
+  "sound-level": { type: "string" },
+  "sound-out": { type: "string" },
   format: { type: "string" },
   out: { type: "string" },
   t: { type: "string" },
@@ -174,6 +185,9 @@ async function buildOptions(v: Values, item: MotionItem): Promise<RenderOptions>
     ...(v.mood ? { mood: v.mood } : {}),
     ...(v.seed !== undefined ? { seed: num(v.seed, "seed") } : {}),
     ...(v.speed ? { speed: num(v.speed, "speed") } : {}),
+    ...(v.sound || v.bed || v["sound-level"] || v["sound-out"] ? { sound: v["sound-level"] ? { level: num(v["sound-level"], "sound-level") } : true } : {}),
+    ...(v.bed ? { bed: v.bed } : {}),
+    ...(v["sound-out"] ? { soundOut: v["sound-out"] } : {}),
   };
   opts.media = await loadMedia(item, props);
   return opts;
@@ -266,7 +280,7 @@ async function main(argv: string[]): Promise<number> {
       const r = await renderVideo(item, { ...opts, ...(v.format ? { format: v.format as VideoFormat } : {}), ...(v.out ? { out: v.out } : {}), onProgress: progress(v.quiet) });
       warn(r.warnings, v.quiet);
       if (v.json) process.stdout.write(`${JSON.stringify(r, null, 2)}\n`);
-      else process.stdout.write(`${r.file}\n  ${r.format} · ${r.width}×${r.height} · ${r.fps} fps · ${r.duration.toFixed(2)} s · ${r.frames} frames (${r.drawn} drawn)${r.bytes ? ` · ${bytes(r.bytes)}` : ""} · ${(r.ms / 1000).toFixed(1)} s\n`);
+      else process.stdout.write(`${r.file}\n  ${r.format} · ${r.width}×${r.height} · ${r.fps} fps · ${r.duration.toFixed(2)} s · ${r.frames} frames (${r.drawn} drawn)${r.bytes ? ` · ${bytes(r.bytes)}` : ""}${r.sound ? ` · sound: ${r.sound.cues.length} cues${r.sound.bed ? ` on a ${r.sound.bed.key} ${r.sound.bed.mode} bed` : ""}${r.sound.file ? ` → ${r.sound.file}` : ""}` : ""} · ${(r.ms / 1000).toFixed(1)} s\n`);
       return 0;
     }
     case "still": {
@@ -321,8 +335,17 @@ async function main(argv: string[]): Promise<number> {
       process.stdout.write(`${dir}\n  edit item.json and frame.js, then: volito sheet ${JSON.stringify(dir)}\n`);
       return 0;
     }
+    case "sound": {
+      const item = need();
+      const opts = await buildOptions(v, item);
+      const r = await renderSoundFile(item, { ...opts, sound: opts.sound ?? true, out: v.out ?? `${item.id}.wav` });
+      warn(r.warnings, v.quiet);
+      if (v.json) process.stdout.write(`${JSON.stringify({ file: r.file, duration: r.duration, peak: r.peak, bed: r.bed, cues: r.cues }, null, 2)}\n`);
+      else process.stdout.write(`${r.file}\n  ${r.duration.toFixed(2)} s · ${r.cues.length} cues${r.bed ? ` · bed ${r.bed.key} ${r.bed.mode}` : ""} · peak ${r.peak.toFixed(2)}\n${describeCues(r.cues)}\n`);
+      return 0;
+    }
     case "api":
-      process.stdout.write(`${MG_API_REFERENCE}\n\n${LIBRARY_GUIDE}\n`);
+      process.stdout.write(`${MG_API_REFERENCE}\n\n${LIBRARY_GUIDE}\n\n${SOUND_GUIDE}\n`);
       return 0;
     case "guide":
       process.stdout.write(`${MOTION_GUIDE}\n\n${AUTHORING_GUIDE}\n`);

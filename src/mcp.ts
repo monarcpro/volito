@@ -10,14 +10,15 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { BUILTIN_STYLES, MG_API_REFERENCE } from "./engine.js";
-import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE } from "./guide.js";
+import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE, SOUND_GUIDE } from "./guide.js";
+import { describeCues } from "./sound.js";
 import { DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS } from "./kit.js";
 import { ASPECT_NAMES, CATEGORIES, type MotionItem, customItem, describeItem, parseAspect } from "./pack.js";
 import { checkItem, describeReport } from "./node/check.js";
 import { loadMedia, normalizeWords, readWords } from "./node/inputs.js";
 import { type Library, findItem, library, searchItems } from "./node/packs.js";
 import { packageVersion } from "./node/paths.js";
-import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderStill, renderVideo } from "./node/render.js";
+import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderSoundFile, renderStill, renderVideo } from "./node/render.js";
 
 const source = {
   item: z.string().optional().describe('A pack item: "essentials/lower-third", or its id "lower-third" (motion_list shows them). Give this or `code`.'),
@@ -63,6 +64,10 @@ type Args = {
   words?: Array<{ w: string; s: number; e: number }>;
   wordsFile?: string;
   beats?: Record<string, number>;
+  sound?: boolean;
+  bed?: string;
+  soundOut?: string;
+  out?: string;
 };
 
 function pick(lib: Library, a: Args): MotionItem {
@@ -102,7 +107,7 @@ const warnings = (w: string[]) => (w.length ? `\nWarnings:\n${w.map((x) => `- ${
 
 export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
   const lib = () => library(opts.packs ?? []);
-  const server = new McpServer({ name: "volito", version: packageVersion() }, { instructions: "Volito renders brand-aware motion graphics (lower thirds, titles, CTAs, stats, lists, end cards…) to video files with alpha. Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), then motion_render to a file. Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed. Packs: essentials, broadcast (lower thirds, tickers, score bugs), social (follow cards, notifications, chat), data (charts, maps, flight routes) and 3d (extruded logos and titles, card flips, globes). To make something no item covers, write a program against motion_api (it includes 3D scenes and world maps) and use the same tools with `code`." });
+  const server = new McpServer({ name: "volito", version: packageVersion() }, { instructions: "Volito renders brand-aware motion graphics (lower thirds, titles, CTAs, stats, lists, end cards…) to video files with alpha. Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), then motion_render to a file. Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed. Packs: essentials, broadcast (lower thirds, tickers, score bugs), social (follow cards, notifications, chat), data (charts, maps, flight routes) and 3d (extruded logos and titles, card flips, globes). To make something no item covers, write a program against motion_api (it includes 3D scenes and world maps) and use the same tools with `code`. Every render can carry sound Volito synthesises itself (motion_render with sound: true, or motion_sound for the track alone): a program's own sound($) cues, else the right pops, whooshes, ticks and hits read from its motion." });
 
   server.registerTool(
     "motion_list",
@@ -212,6 +217,9 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
         fps: z.number().int().min(1).max(120).optional(),
         width: z.number().int().min(16).max(8192).optional().describe("Output width px (height follows)."),
         background: z.string().optional().describe('"#000000" draws a ground under the graphic; "transparent" keeps alpha.'),
+        sound: z.boolean().optional().describe("Mux a sound track synthesised by Volito: the program's own sound($) cues, else cues read from its motion (pops, whooshes, ticks, hits). Not for png/gif."),
+        bed: z.string().optional().describe('A pad under it all, in a key: "Dm", "F major", "C#m".'),
+        soundOut: z.string().optional().describe("Also write the track alone to this .wav (for an editor's timeline)."),
       },
     },
     async (a) => {
@@ -219,8 +227,42 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
         const item = pick(lib(), a as Args);
         const opts = await optionsOf(item, a as Args);
         const format = (a.format ?? "mov") as VideoFormat;
-        const r = await renderVideo(item, { ...opts, format, ...(a.out ? { out: a.out } : { outDir: "motion-renders" }), ...(a.fps ? { fps: a.fps } : {}), ...(a.width ? { width: a.width } : {}), ...(a.background ? { background: a.background } : {}) });
-        return text(`Rendered ${r.file}\n${r.format} · ${r.width}×${r.height} · ${r.fps} fps · ${r.duration.toFixed(2)} s · ${r.frames} frames${r.bytes ? ` · ${(r.bytes / 1e6).toFixed(1)} MB` : ""} · took ${(r.ms / 1000).toFixed(1)} s${warnings(r.warnings)}`);
+        const r = await renderVideo(item, {
+          ...opts,
+          format,
+          ...(a.out ? { out: a.out } : { outDir: "motion-renders" }),
+          ...(a.fps ? { fps: a.fps } : {}),
+          ...(a.width ? { width: a.width } : {}),
+          ...(a.background ? { background: a.background } : {}),
+          ...(a.sound || a.bed || a.soundOut ? { sound: true } : {}),
+          ...(a.bed ? { bed: a.bed } : {}),
+          ...(a.soundOut ? { soundOut: a.soundOut } : {}),
+        });
+        return text(`Rendered ${r.file}\n${r.format} · ${r.width}×${r.height} · ${r.fps} fps · ${r.duration.toFixed(2)} s · ${r.frames} frames${r.bytes ? ` · ${(r.bytes / 1e6).toFixed(1)} MB` : ""}${r.sound ? ` · sound: ${r.sound.cues.length} cues${r.sound.bed ? ` on a ${r.sound.bed.key} ${r.sound.bed.mode} bed` : ""}${r.sound.file ? ` → ${r.sound.file}` : ""}` : ""} · took ${(r.ms / 1000).toFixed(1)} s${warnings(r.warnings)}`);
+      } catch (err) {
+        return failure(err);
+      }
+    },
+  );
+
+  server.registerTool(
+    "motion_sound",
+    {
+      title: "Sound design for a motion graphic",
+      description: "The graphic's sound alone, as a .wav, with its cue list: the program's own sound($) cues when it defines them, else cues read from its motion (a pop for every spring, a whoosh for every move across the frame, ticks for letters, a hit for a slam). Needs no ffmpeg. Use motion_render with sound: true to mux it into the video instead.",
+      inputSchema: {
+        ...source,
+        ...look,
+        bed: z.string().optional().describe('A pad under it all, in a key: "Dm", "F major".'),
+        out: z.string().optional().describe("Output .wav path. Default: motion-renders/<id>.wav."),
+      },
+    },
+    async (a) => {
+      try {
+        const item = pick(lib(), a as Args);
+        const opts = await optionsOf(item, a as Args);
+        const r = await renderSoundFile(item, { ...opts, sound: true, ...(a.bed ? { bed: a.bed } : {}), ...(a.out ? { out: a.out } : { outDir: "motion-renders" }) });
+        return text(`Rendered ${r.file}\n${r.duration.toFixed(2)} s · ${r.cues.length} cues${r.bed ? ` · bed ${r.bed.key} ${r.bed.mode}` : ""} · peak ${r.peak.toFixed(2)}\n${describeCues(r.cues)}${warnings(r.warnings)}`);
       } catch (err) {
         return failure(err);
       }
@@ -230,7 +272,7 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
   server.registerTool(
     "motion_api",
     { title: "Program API", description: "How to write your own graphic: the frame(t, $) contract, the whole $ runtime (timing, motion, text, shapes, cards, charts, art styles, brand colours and faces) and how items and packs are laid out. Read before passing `code`.", inputSchema: {} },
-    async () => text(`${MG_API_REFERENCE}\n\n${LIBRARY_GUIDE}\n\n${MOTION_GUIDE}\n\n${AUTHORING_GUIDE}`),
+    async () => text(`${MG_API_REFERENCE}\n\n${LIBRARY_GUIDE}\n\n${MOTION_GUIDE}\n\n${SOUND_GUIDE}\n\n${AUTHORING_GUIDE}`),
   );
 
   return server;

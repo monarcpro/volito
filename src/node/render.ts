@@ -6,8 +6,8 @@
  * for the web, MP4 and GIF draw on a background. Frames that do not change are drawn once.
  */
 import { spawn } from "node:child_process";
-import { mkdirSync, statSync, writeFileSync } from "node:fs";
-import { availableParallelism } from "node:os";
+import { mkdirSync, mkdtempSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { availableParallelism, tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { Resvg, renderAsync } from "@resvg/resvg-js";
 import { MG_STD_DEFS, type ProgramEnv, type TitleProgram, programEnv } from "../engine.js";
@@ -17,6 +17,7 @@ import { fontFaceCss, fontFilesFor, fontFilesForDocument } from "./fonts.js";
 import { outlineText } from "./outline.js";
 import { resolvePathLength } from "./pathlength.js";
 import { type ProgramFrame, ProgramRunner } from "./sandbox.js";
+import { type SoundBed, type SoundCue, type SoundSpec, type TraceMark, cuesFromMarks, normalizeSoundSpec, renderSound, wavEncode } from "../sound.js";
 
 export const VIDEO_FORMATS = ["mov", "webm", "mp4", "hevc", "gif", "png"] as const;
 export type VideoFormat = (typeof VIDEO_FORMATS)[number];
@@ -44,6 +45,27 @@ export interface RenderOptions extends BuildOptions {
   /** Bound on one frame's program run, ms. */
   frameTimeoutMs?: number;
   onProgress?: (done: number, total: number) => void;
+  /**
+   * Sound, synthesised by Volito and muxed into the video: true for the program's own sound($) (or, when it has
+   * none, cues read from its motion); a SoundSpec adds cues and sets the bed, level and room on top.
+   */
+  sound?: boolean | SoundSpec;
+  /** A pad under everything in a key ("Dm", "F major"), a bed object, or false for none — over what the program asks. */
+  bed?: string | SoundBed | false;
+  /** Also write the sound alone to this .wav (an editor's timeline wants it next to a ProRes overlay). */
+  soundOut?: string;
+}
+
+export interface SoundResult {
+  /** The cues rendered, in time order. */
+  cues: SoundCue[];
+  bed: SoundBed | null;
+  /** Peak after the limiter, 0–1. */
+  peak: number;
+  duration: number;
+  /** The .wav written, when one was asked for. */
+  file?: string;
+  warnings: string[];
 }
 
 export interface Session {
@@ -233,9 +255,68 @@ export interface VideoResult {
   bytes: number;
   ms: number;
   warnings: string[];
+  /** The sound track, when one was rendered. */
+  sound?: SoundResult;
 }
 
 const EXT: Record<VideoFormat, string> = { mov: ".mov", webm: ".webm", mp4: ".mp4", hevc: ".mov", gif: ".gif", png: "" };
+
+/**
+ * The sound of a graphic: the program's own sound($) when it defines one, cues read from its motion trace
+ * (always when it defines none, or when it asks with auto: true), and the bed, level and room the caller sets.
+ */
+export function designSound(s: Session, opts: Pick<RenderOptions, "sound" | "bed">, duration = s.built.duration): { spec: SoundSpec; warnings: string[] } {
+  const warnings: string[] = [];
+  const own = s.runner.sound();
+  if (own.error) warnings.push(own.error);
+  const { spec, warnings: w } = normalizeSoundSpec(own.spec, duration);
+  warnings.push(...w);
+  if (typeof opts.sound === "object" && opts.sound) {
+    const o = normalizeSoundSpec(opts.sound, duration);
+    warnings.push(...o.warnings);
+    if (o.spec.cues) spec.cues = [...(spec.cues ?? []), ...o.spec.cues];
+    if (o.spec.bed !== undefined) spec.bed = o.spec.bed;
+    if (o.spec.auto !== undefined) spec.auto = o.spec.auto;
+    if (o.spec.level !== undefined) spec.level = o.spec.level;
+    if (o.spec.room !== undefined) spec.room = o.spec.room;
+  }
+  if (opts.bed !== undefined) spec.bed = opts.bed;
+  if (spec.auto ?? !spec.cues?.length) {
+    const tr = s.runner.trace(s.fps);
+    if (tr.error) warnings.push(tr.error);
+    spec.cues = [...(spec.cues ?? []), ...cuesFromMarks(tr.marks as TraceMark[], duration)].sort((a, b) => a.at - b.at);
+  }
+  if (!spec.cues?.length && !spec.bed) warnings.push("sound: nothing in this graphic moves in a way the sound design reads, so its track is silent — add a bed (--bed Dm) or a sound($) to the program");
+  return { spec, warnings };
+}
+
+/** Render a graphic's sound alone, to a .wav (no ffmpeg needed). */
+export async function renderSoundFile(item: MotionItem, opts: RenderOptions & { out?: string; outDir?: string } = {}): Promise<SoundResult> {
+  const s = await openSession(item, opts);
+  const total = Math.max(1, Math.round(s.built.duration * s.fps));
+  const duration = total / s.fps;
+  const { spec, warnings } = designSound(s, { sound: opts.sound ?? true, bed: opts.bed }, duration);
+  const r = renderSound(spec, duration);
+  const file = resolve(opts.out ?? join(opts.outDir ?? ".", `${item.id}.wav`));
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, wavEncode(r.left, r.right, r.sampleRate));
+  return { cues: r.cues, bed: r.bed, peak: r.peak, duration, file, warnings: [...s.warnings, ...warnings, ...r.warnings] };
+}
+
+/** The audio codec for a container; [] when it cannot carry one here. */
+function audioArgs(format: VideoFormat, encoders: Set<string>): string[] {
+  switch (format) {
+    case "mov":
+      return ["-c:a", "pcm_s16le"];
+    case "mp4":
+    case "hevc":
+      return ["-c:a", "aac", "-b:a", "192k"];
+    case "webm":
+      return encoders.has("libopus") ? ["-c:a", "libopus", "-b:a", "128k"] : encoders.has("libvorbis") ? ["-c:a", "libvorbis"] : [];
+    default:
+      return [];
+  }
+}
 
 /** The format a file name asks for (".mov" → ProRes, ".webm", ".mp4", ".gif", a folder → PNG frames). */
 export function formatFromPath(path: string): VideoFormat | null {
@@ -248,7 +329,16 @@ export function defaultOutput(item: MotionItem, format: VideoFormat, s: { width:
   return `${item.id}-${s.width}x${s.height}${format === "hevc" ? "-hevc" : ""}${EXT[format]}`;
 }
 
-function encoderArgs(format: VideoFormat, s: Session, alpha: boolean, encoders: Set<string>): string[] {
+/** The video encoder's arguments, and with `audio` (a .wav) a second input muxed in beside the frames. */
+function encoderArgs(format: VideoFormat, s: Session, alpha: boolean, encoders: Set<string>, audio: string | null = null): string[] {
+  const video = videoArgs(format, s, alpha, encoders);
+  const codec = audio ? audioArgs(format, encoders) : [];
+  if (!audio || !codec.length) return video;
+  const i = video.indexOf("-i") + 2;
+  return [...video.slice(0, i), "-i", audio, "-map", "0:v:0", "-map", "1:a:0", ...video.slice(i), ...codec];
+}
+
+function videoArgs(format: VideoFormat, s: Session, alpha: boolean, encoders: Set<string>): string[] {
   const input = ["-hide_banner", "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", `${s.width}x${s.height}`, "-r", String(s.fps), "-i", "-"];
   switch (format) {
     case "mov":
@@ -295,11 +385,40 @@ export async function renderVideo(item: MotionItem, opts: RenderOptions & { form
   const concurrency = Math.max(1, Math.min(16, opts.concurrency ?? availableParallelism()));
   const holdAfter = s.built.program.holdAfter;
 
+  // The sound first (it reads the program, not the frames), so ffmpeg muxes it in one pass.
+  let audio: string | null = null;
+  let soundTmp: string | null = null;
+  let sound: SoundResult | undefined;
+  if (opts.sound || opts.bed !== undefined || opts.soundOut) {
+    const duration = total / s.fps;
+    const { spec, warnings } = designSound(s, { sound: opts.sound ?? true, bed: opts.bed }, duration);
+    s.warnings.push(...warnings);
+    const r = renderSound(spec, duration);
+    const wav = wavEncode(r.left, r.right, r.sampleRate);
+    sound = { cues: r.cues, bed: r.bed, peak: r.peak, duration, warnings: r.warnings };
+    if (opts.soundOut) {
+      sound.file = resolve(opts.soundOut);
+      mkdirSync(dirname(sound.file), { recursive: true });
+      writeFileSync(sound.file, wav);
+    }
+    if (!ff || format === "png" || format === "gif") s.warnings.push(`${format} carries no sound${sound.file ? "" : " — pass --sound-out file.wav to keep the track"}`);
+    else if (!audioArgs(format, ff.encoders).length) s.warnings.push(`this ffmpeg has no audio encoder for ${format} (libopus or libvorbis) — the video has no sound${sound.file ? "" : "; pass --sound-out file.wav to keep the track"}`);
+    else {
+      soundTmp = mkdtempSync(join(tmpdir(), "volito-sound-"));
+      audio = join(soundTmp, "sound.wav");
+      writeFileSync(audio, wav);
+    }
+  }
+  const cleanSound = () => {
+    if (soundTmp) rmSync(soundTmp, { recursive: true, force: true });
+    soundTmp = null;
+  };
+
   let enc: ReturnType<typeof spawn> | null = null;
   let encError = "";
   let encDone: Promise<number> | null = null;
   if (ff) {
-    enc = spawn(ff.path, [...encoderArgs(format, s, alpha, ff.encoders), file], { stdio: ["pipe", "ignore", "pipe"] });
+    enc = spawn(ff.path, [...encoderArgs(format, s, alpha, ff.encoders, audio), file], { stdio: ["pipe", "ignore", "pipe"] });
     enc.stderr!.on("data", (d: Buffer) => {
       encError = (encError + d.toString()).slice(-4000);
     });
@@ -364,11 +483,13 @@ export async function renderVideo(item: MotionItem, opts: RenderOptions & { form
   } catch (err) {
     enc?.stdin?.destroy();
     enc?.kill("SIGKILL");
+    cleanSound();
     throw err;
   }
   if (enc) {
     enc.stdin!.end();
     const code = await encDone!;
+    cleanSound();
     if (code !== 0) throw new MotionError(`ffmpeg failed (${code}): ${encError.trim().slice(-600)}`);
   }
   let bytes = 0;
@@ -377,5 +498,5 @@ export async function renderVideo(item: MotionItem, opts: RenderOptions & { form
   } catch {
     /* reported as 0 */
   }
-  return { file, format, width: s.width, height: s.height, fps: s.fps, frames: total, duration: s.built.duration, drawn, bytes, ms: Math.round(performance.now() - started), warnings: s.warnings };
+  return { file, format, width: s.width, height: s.height, fps: s.fps, frames: total, duration: s.built.duration, drawn, bytes, ms: Math.round(performance.now() - started), warnings: s.warnings, ...(sound ? { sound } : {}) };
 }
