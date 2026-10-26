@@ -1,6 +1,6 @@
 {
   "name": "volito",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Volito by MONARC STUDIOS: brand-aware, voice-synced motion graphics as code. Packs of ready-made graphics, a CLI, a Node API and an MCP server that render them to ProRes 4444, WebM, MP4, GIF, PNG or SVG.",
   "license": "(MIT AND LicenseRef-MONARC-Packs-1.0)",
@@ -69,10 +69,10 @@
     "prepack": "pnpm run build"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "1.30.0",
+    "@modelcontextprotocol/sdk": "1.32.2",
     "@resvg/resvg-js": "2.6.2",
     "fontkit": "2.0.4",
-    "zod": "4.6.2"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@fontsource/anton": "5.3.0",
