@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>volito player bench: one run</title>
+</head>
+<body style="margin:0;background:#111">
+<canvas id="c" width="1280" height="720" style="width:320px;height:180px"></canvas>
+<script type="module">
+// One cold run of one item with one build of the browser engine: load time, the SVG each frame
+// carries, ms per frame, and a checksum of a frame's pixels (to prove builds draw the same).
+//   run.html?build=baseline|current&item=pack/id[&frames=30]
+const q = new URLSearchParams(location.search);
+const build = q.get("build") ?? "current";
+const item = q.get("item") ?? "essentials/lower-third";
+const src = build === "baseline" ? "./baseline/browser.js" : "../dist/browser.js";
+const base = new URL("../", location.href).href;
+
+// Every frame goes through URL.createObjectURL(svgBlob) on its way to the canvas: count its bytes.
+const sizes = [];
+const create = URL.createObjectURL.bind(URL);
+URL.createObjectURL = (b) => {
+  if (b instanceof Blob && b.type === "image/svg+xml") sizes.push(b.size);
+  return create(b);
+};
+
+const post = (data) => parent.postMessage({ bench: true, build, item, ...data }, "*");
+try {
+  await fetch("/__stats");
+  const t0 = performance.now();
+  const { loadRegistry, findItem, createPlayer } = await import(src);
+  const reg = await loadRegistry(base);
+  const tReg = performance.now();
+  const canvas = document.getElementById("c");
+  const mp = await createPlayer(canvas, findItem(reg, item), { base });
+  const tReady = performance.now();
+
+  // Frames across the graphic, each forced through decode (no reuse of the last frame).
+  const N = Number(q.get("frames") ?? 30);
+  const t1 = performance.now();
+  for (let i = 0; i < N; i++) {
+    mp.lastSvg = "";
+    await mp.draw((mp.duration * (i + 0.5)) / N);
+  }
+  const msPerFrame = (performance.now() - t1) / N;
+
+  // Frames to compare between builds (a quarter, half and three quarters in), at 1280×720.
+  let h1 = 2166136261 >>> 0, inked = 0;
+  for (const k of [0.25, 0.5, 0.75]) {
+    mp.lastSvg = "";
+    await mp.draw(mp.duration * k);
+    const px = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
+    for (let i = 0; i < px.length; i += 4) {
+      h1 = Math.imul(h1 ^ px[i] ^ (px[i + 1] << 8) ^ (px[i + 2] << 16) ^ (px[i + 3] << 24), 16777619) >>> 0;
+      if (px[i + 3]) inked++;
+    }
+  }
+  const svgKB = sizes.slice(-N - 3).reduce((a, b) => a + b, 0) / (N + 3) / 1024;
+  const net = await fetch("/__stats").then((r) => r.json());
+  post({ ok: true, loadMs: tReady - t0, registryMs: tReg - t0, playerMs: tReady - tReg, msPerFrame, svgKB, checksum: h1.toString(16), inked, fontFiles: net.fontFiles, fontKB: net.fontBytes / 1024 });
+  mp.destroy();
+} catch (err) {
+  post({ ok: false, error: String(err && err.message || err) });
+}
+</script>
+</body>
+</html>

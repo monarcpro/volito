@@ -11,9 +11,10 @@
  * Fonts and the registry load from `base` (the package's folder on jsDelivr by default); serve the
  * package's fonts/ and dist/registry.json yourself and pass their folder to keep it offline.
  */
-import { MG_STD_DEFS, type ProgramEnv, type TitleProgram, programEnv, programWorkerSource } from "../engine.js";
+import { MG_STD_DEFS, type ProgramEnv, type TitleProgram, parseFontSpec, programEnv, programWorkerSource } from "../engine.js";
 import { type BuildOptions, type BuiltProgram, type MotionItem, type MotionPack, MotionError, buildProgram, customItem, glyphFaces, registerLibrary, resolveStyle } from "../pack.js";
 import { TrueTypeFace, glyphFaceFile, glyphTable, setGlyphSource } from "../glyphs.js";
+import { type Face, type FontPayload, facesFor, fontWants, wideCodepoints } from "./fonts.js";
 
 declare const __MOTION_VERSION__: string;
 declare const __MOTION_NAME__: string;
@@ -81,8 +82,8 @@ async function preloadGlyphs(item: MotionItem, opts: BuildOptions, base: string)
       if (glyphTables.has(key)) return Promise.resolve();
       const pending = glyphLoads.get(key);
       if (pending) return pending;
-      const p: Promise<void> = fetch(new URL(`fonts/${file}`, base).href)
-        .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      const p: Promise<void> = fontBlob(new URL(`fonts/${file}`, base).href)
+        .then((b) => b.arrayBuffer())
         .then((buf) => {
           glyphTables.set(key, glyphTable(new TrueTypeFace(new Uint8Array(buf)), key));
         })
@@ -97,28 +98,16 @@ async function preloadGlyphs(item: MotionItem, opts: BuildOptions, base: string)
 }
 
 // ---------------------------------------------------------------------------------------------
-// Fonts: an SVG drawn as an image cannot reach the page's fonts, so each frame embeds its faces.
+// Fonts. An SVG drawn as an image cannot reach the page's fonts, so each frame embeds the faces it
+// draws with, and only those: every face of every family in every frame cost ~2 MB of base64 and
+// most of the time a frame took. The worker measures text with the faces the program declares
+// plus any its frames are seen drawing with. Each file is fetched once and shared.
 // ---------------------------------------------------------------------------------------------
 
-interface Face {
-  family: string;
-  weight: number;
-  italic: boolean;
-  subset: string;
-  range: string;
-  file: string;
-}
-
-interface FontPayload {
-  family: string;
-  weight: number;
-  italic: boolean;
-  url: string;
-  range: string;
-}
-
 const faceLists = new Map<string, Promise<Face[]>>();
-const faceData = new Map<string, Promise<string>>();
+const fontBlobs = new Map<string, Promise<Blob>>();
+const fontObjectUrls = new Map<string, Promise<string>>();
+const fontDataUrls = new Map<string, Promise<string>>();
 
 function facesAt(base: string): Promise<Face[]> {
   const url = new URL("fonts/faces.json", base).href;
@@ -134,49 +123,54 @@ function facesAt(base: string): Promise<Face[]> {
   return p;
 }
 
-function dataUrl(url: string): Promise<string> {
-  let p = faceData.get(url);
+/** One fetch per font file, whoever asks: the worker, the frames, the 3D glyph reader. */
+function fontBlob(url: string): Promise<Blob> {
+  let p = fontBlobs.get(url);
   if (!p) {
-    p = fetch(url)
-      .then((r) => {
-        if (!r.ok) throw new MotionError(`${url}: HTTP ${r.status}`);
-        return r.blob();
-      })
-      .then((b) => new Promise<string>((res, rej) => {
-        const fr = new FileReader();
-        fr.onload = () => res(String(fr.result));
-        fr.onerror = () => rej(fr.error);
-        fr.readAsDataURL(b);
-      }));
-    faceData.set(url, p);
-    p.catch(() => faceData.delete(url));
+    p = fetch(url).then((r) => {
+      if (!r.ok) throw new MotionError(`${url}: HTTP ${r.status}`);
+      return r.blob();
+    });
+    fontBlobs.set(url, p);
+    p.catch(() => fontBlobs.delete(url));
   }
   return p;
 }
 
-function covers(range: string, cp: number): boolean {
-  if (!range) return true;
-  return range.split(",").some((part) => {
-    const m = /U\+([0-9A-F?]+)(?:-([0-9A-F]+))?/i.exec(part.trim());
-    if (!m) return false;
-    const lo = Number.parseInt(m[1]!.replace(/\?/g, "0"), 16);
-    const hi = m[2] ? Number.parseInt(m[2], 16) : Number.parseInt(m[1]!.replace(/\?/g, "F"), 16);
-    return cp >= lo && cp <= hi;
-  });
+/** A blob: URL for the worker's FontFace (same origin as the page, so it loads without a refetch). */
+function fontObjectUrl(url: string): Promise<string> {
+  let p = fontObjectUrls.get(url);
+  if (!p) {
+    p = fontBlob(url).then((b) => URL.createObjectURL(b));
+    fontObjectUrls.set(url, p);
+    p.catch(() => fontObjectUrls.delete(url));
+  }
+  return p;
 }
 
-/** Every cut of the program's families, latin always, other scripts when its text needs them. */
-async function fontsFor(program: TitleProgram, text: string, base: string): Promise<FontPayload[]> {
-  const faces = await facesAt(base);
-  const fams = new Set(["Inter", ...program.fonts.map((f) => f.split(":")[0]!)]);
-  const subsets = new Set(["latin", "latin-ext"]);
-  for (const ch of text) {
-    const cp = ch.codePointAt(0)!;
-    if (cp < 0x250) continue;
-    for (const f of faces) if (covers(f.range, cp)) subsets.add(f.subset);
+/** A data: URL for a frame's @font-face (an SVG image may only use what it carries). */
+function fontDataUrl(url: string): Promise<string> {
+  let p = fontDataUrls.get(url);
+  if (!p) {
+    p = fontBlob(url).then(
+      (b) =>
+        new Promise<string>((res, rej) => {
+          const fr = new FileReader();
+          fr.onload = () => res(String(fr.result));
+          fr.onerror = () => rej(fr.error);
+          fr.readAsDataURL(b);
+        }),
+    );
+    fontDataUrls.set(url, p);
+    p.catch(() => fontDataUrls.delete(url));
   }
-  const chosen = faces.filter((f) => fams.has(f.family) && subsets.has(f.subset));
-  return Promise.all(chosen.map(async (f) => ({ family: f.family, weight: f.weight, italic: f.italic, range: f.range, url: await dataUrl(new URL(`fonts/${f.file}`, base).href) })));
+  return p;
+}
+
+const faceUrl = (base: string, f: Face) => new URL(`fonts/${f.file}`, base).href;
+
+async function payloadFor(faces: Face[], base: string, url: (u: string) => Promise<string>): Promise<FontPayload[]> {
+  return Promise.all(faces.map(async (f) => ({ family: f.family, weight: f.weight, italic: f.italic, range: f.range, url: await url(faceUrl(base, f)) })));
 }
 
 const fontCss = (fonts: FontPayload[]) => fonts.map((f) => `@font-face{font-family:'${f.family}';font-weight:${f.weight};font-style:${f.italic ? "italic" : "normal"};${f.range ? `unicode-range:${f.range};` : ""}src:url(${f.url});}`).join("");
@@ -312,7 +306,14 @@ export class MotionPlayer {
   private opts: PlayerOptions;
   private built!: BuiltProgram;
   private worker: ProgramWorker | null = null;
-  private css = "";
+  private env!: ProgramEnv;
+  /** Every face the package has (fonts/faces.json), and the files the worker has loaded. */
+  private all: Face[] = [];
+  private loaded = new Set<string>();
+  private readonly css = new Map<string, Promise<string>>();
+  private widening: Promise<void> | null = null;
+  private gone = false;
+  private lastT = 0;
   private raf = 0;
   private started = 0;
   private offset = 0;
@@ -349,19 +350,95 @@ export class MotionPlayer {
     return this.built.program;
   }
 
+  private get base(): string {
+    return this.opts.base ?? CDN_BASE;
+  }
+
   private async load(): Promise<void> {
-    this.worker?.stop();
-    await preloadGlyphs(this.item, this.opts, this.opts.base ?? CDN_BASE);
+    const old = this.worker;
+    this.worker = null;
+    old?.stop();
+    await preloadGlyphs(this.item, this.opts, this.base);
     this.built = buildProgram(this.item, this.opts);
-    const fps = this.opts.fps ?? 30;
-    const env = programEnv(this.built.program, this.built.duration, fps, this.built.media);
-    const fonts = await fontsFor(this.built.program, JSON.stringify(this.built.props), this.opts.base ?? CDN_BASE);
-    this.css = fontCss(fonts);
-    this.worker = new ProgramWorker(this.built.program, env, fonts, this.built.codeOffset);
+    this.env = programEnv(this.built.program, this.built.duration, this.opts.fps ?? 30, this.built.media);
+    this.all = await facesAt(this.base);
     this.lastSvg = "";
     this.report(this.built.warnings);
-    await this.worker.ready;
+    // The worker measures text with the faces the program declares, in latin and the scripts its
+    // props need (as a render does)...
+    let faces = facesFor(this.all, this.built.program.fonts.map((f) => parseFontSpec(f)), wideCodepoints(JSON.stringify(this.built.props)));
+    let worker = await this.startWorker(faces);
+    // ...and any its frames draw with: a few frames across it find those before the first is shown.
+    const have = new Set(faces.map((f) => f.file));
+    const more: Face[] = [];
+    try {
+      for (const k of [0.1, 0.35, 0.6, 0.85]) for (const f of this.facesOf(await worker.frame(this.built.duration * k))) if (!have.has(f.file) && have.add(f.file)) more.push(f);
+    } catch {
+      // A frame that fails here fails again when drawn, and is reported there.
+    }
+    if (more.length) {
+      worker.stop();
+      faces = [...faces, ...more];
+      worker = await this.startWorker(faces);
+    }
+    if (this.gone) return worker.stop();
+    this.worker = worker;
+    this.loaded = have;
     await this.draw(this.offset);
+  }
+
+  private async startWorker(faces: Face[]): Promise<ProgramWorker> {
+    const fonts = await payloadFor(faces, this.base, fontObjectUrl);
+    const w = new ProgramWorker(this.built.program, this.env, fonts, this.built.codeOffset);
+    await w.ready;
+    return w;
+  }
+
+  /** The faces a frame draws with. */
+  private facesOf(f: WorkerFrame): Face[] {
+    const svg = f.defs + f.svg;
+    return facesFor(this.all, fontWants(svg), wideCodepoints(svg));
+  }
+
+  /** The @font-face rules for a set of faces, as data: URLs; one string per set, made once. */
+  private cssOf(faces: Face[]): Promise<string> {
+    const key = faces
+      .map((f) => f.file)
+      .sort()
+      .join("|");
+    let p = this.css.get(key);
+    if (!p) {
+      p = payloadFor(faces, this.base, fontDataUrl).then(fontCss);
+      this.css.set(key, p);
+      p.catch(() => this.css.delete(key));
+    }
+    return p;
+  }
+
+  /** A frame drew with a face the worker lacks (so measured without it): restart it with that face, then redraw. */
+  private widen(faces: Face[]): Promise<void> {
+    if (this.widening) return this.widening;
+    const program = this.built.program;
+    this.widening = (async () => {
+      const files = new Set(this.loaded);
+      for (const f of faces) files.add(f.file);
+      try {
+        const next = await this.startWorker(this.all.filter((f) => files.has(f.file)));
+        const old = this.worker;
+        if (this.gone || !old || this.built.program !== program) return next.stop();
+        this.worker = next;
+        this.loaded = files;
+        // Frames already on their way finish on the old worker first.
+        setTimeout(() => old.stop(), 2500);
+        this.lastSvg = "";
+        if (!this.playing) await this.draw(this.lastT);
+      } catch {
+        // Keep the worker there is; its text is measured with the nearest face it has.
+      }
+    })().finally(() => {
+      this.widening = null;
+    });
+    return this.widening;
   }
 
   private report(w: string[]): void {
@@ -389,10 +466,13 @@ export class MotionPlayer {
     const p = this.built.program;
     const w = this.canvas.width || p.width;
     const h = this.canvas.height || Math.round((w * p.height) / p.width);
+    this.lastT = t;
     try {
       const f = await this.worker.frame(Math.max(0, Math.min(this.duration, t)));
       this.report([...this.built.warnings, ...f.warnings]);
-      const doc = frameDocument(p, f, this.css, w, h, this.opts.background);
+      const faces = this.facesOf(f);
+      if (faces.some((x) => !this.loaded.has(x.file))) void this.widen(faces);
+      const doc = frameDocument(p, f, await this.cssOf(faces), w, h, this.opts.background);
       if (doc !== this.lastSvg) {
         const img = await decode(doc);
         const ctx = this.canvas.getContext("2d")!;
@@ -444,6 +524,7 @@ export class MotionPlayer {
   }
 
   destroy(): void {
+    this.gone = true;
     this.pause();
     this.worker?.stop();
     this.worker = null;

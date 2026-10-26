@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>volito player bench</title>
+<style>
+  body { margin: 16px; font: 13px/1.5 ui-monospace, Menlo, monospace; background: #f4f1ea; color: #15140f; }
+  iframe { width: 340px; height: 200px; border: 1px solid #ccc; }
+  table { border-collapse: collapse; margin-top: 12px; }
+  td, th { padding: 4px 10px; border-bottom: 1px solid #ddd; text-align: right; }
+  td:first-child, th:first-child { text-align: left; }
+</style>
+</head>
+<body>
+<p>Each run is a fresh page (so the engine's caches start empty); serve with <code>node bench/serve.mjs</code>, which
+forbids HTTP caching so fonts load cold, and counts the font files and bytes each run downloads.
+"current" is dist/browser.js; "baseline" is bench/baseline/browser.js, a copy of the dist/browser.js you
+compare against (not committed). ?items=a,b|all&reps=3&frames=30&builds=baseline,current</p>
+<div id="frame"></div>
+<pre id="out"></pre>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const named = q.get("items") ?? "essentials/lower-third,essentials/title-card,social/follow-card,type/split-flap,data/world-map,3d/logo-3d,promo/price-card,backdrops/aurora";
+// items=all: every item in the registry.
+const items = named === "all" ? (await fetch("../dist/registry.json").then((r) => r.json())).packs.flatMap((p) => p.entries.map((e) => e.ref)) : named.split(",");
+const builds = (q.get("builds") ?? "baseline,current").split(",");
+const reps = Number(q.get("reps") ?? 3);
+const frames = q.get("frames") ?? "30";
+const results = [];
+window.__bench = { done: false, results };
+
+function runOnce(build, item) {
+  return new Promise((resolve) => {
+    const f = document.createElement("iframe");
+    const onMsg = (e) => {
+      if (!e.data?.bench || e.source !== f.contentWindow) return;
+      removeEventListener("message", onMsg);
+      f.remove();
+      resolve(e.data);
+    };
+    addEventListener("message", onMsg);
+    f.src = `run.html?build=${build}&item=${encodeURIComponent(item)}&frames=${frames}&r=${Math.random()}`;
+    document.getElementById("frame").appendChild(f);
+  });
+}
+
+const median = (xs) => { const s = [...xs].sort((a, b) => a - b); return s[Math.floor(s.length / 2)]; };
+for (const item of items) {
+  for (let r = 0; r < reps; r++) {
+    // Alternate the builds so neither always runs on a warmer machine.
+    for (const build of r % 2 ? [...builds].reverse() : builds) results.push(await runOnce(build, item));
+  }
+  document.getElementById("out").textContent = `${results.length} runs`;
+}
+const rows = [];
+for (const item of items) {
+  for (const build of builds) {
+    const rs = results.filter((x) => x.item === item && x.build === build && x.ok);
+    const bad = results.find((x) => x.item === item && x.build === build && !x.ok);
+    rows.push({ item, build, loadMs: rs.length ? Math.round(median(rs.map((x) => x.loadMs))) : null, msPerFrame: rs.length ? +median(rs.map((x) => x.msPerFrame)).toFixed(1) : null, svgKB: rs.length ? Math.round(median(rs.map((x) => x.svgKB))) : null, fontFiles: rs.length ? median(rs.map((x) => x.fontFiles)) : null, fontKB: rs.length ? Math.round(median(rs.map((x) => x.fontKB))) : null, checksum: [...new Set(rs.map((x) => x.checksum))].join("|"), error: bad?.error });
+  }
+}
+window.__bench.rows = rows;
+window.__bench.done = true;
+document.getElementById("out").textContent = JSON.stringify(rows, null, 1);
+</script>
+</body>
+</html>
