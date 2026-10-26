@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>volito-player examples</title>
+<!-- From a CDN: <script type="module" src="https://cdn.jsdelivr.net/npm/volito/dist/player.js"></script>
+     Here, the package's own build; base="../" makes the player load fonts/ and dist/registry.json
+     from this package instead of jsDelivr. -->
+<script type="module" src="../dist/player.js"></script>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #f4f1ea; color: #15140f; font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 16px 96px; }
+  h1 { font-size: 40px; line-height: 1.05; margin: 0 0 8px; }
+  h2 { font-size: 22px; margin: 56px 0 6px; }
+  p { margin: 0 0 14px; color: #3f3b33; }
+  code, pre { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+  pre { overflow-x: auto; padding: 12px 14px; border: 1.5px solid #15140f; border-radius: 12px; background: #fff; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0; }
+  .row input { min-width: 0; flex: 1; padding: 8px 10px; border: 1.5px solid #15140f; border-radius: 10px; font: inherit; }
+  .log { height: 140px; overflow: auto; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #15140f; color: #e7e2d6; font: 12px/1.6 ui-monospace, Menlo, monospace; }
+  .bare { max-width: 260px; --volito-stage: transparent; --volito-stage-padding: 0; --volito-max-height: 420px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>&lt;volito-player&gt;</h1>
+  <p>Volito graphics playing live in the page: the same sandboxed engine as a render, laid out again for each aspect.</p>
+
+  <h2>Aspect tabs and controls</h2>
+  <volito-player id="one" base="../" item="essentials/lower-third" props='{"name":"Ada Lovelace","role":"First programmer"}' aspects="all" controls autoplay loop></volito-player>
+  <div class="row">
+    <label for="name">Name</label>
+    <input id="name" value="Ada Lovelace">
+    <select id="brand" aria-label="Brand style">
+      <option value="">pack style</option>
+      <option>cobalt</option>
+      <option>tomato</option>
+      <option>swiss</option>
+      <option>neon</option>
+    </select>
+  </div>
+  <pre>&lt;volito-player item="essentials/lower-third" props='{"name":"Ada Lovelace","role":"First programmer"}'
+  aspects="all" controls autoplay loop&gt;&lt;/volito-player&gt;</pre>
+  <div class="log" id="log" aria-live="off"></div>
+
+  <h2>A range, half speed, no loop</h2>
+  <p>Plays 0.5–2.5 s of the title card at half speed, then stops and fires <code>ended</code>.</p>
+  <volito-player id="two" base="../" item="essentials/title-card" brand="cobalt" controls range-start="0.5" range-end="2.5" playback-rate="0.5"></volito-player>
+  <div class="row"><button id="replay" type="button">Play the range</button><span id="twoState"></span></div>
+
+  <h2>Bare, 9:16, on a checkerboard</h2>
+  <p>No controls; the stage styled away with CSS custom properties.</p>
+  <volito-player class="bare" base="../" item="social/follow-card" aspect="9:16" ground="checker" autoplay loop></volito-player>
+
+  <h2>Your own program</h2>
+  <p>Set <code>program</code> to <code>function frame(t, $)</code> code instead of an item.</p>
+  <volito-player id="own" base="../" controls autoplay loop></volito-player>
+</main>
+<script type="module">
+  const one = document.getElementById("one");
+  const log = document.getElementById("log");
+  const write = (s) => { log.textContent += s + "\n"; log.scrollTop = log.scrollHeight; };
+  for (const type of ["ready", "play", "pause", "ended", "aspectchange", "durationchange", "warnings", "error"]) {
+    one.addEventListener(type, (e) => write(`${type} ${e.detail ? JSON.stringify(e.detail) : ""}`));
+  }
+  let ticks = 0;
+  one.addEventListener("timeupdate", () => { ticks++; });
+  setInterval(() => { if (ticks) write(`timeupdate ×${ticks} (t=${one.currentTime.toFixed(2)})`); ticks = 0; }, 2000);
+
+  document.getElementById("name").addEventListener("input", (e) => {
+    one.props = { ...one.props, name: e.target.value };
+  });
+  document.getElementById("brand").addEventListener("change", (e) => {
+    if (e.target.value) one.setAttribute("brand", e.target.value);
+    else one.removeAttribute("brand");
+  });
+
+  const two = document.getElementById("two");
+  const state = document.getElementById("twoState");
+  for (const type of ["play", "pause", "ended"]) two.addEventListener(type, () => (state.textContent = type));
+  document.getElementById("replay").addEventListener("click", () => two.play());
+
+  document.getElementById("own").program = `function frame(t, $) {
+  const k = $.k, s = 0.6 + 0.4 * Math.sin(t * 2);
+  return $.g("",
+    \`<circle cx="\${$.W / 2}" cy="\${$.H / 2}" r="\${180 * k * s}" fill="\${$.c.accent}"/>\`,
+    $.text("Your program", { ...$.font("display"), size: 72 * k, x: $.W / 2, y: $.H / 2 + 24 * k, anchor: "middle", fill: $.c.fg }));
+}`;
+</script>
+</body>
+</html>

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- `<volito-player>`, a web component for any page: `import "volito/player"`, or one
+  `<script type="module">` from a CDN (`dist/player.js`, self-contained). Aspect tabs, controls,
+  autoplay, loop, playback rate, a play range, posters, events (`ready`, `play`, `pause`, `ended`,
+  `timeupdate`, `aspectchange`, `warnings`, `error`), keyboard control and CSS theming. It loads
+  near the screen, pauses off screen, and respects reduced motion. Example: `examples/player.html`.
+
 ## 0.1.1 — 2026-10-26
 
 Security patch: two dependency updates and nothing else. Volito's code, graphics and MCP tools are
