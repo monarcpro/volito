@@ -1,7 +1,21 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 — 2026-10-26
 
+Sound, a web component, and a much faster browser player.
+
+- Sound: every render can carry a stereo track Volito synthesises itself, with no samples. `--sound`
+  reads the graphic's motion and gives each move its sound (a spring pops, a move across the frame
+  whooshes, letters tick, a slam hits, a glitch zaps); `--bed Dm` lays a pad in a key that ducks under
+  hits; `--sound-level` sets the level; `--sound-out file.wav` also writes the track alone for an
+  editor's timeline. A program can design its own cues with `function sound($)` beside `frame`
+  (17 kinds: whoosh, hit, stamp, pop, tick, click, riser, fall, sub, shimmer, ding, swell, zap, type,
+  scratch, tone, chord). ProRes `.mov` carries PCM, MP4 and HEVC carry AAC, WebM Opus or Vorbis; PNG
+  and GIF none. New: `volito sound <item>` (the track alone, with its cue list), `renderSoundFile()`
+  and the `motion_sound` MCP tool; `renderVideo`, `volito render` and `motion_render` take the sound
+  options. Every one of the 96 items has a track; transitions, the wipe, word by word, reactions,
+  emphasis and the gradient backdrop got cues of their own. Renders without sound are byte-identical
+  to 0.1.x. Example: `examples/volito-intro` (32 cues).
 - `<volito-player>`, a web component for any page: `import "volito/player"`, or one
   `<script type="module">` from a CDN (`dist/player.js`, self-contained). Aspect tabs, controls,
   autoplay, loop, playback rate, a play range, posters, events (`ready`, `play`, `pause`, `ended`,
