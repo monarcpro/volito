@@ -5,3 +5,4 @@ fonts/
 out/
 *.tgz
 .DS_Store
+bench/baseline/

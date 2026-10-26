@@ -1,7 +1,8 @@
 /**
  * Build the publishable package into dist/: the Node API, the CLI and the MCP server (ESM, one
- * shared chunk), the browser player, type declarations, and registry.json (every pack's items
- * and code, for the browser player and the gallery).
+ * shared chunk), the browser player and the <volito-player> element (each one self-contained file,
+ * so a CDN <script type="module"> needs nothing else), type declarations, and registry.json (every
+ * pack's items and code, for the browser player and the gallery).
  */
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
@@ -39,7 +40,7 @@ writeFileSync(cli, `#!/usr/bin/env node\n${readFileSync(cli, "utf8")}`, { mode: 
 
 const browser = await esbuild.build({
   absWorkingDir: root,
-  entryPoints: { browser: "src/browser/index.ts" },
+  entryPoints: { browser: "src/browser/index.ts", player: "src/player/index.ts" },
   outdir: dist,
   bundle: true,
   format: "esm",
@@ -56,7 +57,7 @@ const browser = await esbuild.build({
 const types = join(root, ".types");
 rmSync(types, { recursive: true, force: true });
 execFileSync(process.execPath, [join(root, "node_modules/typescript/bin/tsc"), "-p", join(root, "tsconfig.build.json")], { stdio: "inherit" });
-for (const [entry, file] of [["src/index.d.ts", "index.d.ts"], ["src/browser/index.d.ts", "browser.d.ts"]]) {
+for (const [entry, file] of [["src/index.d.ts", "index.d.ts"], ["src/browser/index.d.ts", "browser.d.ts"], ["src/player/index.d.ts", "player.d.ts"]]) {
   const bundle = await rollup({ input: join(types, entry), plugins: [dts({ respectExternal: false })], external: external.concat(["fontkit"]), onwarn: (w, warn) => (w.code === "UNUSED_EXTERNAL_IMPORT" ? undefined : warn(w)) });
   await bundle.write({ file: join(dist, file), format: "es" });
   await bundle.close();
@@ -78,4 +79,5 @@ const registry = {
 writeFileSync(join(dist, "registry.json"), JSON.stringify(registry));
 
 const size = (m) => Object.values(m.outputs).reduce((a, o) => a + o.bytes, 0);
-console.log(`build: dist/ — node ${(size(node.metafile) / 1e3).toFixed(0)} KB · browser ${(size(browser.metafile) / 1e3).toFixed(0)} KB · ${lib.items.length} items in ${lib.packs.length} pack(s)`);
+const out = (name) => browser.metafile.outputs[`dist/${name}`]?.bytes ?? 0;
+console.log(`build: dist/ — node ${(size(node.metafile) / 1e3).toFixed(0)} KB · browser ${(out("browser.js") / 1e3).toFixed(0)} KB · player ${(out("player.js") / 1e3).toFixed(0)} KB · ${lib.items.length} items in ${lib.packs.length} pack(s)`);

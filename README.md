@@ -281,6 +281,44 @@ The player runs each program in a sandboxed Web Worker and draws through the sam
 renderer, so what plays on the page is what renders. Fonts load from `base` (the package's own
 `fonts/` on jsDelivr by default); serve the package's `fonts/` and `dist/registry.json` to stay offline.
 
+### `<volito-player>`
+
+The same player as an HTML element, with controls and aspect tabs. One script, no build step:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/volito/dist/player.js"></script>
+
+<volito-player item="essentials/lower-third"
+  props='{"name":"Ada Lovelace","role":"First programmer"}'
+  brand="cobalt" aspects="all" controls autoplay loop></volito-player>
+```
+
+Or `import "volito/player"` in a bundled app. Each tab lays the item out again for that aspect, not a
+crop. It loads when it nears the screen, pauses off screen and in a hidden tab, and does not autoplay
+for readers who prefer reduced motion.
+
+| Attribute | What it does |
+| --- | --- |
+| `item` | `pack/id` or an id (or set the `program` property to your own `frame(t, $)` code) |
+| `props` | the item's props as JSON |
+| `brand` | a built-in style; the `brand` property also takes DESIGN.md text. `accent`, `accent2`, `ink`, `paper`, `mode` override colours |
+| `aspect` · `aspects` | the aspect shown (`16:9`, `9:16`, `1:1`, `4:5`, `WIDTHxHEIGHT`) · the tabs to offer (`all` or a list) |
+| `duration` `speed` `mood` `seed` `motion` `beats` | as on the CLI; `motion` takes `part.setting=value` separated by `;` |
+| `controls` `autoplay` `loop` | play/pause, a scrubber and the time; start when shown; play again at the end |
+| `playback-rate` · `range-start` `range-end` | play faster or slower · play only `[start, end)` seconds |
+| `poster` · `posters` | an image until the first frame · per-aspect images as JSON |
+| `ground` | behind a transparent graphic: `footage` (default), `checker`, `none` or a colour |
+| `background` | a colour drawn into the frame itself |
+| `base` · `loading` · `resolution` | where `fonts/` and `dist/registry.json` live · `eager` to load at once · the canvas's longest side (1920) |
+
+Properties and methods: `play()`, `pause()`, `seek(t)`, `load()`, `currentTime`, `duration`, `paused`,
+`ended`, `ready`, `playbackRate`, `props`, `brand`, `aspect`, `options` (anything else a build takes:
+`words`, `media`, `beats`), `program`, `warnings` and `player` (the `MotionPlayer` underneath). Events,
+none of which bubble: `ready`, `play`, `pause`, `ended`, `timeupdate` (about ten a second),
+`durationchange`, `aspectchange`, `warnings` and `error`. Style it with CSS custom properties
+(`--volito-accent`, `--volito-stage`, `--volito-max-height`, …) or `::part()`; Space, ←/→ (a frame,
+Shift for a second), Home and End work when it has focus. `examples/player.html` shows each of these.
+
 ## Brand styles
 
 36 built in. MONARC PRO's: `ember`, `cream`, `mono`, `neon`, `pop`, `studio`, and the explainer art
