@@ -26,6 +26,9 @@ Sound, a web component, and a much faster browser player.
   fetches each font file once for the worker, the frames and 3D glyphs. Across all 96 items: font
   downloads before the first frame 30 files / 1.7 MB → 4 files / 209 KB, each frame's SVG 2.3 MB →
   118 KB, and 18.4 → 3.3 ms per frame, with every frame pixel-identical (`bench/`).
+- The MCP server can be listed in the official MCP Registry as `io.github.monarcpro/volito`:
+  `package.json` carries `mcpName`, and `server.json` at the repo root describes the server
+  (`npx -y volito mcp` over stdio).
 
 ## 0.1.1 — 2026-10-26
 
