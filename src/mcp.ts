@@ -5,7 +5,7 @@
  * way. Runs on stdio:  volito mcp   (claude mcp add volito -- npx -y volito mcp)
  */
 import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -18,12 +18,14 @@ import { checkItem, describeReport } from "./node/check.js";
 import { loadMedia, normalizeWords, readWords } from "./node/inputs.js";
 import { type Library, findItem, library, searchItems } from "./node/packs.js";
 import { packageVersion } from "./node/paths.js";
+import { formatIssues, itemOfSpec, loadSpecFile, specToOptions, validateSpec } from "./node/spec.js";
 import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderSoundFile, renderStill, renderVideo } from "./node/render.js";
 
 const source = {
   item: z.string().optional().describe('A pack item: "essentials/lower-third", or its id "lower-third" (motion_list shows them). Give this or `code`.'),
   code: z.string().optional().describe("Your own program: plain JavaScript defining function frame(t, $) that returns SVG markup (see motion_api). Give this or `item`."),
   placement: z.enum(["overlay", "full"]).optional().describe("For `code`: overlay (transparent, over footage) or full (draws its own ground)."),
+  spec: z.string().optional().describe('A Graphic spec file (.json with "volito": 1; motion_validate checks one): its item and options are the base, and anything else given here wins. Give this instead of `item` or `code`.'),
 };
 
 const look = {
@@ -49,6 +51,7 @@ const look = {
 };
 
 type Args = {
+  spec?: string;
   motion?: Record<string, Record<string, unknown>>;
   mood?: string;
   seed?: number;
@@ -71,6 +74,7 @@ type Args = {
 };
 
 function pick(lib: Library, a: Args): MotionItem {
+  if (a.spec) return itemOfSpec(loadSpecFile(a.spec), lib);
   if (a.code?.trim()) return customItem(a.code, { placement: a.placement, duration: a.duration });
   if (!a.item) throw new Error("give `item` (see motion_list) or `code` (see motion_api)");
   return findItem(a.item, lib);
@@ -85,10 +89,13 @@ function styleOf(s: string | undefined): string | undefined {
 
 async function optionsOf(item: MotionItem, a: Args): Promise<RenderOptions> {
   const words = a.words?.length ? normalizeWords(a.words) : a.wordsFile ? readWords(a.wordsFile) : undefined;
+  const base: RenderOptions = a.spec ? specToOptions(loadSpecFile(a.spec), item) : {};
+  const props = { ...(base.props ?? {}), ...(a.props ?? {}) };
   return {
-    props: a.props ?? {},
+    ...base,
+    props,
     ...(a.style ? { style: styleOf(a.style) } : {}),
-    ...(a.colors ? { colors: a.colors } : {}),
+    ...(a.colors ? { colors: { ...(base.colors ?? {}), ...a.colors } } : {}),
     ...(a.aspect ? { aspect: parseAspect(a.aspect) } : {}),
     ...(a.duration ? { duration: a.duration } : {}),
     ...(words?.length ? { words } : {}),
@@ -97,7 +104,7 @@ async function optionsOf(item: MotionItem, a: Args): Promise<RenderOptions> {
     ...(a.mood ? { mood: a.mood } : {}),
     ...(a.seed !== undefined ? { seed: a.seed } : {}),
     ...(a.speed ? { speed: a.speed } : {}),
-    media: await loadMedia(item, a.props ?? {}),
+    media: await loadMedia(item, props),
   };
 }
 
@@ -226,11 +233,13 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
       try {
         const item = pick(lib(), a as Args);
         const opts = await optionsOf(item, a as Args);
-        const format = (a.format ?? "mov") as VideoFormat;
+        const fromSpec = a.spec ? loadSpecFile(a.spec).spec.render : undefined;
+        const format = (a.format ?? fromSpec?.format ?? "mov") as VideoFormat;
+        const out = a.out ?? fromSpec?.out;
         const r = await renderVideo(item, {
           ...opts,
           format,
-          ...(a.out ? { out: a.out } : { outDir: "motion-renders" }),
+          ...(out ? { out } : { outDir: "motion-renders" }),
           ...(a.fps ? { fps: a.fps } : {}),
           ...(a.width ? { width: a.width } : {}),
           ...(a.background ? { background: a.background } : {}),
@@ -263,6 +272,28 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
         const opts = await optionsOf(item, a as Args);
         const r = await renderSoundFile(item, { ...opts, sound: true, ...(a.bed ? { bed: a.bed } : {}), ...(a.out ? { out: a.out } : { outDir: "motion-renders" }) });
         return text(`Rendered ${r.file}\n${r.duration.toFixed(2)} s · ${r.cues.length} cues${r.bed ? ` · bed ${r.bed.key} ${r.bed.mode}` : ""} · peak ${r.peak.toFixed(2)}\n${describeCues(r.cues)}${warnings(r.warnings)}`);
+      } catch (err) {
+        return failure(err);
+      }
+    },
+  );
+
+  server.registerTool(
+    "motion_validate",
+    {
+      title: "Validate a Graphic spec",
+      description: 'Checks a Graphic spec before rendering: its shape, the item it names, files it points at, props against the item (lengths, types, choices), motion parts, aspect and length. A spec is one JSON document for one graphic: { "volito": 1, "item": "lower-third", "props": {…}, "style": "ember", "aspect": "9:16", "motion": {…}, "mood", "seed", "sound" }. Pass it inline or as a file path; then render it with motion_render { spec: "path" }.',
+      inputSchema: { spec: z.union([z.string(), z.record(z.string(), z.unknown())]).describe("A path to a .json spec, or the spec itself") },
+    },
+    async (a) => {
+      try {
+        const isPath = typeof a.spec === "string";
+        const doc = isPath ? JSON.parse(readFileSync(resolve(a.spec as string), "utf8")) : a.spec;
+        const rep = validateSpec(doc, { dir: isPath ? dirname(resolve(a.spec as string)) : process.cwd(), lib: lib() });
+        const lines = [rep.ok ? `Valid${rep.item ? ` — ${rep.item}` : ""}.` : "Not valid."];
+        if (rep.errors.length) lines.push(`Errors:\n${formatIssues(rep.errors, "-")}`);
+        if (rep.warnings.length) lines.push(`Warnings (it renders, but not as written):\n${formatIssues(rep.warnings, "-")}`);
+        return text(lines.join("\n"));
       } catch (err) {
         return failure(err);
       }

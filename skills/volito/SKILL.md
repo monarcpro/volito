@@ -66,6 +66,13 @@ The references in `references/` are the craft behind the commands. Load only wha
 npx -y volito render lower-third --prop name="Priya Sharma" --prop role="Product designer" --style ember --aspect 16:9 --out priya.mov
 ```
 
+## Keep the recipe
+
+When a graphic is right, save it as a spec so it can be rendered again, reviewed and changed later:
+`volito spec <item> [the same options] --out name.volito.json`, then `volito render name.volito.json`
+(options you add on the command line win). `volito validate name.volito.json` checks it against its item.
+With MCP, pass `spec: "name.volito.json"` to any tool and `motion_validate` checks one.
+
 ## Voice sync
 
 Give a transcript and items land their text on the spoken words: `--words transcript.json` (`[{w, s, e}]`

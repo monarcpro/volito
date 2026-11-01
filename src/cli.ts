@@ -17,17 +17,19 @@ process.stdout.on("error", (e: NodeJS.ErrnoException) => {
 });
 
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE, SOUND_GUIDE } from "./guide.js";
 import { describeCues } from "./sound.js";
 import { BUILTIN_STYLES, MG_API_REFERENCE } from "./engine.js";
 import { ASPECT_NAMES, type BuildOptions, CATEGORIES, type MotionItem, MotionError, describeItem, parseAspect } from "./pack.js";
-import { DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS, parseMotionArgs } from "./kit.js";
+import { DIRECTIONS, EASES, HITS, IDLES, MOODS, MOVES, MOVE_NOTES, ORDERS, ORIGINS, SPLITS, type MotionInput, parseMotionArgs } from "./kit.js";
 import { checkItem, describeReport } from "./node/check.js";
 import { loadMedia, readStyleArg, readWords } from "./node/inputs.js";
 import { findItem, library, searchItems } from "./node/packs.js";
 import { packageVersion, packsDir } from "./node/paths.js";
+import { type LoadedSpec, formatIssues, isSpecFile, itemOfSpec, loadSpecFile, specFrom, specToOptions, validateSpec } from "./node/spec.js";
+import { specJsonSchema } from "./spec.js";
 import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderSoundFile, renderStill, renderVideo } from "./node/render.js";
 
 const HELP = `Volito ${packageVersion()} — brand-aware, voice-synced motion graphics as code
@@ -38,6 +40,9 @@ Commands
   init [--agent a,b] [--dry-run] [--force]        set this project up for Claude Code, Cursor, VS Code or Codex:
                                                   the MCP server in each agent's config and the Volito skill
   doctor [--json]                                 what is ready: Node, FFmpeg and its formats, fonts, agents
+  spec <item> [options] [--out g.volito.json]     write the options as a Graphic spec, a file any command takes
+  validate <spec.json> [--strict] [--json]        check a spec against its item before rendering
+  schema                                          the Graphic spec's JSON Schema
   list [--search words] [--category c] [--json]   the graphics in the packs
   info <item> [--json] [--code]                   what an item is and every prop it takes
   styles [--json]                                 the built-in brand styles
@@ -53,7 +58,8 @@ Commands
   guide                                           how items and packs are written
   mcp                                             run the MCP server on stdio
 
-An item is "pack/id" (essentials/lower-third), its id alone (lower-third), an item folder, or a .js program.
+An item is "pack/id" (essentials/lower-third), its id alone (lower-third), an item folder, a .js program, or a
+Graphic spec (.json with "volito": 1); options given on the command line win over the spec's.
 
 Options
   --prop name=value      set a prop (repeat it); lists take "a; b; c" or JSON
@@ -134,6 +140,7 @@ const OPTIONS = {
   force: { type: "boolean" },
   "dry-run": { type: "boolean" },
   "no-skill": { type: "boolean" },
+  strict: { type: "boolean" },
   quiet: { type: "boolean", short: "q" },
   help: { type: "boolean", short: "h" },
   version: { type: "boolean", short: "v" },
@@ -148,6 +155,22 @@ const num = (s: string | undefined, name: string): number | undefined => {
   return n;
 };
 
+type GraphicMotion = Record<string, Record<string, unknown>>;
+
+/** A spec's motion with the command line's on top, part by part. */
+function mergeMotion(base: GraphicMotion | MotionInput | undefined, over: MotionInput): MotionInput {
+  const out: Record<string, Record<string, unknown>> = {};
+  for (const [part, s] of Object.entries(base ?? {})) out[part] = { ...(s as Record<string, unknown>) };
+  for (const [part, s] of Object.entries(over)) out[part] = { ...(out[part] ?? {}), ...(s as Record<string, unknown>) };
+  return out;
+}
+
+/** A path as seen from the folder `file` will be written in (spec paths are relative to the spec). */
+function relativeTo(file: string, path: string): string {
+  const rel = relative(dirname(resolve(file)), resolve(path));
+  return rel.startsWith(".") ? rel : `./${rel}`;
+}
+
 /** name=value pairs; the value may itself contain "=". */
 function pairs(list: string[] | undefined, flag: string): Array<[string, string]> {
   return (list ?? []).map((p) => {
@@ -157,27 +180,29 @@ function pairs(list: string[] | undefined, flag: string): Array<[string, string]
   });
 }
 
-async function buildOptions(v: Values, item: MotionItem): Promise<RenderOptions> {
-  let props: Record<string, unknown> = {};
+/** Render options from the command line, on top of a spec's (`base`) when the item was a spec file. */
+async function buildOptions(v: Values, item: MotionItem, base: RenderOptions = {}): Promise<RenderOptions> {
+  let props: Record<string, unknown> = { ...(base.props ?? {}) };
   if (v.props) {
     const raw = existsSync(resolve(v.props)) ? readFileSync(resolve(v.props), "utf8") : v.props;
     try {
-      props = JSON.parse(raw) as Record<string, unknown>;
+      props = { ...props, ...(JSON.parse(raw) as Record<string, unknown>) };
     } catch {
       throw new MotionError("--props takes JSON or a JSON file");
     }
   }
   for (const [k, val] of pairs(v.prop, "prop")) props[k] = val;
   for (const [k, val] of pairs(v.image, "image")) props[k] = val;
-  const beats: Record<string, number> = {};
+  const beats: Record<string, number> = { ...(base.beats ?? {}) };
   for (const [k, val] of pairs(v.beat, "beat")) beats[k] = num(val, "beat")!;
-  const colors: BuildOptions["colors"] = {};
+  const colors: BuildOptions["colors"] = { ...(base.colors ?? {}) };
   for (const k of ["accent", "accent2", "ink", "paper", "surface", "display", "text", "mono"] as const) if (v[k]) colors[k] = v[k];
   if (v.mode) {
     if (v.mode !== "dark" && v.mode !== "light") throw new MotionError('--mode is "dark" or "light"');
     colors.mode = v.mode;
   }
   const opts: RenderOptions = {
+    ...base,
     props,
     colors,
     ...(v.style ? { style: readStyleArg(v.style) } : {}),
@@ -188,7 +213,7 @@ async function buildOptions(v: Values, item: MotionItem): Promise<RenderOptions>
     ...(v.bg ? { background: v.bg } : {}),
     ...(v.words ? { words: readWords(v.words, num(v.offset, "offset") ?? 0) } : {}),
     ...(Object.keys(beats).length ? { beats } : {}),
-    ...(v.motion?.length ? { motion: parseMotionArgs(v.motion) } : {}),
+    ...(v.motion?.length ? { motion: mergeMotion(base.motion, parseMotionArgs(v.motion)) } : {}),
     ...(v.mood ? { mood: v.mood } : {}),
     ...(v.seed !== undefined ? { seed: num(v.seed, "seed") } : {}),
     ...(v.speed ? { speed: num(v.speed, "speed") } : {}),
@@ -234,12 +259,77 @@ async function main(argv: string[]): Promise<number> {
   }
   if (rest.length) throw new MotionError(`unexpected "${rest.join(" ")}" — options start with --`);
   const lib = library(v.packs ?? []);
+  // A spec file stands in for an item: its options are the base the command line adds to.
+  const loaded: LoadedSpec | null = target && cmd !== "validate" && isSpecFile(target) ? loadSpecFile(target) : null;
   const need = () => {
     if (!target) throw new MotionError(`${cmd} needs an item (see: volito list)`);
-    return findItem(target, lib);
+    return loaded ? itemOfSpec(loaded, lib) : findItem(target, lib);
   };
+  const optionsFor = (item: MotionItem) => buildOptions(v, item, loaded ? specToOptions(loaded, item) : {});
 
   switch (cmd) {
+    case "validate": {
+      if (!target) throw new MotionError("validate needs a spec file");
+      let doc: unknown;
+      try {
+        doc = JSON.parse(readFileSync(resolve(target), "utf8"));
+      } catch (e) {
+        throw new MotionError(`${target}: ${(e as Error).message}`);
+      }
+      const rep = validateSpec(doc, { dir: dirname(resolve(target)), lib });
+      const ok = rep.ok && !(v.strict && rep.warnings.length);
+      if (v.json) process.stdout.write(`${JSON.stringify({ ...rep, ok }, null, 2)}\n`);
+      else {
+        const lines = [ok ? `✓ ${target} is a valid spec${rep.item ? ` for ${rep.item}` : ""}` : `✗ ${target}`];
+        if (rep.errors.length) lines.push(formatIssues(rep.errors));
+        if (rep.warnings.length) lines.push(formatIssues(rep.warnings, "!"));
+        process.stdout.write(`${lines.join("\n")}\n`);
+      }
+      return ok ? 0 : 1;
+    }
+    case "spec": {
+      const item = need();
+      const base = loaded?.spec;
+      const props: Record<string, unknown> = { ...(base?.props ?? {}) };
+      if (v.props) Object.assign(props, JSON.parse(existsSync(resolve(v.props)) ? readFileSync(resolve(v.props), "utf8") : v.props) as Record<string, unknown>);
+      for (const [k, val] of [...pairs(v.prop, "prop"), ...pairs(v.image, "image")]) props[k] = val;
+      const colors: Record<string, string> = { ...(base?.colors ?? {}) };
+      for (const k of ["accent", "accent2", "ink", "paper", "surface", "mode", "display", "text", "mono"] as const) if (v[k]) colors[k] = v[k]!;
+      const beats: Record<string, number> = { ...(base?.beats ?? {}) };
+      for (const [k, val] of pairs(v.beat, "beat")) beats[k] = num(val, "beat")!;
+      const out = v.out ?? `${item.id}.volito.json`;
+      const spec = specFrom({
+        ...(base ?? {}),
+        ...(loaded ? {} : item.pack === "custom" || item.pack === "local" ? { program: relativeTo(out, target!) } : { item: item.ref }),
+        props,
+        ...(v.style ? { style: /\.(md|markdown|txt)$/i.test(v.style) ? relativeTo(out, v.style) : v.style } : {}),
+        colors: colors as never,
+        ...(v.aspect ? { aspect: v.aspect } : {}),
+        ...(v.duration ? { duration: num(v.duration, "duration") } : {}),
+        ...(v.fps ? { fps: num(v.fps, "fps") } : {}),
+        ...(v.width ? { width: num(v.width, "width") } : {}),
+        ...(v.bg ? { background: v.bg } : {}),
+        ...(v.words ? { words: relativeTo(out, v.words) } : {}),
+        ...(v.offset ? { offset: num(v.offset, "offset") } : {}),
+        beats,
+        ...(v.motion?.length ? { motion: mergeMotion(base?.motion, parseMotionArgs(v.motion)) as GraphicMotion } : {}),
+        ...(v.mood ? { mood: v.mood as never } : {}),
+        ...(v.seed !== undefined ? { seed: num(v.seed, "seed") } : {}),
+        ...(v.speed ? { speed: num(v.speed, "speed") } : {}),
+        ...(v.sound || v.bed || v["sound-level"] ? { sound: v.bed || v["sound-level"] ? { ...(v.bed ? { bed: v.bed } : {}), ...(v["sound-level"] ? { level: num(v["sound-level"], "sound-level") } : {}) } : true } : {}),
+        ...(v.format ? { render: { ...(base?.render ?? {}), format: v.format as never } } : {}),
+      });
+      const rep = validateSpec(spec, { dir: dirname(resolve(out)), lib });
+      if (!rep.ok) throw new MotionError(`that spec would not render:\n${formatIssues(rep.errors)}`);
+      mkdirSync(dirname(resolve(out)), { recursive: true });
+      writeFileSync(resolve(out), `${JSON.stringify(spec, null, 2)}\n`);
+      warn(rep.warnings.map((w) => `${w.path ? `${w.path}: ` : ""}${w.message}`), v.quiet);
+      process.stdout.write(`${resolve(out)}\n  render it with: volito render ${JSON.stringify(out)}\n`);
+      return 0;
+    }
+    case "schema":
+      process.stdout.write(`${JSON.stringify(specJsonSchema(), null, 2)}\n`);
+      return 0;
     case "init": {
       const { applyInit, describeInit, parseAgents, planInit } = await import("./node/init.js");
       let agents;
@@ -303,9 +393,11 @@ async function main(argv: string[]): Promise<number> {
     }
     case "render": {
       const item = need();
-      const opts = await buildOptions(v, item);
-      if (v.format && !(VIDEO_FORMATS as readonly string[]).includes(v.format)) throw new MotionError(`--format is one of ${VIDEO_FORMATS.join(", ")}`);
-      const r = await renderVideo(item, { ...opts, ...(v.format ? { format: v.format as VideoFormat } : {}), ...(v.out ? { out: v.out } : {}), onProgress: progress(v.quiet) });
+      const opts = await optionsFor(item);
+      const format = v.format ?? loaded?.spec.render?.format;
+      const out = v.out ?? loaded?.spec.render?.out;
+      if (format && !(VIDEO_FORMATS as readonly string[]).includes(format)) throw new MotionError(`--format is one of ${VIDEO_FORMATS.join(", ")}`);
+      const r = await renderVideo(item, { ...opts, ...(format ? { format: format as VideoFormat } : {}), ...(out ? { out } : {}), onProgress: progress(v.quiet) });
       warn(r.warnings, v.quiet);
       if (v.json) process.stdout.write(`${JSON.stringify(r, null, 2)}\n`);
       else process.stdout.write(`${r.file}\n  ${r.format} · ${r.width}×${r.height} · ${r.fps} fps · ${r.duration.toFixed(2)} s · ${r.frames} frames (${r.drawn} drawn)${r.bytes ? ` · ${bytes(r.bytes)}` : ""}${r.sound ? ` · sound: ${r.sound.cues.length} cues${r.sound.bed ? ` on a ${r.sound.bed.key} ${r.sound.bed.mode} bed` : ""}${r.sound.file ? ` → ${r.sound.file}` : ""}` : ""} · ${(r.ms / 1000).toFixed(1)} s\n`);
@@ -313,7 +405,7 @@ async function main(argv: string[]): Promise<number> {
     }
     case "still": {
       const item = need();
-      const opts = await buildOptions(v, item);
+      const opts = await optionsFor(item);
       const format = v.format === "svg" || v.out?.endsWith(".svg") ? "svg" : "png";
       const out = v.out ?? `${item.id}.${format}`;
       const r = await renderStill(item, { ...opts, format, out, ...(v.t ? { t: num(v.t, "t") } : {}) });
@@ -323,7 +415,7 @@ async function main(argv: string[]): Promise<number> {
     }
     case "sheet": {
       const item = need();
-      const opts = await buildOptions(v, item);
+      const opts = await optionsFor(item);
       const times = v.times ? v.times.split(",").map((s) => num(s.trim(), "times")!) : undefined;
       const r = await renderSheet(item, { ...opts, ...(times ? { times } : {}), ...(v.cols ? { cols: num(v.cols, "cols") } : {}) });
       const out = resolve(v.out ?? `${item.id}-sheet.png`);
@@ -335,7 +427,7 @@ async function main(argv: string[]): Promise<number> {
     }
     case "check": {
       const item = need();
-      const opts = await buildOptions(v, item);
+      const opts = await optionsFor(item);
       const rep = await checkItem(item, { ...opts, ...(v.aspect ? { aspects: [parseAspect(v.aspect)] } : {}) });
       process.stdout.write(v.json ? `${JSON.stringify(rep, null, 2)}\n` : `${describeReport(rep)}\n`);
       return rep.ok ? 0 : 1;
@@ -365,7 +457,7 @@ async function main(argv: string[]): Promise<number> {
     }
     case "sound": {
       const item = need();
-      const opts = await buildOptions(v, item);
+      const opts = await optionsFor(item);
       const r = await renderSoundFile(item, { ...opts, sound: opts.sound ?? true, out: v.out ?? `${item.id}.wav` });
       warn(r.warnings, v.quiet);
       if (v.json) process.stdout.write(`${JSON.stringify({ file: r.file, duration: r.duration, peak: r.peak, bed: r.bed, cues: r.cues }, null, 2)}\n`);

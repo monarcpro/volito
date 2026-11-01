@@ -10,7 +10,15 @@
 - `volito doctor` says what is ready: Node, FFmpeg, the encoders behind each format, HEVC with alpha,
   the bundled fonts, and each agent's MCP config and skill, with the fix for anything missing.
 - The agent skill moved to `skills/volito/SKILL.md`, where `npx skills add monarcpro/volito` finds it;
-  the item template for `volito new` moved to `templates/item`.
+  the item template for `volito new` moved to `templates/item`. It gained nine craft references (art
+  direction, motion craft, brand, type and layout, voice and timing, self-review, matching a reference,
+  writing items, delivery) that an agent loads only when a task needs them.
+- Graphic specs: one JSON document for one graphic (`{ "volito": 1, "item": …, "props": …, "style": …,
+  "aspect": …, "motion": …, "sound": … }`). Every command takes a spec file in place of an item, with
+  command-line options on top. `volito spec <item> [options]` writes one, `volito validate` checks it
+  against its item (shape, props, parts, files, aspect, length; unknown fields get a "did you mean"),
+  and `volito schema` prints its JSON Schema. The MCP tools take `spec`, and `motion_validate` checks one.
+  Node: `parseSpec`, `validateSpec`, `loadSpecFile`, `specToOptions`, `specJsonSchema`.
 
 ## 0.2.0 — 2026-10-26
 

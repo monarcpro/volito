@@ -36,6 +36,8 @@ export {
   resolveStyle,
 } from "./pack.js";
 export { type Library, type ItemQuery, builtinPacks, findItem, library, loadPack, packsIn, searchItems } from "./node/packs.js";
+export { type GraphicSpec, type SpecIssue, GraphicSpecSchema, SPEC_SCHEMA_URL, SPEC_VERSION, parseSpec, specJsonSchema } from "./spec.js";
+export { type LoadedSpec, type SpecReport, isSpecFile, itemOfSpec, loadSpecFile, specFrom, specToOptions, validateSpec } from "./node/spec.js";
 export {
   type RenderOptions,
   type SoundResult,

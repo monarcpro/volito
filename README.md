@@ -191,6 +191,37 @@ volito render banner --prop headline="Doors open at 9" --format webm --out banne
 volito check ./my-graphic.js                  # run it at every aspect, report problems
 ```
 
+### Graphic specs
+
+Any set of options can be saved as a spec: one JSON file for one graphic that every command takes in place
+of an item. Keep it in your repo, review it, hand it to an agent; options on the command line win over it.
+
+```bash
+volito spec lower-third --prop name="Priya Sharma" --style ember --aspect 9:16 --out priya.volito.json
+volito validate priya.volito.json            # its props, parts, files and aspect against the item
+volito render priya.volito.json --prop role="Founder"
+volito schema                                # the JSON Schema (also at https://volito.dev/schema/graphic.v1.json)
+```
+
+```json
+{
+  "$schema": "https://volito.dev/schema/graphic.v1.json",
+  "volito": 1,
+  "item": "essentials/lower-third",
+  "props": { "name": "Priya Sharma", "role": "Product designer" },
+  "style": "./DESIGN.md",
+  "aspect": "9:16",
+  "motion": { "name": { "in": "typewriter" } },
+  "mood": "elegant",
+  "seed": 4,
+  "sound": { "bed": "Dm" },
+  "render": { "format": "mov", "out": "renders/priya.mov" }
+}
+```
+
+Paths inside a spec (a DESIGN.md, a `program`, a transcript, image props) are relative to the spec file.
+`program` points at your own `frame(t, $)` file, or `code` holds it inline.
+
 | Option | |
 | --- | --- |
 | `--prop name=value` | a prop (repeat). Lists: `"a; b; c"`. Chart rows: `"Label: 42; Other: 17"` |
@@ -222,9 +253,11 @@ volito check ./my-graphic.js                  # run it at every aspect, report p
 <img src=".github/assets/agents.jpg" alt="An agent adds the Volito MCP server, then calls motion_list, motion_preview, motion_check and motion_render to make a lower third in 16:9 and 9:16" width="100%">
 
 ```bash
-claude mcp add volito -- npx -y volito mcp
+npx volito init          # adds the server for Claude Code, Cursor and VS Code, and the skill
+npx volito doctor        # what is ready: Node, FFmpeg formats, fonts, each agent's setup
 ```
 
+Or by hand: `claude mcp add volito -- npx -y volito mcp`, `codex mcp add volito -- npx -y volito mcp`, and for
 Cursor, Windsurf and other MCP clients:
 
 ```json
@@ -242,9 +275,10 @@ Cursor, Windsurf and other MCP clients:
 | `motion_render` | render to a file and return its path (`sound: true` muxes a synthesised track, `bed: "Dm"` a pad) |
 | `motion_sound` | the graphic's sound alone as a .wav, with its cue list |
 | `motion_moves` | every move, ease, idle, hit and mood the `motion` settings take |
+| `motion_validate` | check a Graphic spec (inline or a file) against its item before rendering |
 | `motion_api` | the program API and the motion kit, for writing new graphics |
 
-Every tool takes an `item` or your own `code`, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skills/volito/SKILL.md` — `npx volito init` installs it for Claude Code, `npx skills add monarcpro/volito` for other agents, or copy it
+Every tool takes an `item`, your own `code` or a `spec` file, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skills/volito/SKILL.md` — `npx volito init` installs it for Claude Code, `npx skills add monarcpro/volito` for other agents, or copy it
 to `~/.claude/skills/volito/` for Claude Code.
 
 ## Node API
