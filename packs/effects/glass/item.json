@@ -1,0 +1,16 @@
+{
+  "id": "glass",
+  "name": "Glass card",
+  "description": "A frosted glass card over soft moving colour: the ground blurs through the glass, a highlight runs along its edge, and the title sets on it.",
+  "category": "title",
+  "tags": ["effect", "glass", "glassmorphism", "frosted", "blur", "title", "card", "gradient"],
+  "placement": "full",
+  "duration": { "default": 5, "min": 2, "max": 20 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "kicker": { "type": "text", "label": "Kicker", "default": "New", "maxLength": 20, "description": "empty for none" },
+    "title": { "type": "text", "label": "Title", "default": "Made for agents", "maxLength": 28 },
+    "subtitle": { "type": "text", "label": "Subtitle", "default": "Motion graphics as code", "maxLength": 44, "description": "empty for none" }
+  },
+  "beats": { "in": 0.2 }
+}

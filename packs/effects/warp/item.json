@@ -1,0 +1,15 @@
+{
+  "id": "warp",
+  "name": "Liquid warp",
+  "description": "A title that settles out of a liquid ripple: rolling noise bends the letters, eases off until they read clean, then keeps a slow shimmer.",
+  "category": "text",
+  "tags": ["effect", "liquid", "warp", "distortion", "ripple", "title", "text effect", "heat haze"],
+  "placement": "overlay",
+  "duration": { "default": 4, "min": 1.5, "max": 20 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "title": { "type": "text", "label": "Title", "default": "Fluid by design", "maxLength": 24 },
+    "shimmer": { "type": "boolean", "label": "Keep a shimmer", "default": true }
+  },
+  "beats": { "in": 0.1 }
+}

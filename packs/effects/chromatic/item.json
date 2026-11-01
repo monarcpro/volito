@@ -1,0 +1,15 @@
+{
+  "id": "chromatic",
+  "name": "Chromatic split",
+  "description": "A title whose colour channels arrive apart and snap together, then split again on a hit: a lens-fringe look in the brand's two accents.",
+  "category": "text",
+  "tags": ["effect", "chromatic aberration", "rgb split", "glitch", "title", "text effect", "fringe"],
+  "placement": "overlay",
+  "duration": { "default": 4, "min": 1.5, "max": 20 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "title": { "type": "text", "label": "Title", "default": "Signal found", "maxLength": 24 },
+    "hits": { "type": "number", "label": "Split again (times)", "default": 2, "min": 0, "max": 6, "step": 1 }
+  },
+  "beats": { "in": 0.1 }
+}

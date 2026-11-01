@@ -33,6 +33,10 @@
 - A new pack, MONARC UI (`ui`): a button that breathes, lifts on hover, presses, spins while it loads and
   lands on a check; a toggle; a like with a rolling count; a loader that succeeds or fails; and a
   notification bell. Each declares its states, plays live in a page and renders to video like any item.
+- A new pack, MONARC Effects (`effects`): film grain that re-rolls every film frame, a light leak, a frosted
+  glass card over drifting colour, a chromatic split title, a liquid warp title and a neon sign. All are
+  SVG filters (turbulence, displacement, blur, colour matrices), so the live player and a render match
+  with no GPU.
 - `.volito` bundles: `volito bundle spec.json` packs a spec with every file it uses (a DESIGN.md, a
   program, a transcript, images) into one file; every command and MCP tool takes a bundle where it takes a
   spec, and renders it byte for byte the same anywhere.

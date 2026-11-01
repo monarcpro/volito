@@ -32,7 +32,7 @@ The references in `references/` are the craft behind the commands. Load only wha
 
 ## The loop
 
-1. **Find the item.** `volito list` (or `volito list --search "name plate"`). 96 items in ten packs:
+1. **Find the item.** `volito list` (or `volito list --search "name plate"`). 107 items in twelve packs:
    `essentials/…`, `broadcast/…` (lower thirds, ticker, live badge, score bug, location, countdown),
    `social/…` (follow card, notifications, comments, chat, post, now playing, rating), `data/…` (line,
    donut, bar race, goals, versus, timeline, funnel, world map, flight route) and `3d/…` (3D logo, title,
@@ -42,7 +42,9 @@ The references in `references/` are the craft behind the commands. Load only wha
    frame), `type/…` (typewriter, word swap, split-flap, marquee, echo, liquid fill, decode, word by word,
    key phrase, editorial stack), `backdrops/…` (any pattern, aurora, Bauhaus field, synthwave grid, lava
    blobs, colour sweep, starfield, bokeh, topographic) and `promo/…` (sale badge, price card, coupon, offer
-   countdown, feature list, call to action, launch, tape ribbons).
+   countdown, feature list, call to action, launch, tape ribbons), `ui/…` (button, toggle, like, loader, bell —
+   each with interactive states for `<volito-player>`) and `effects/…` (film grain, light leak, glass card,
+   chromatic split, liquid warp, neon sign).
 2. **Read its props.** `volito info lower-third` — every prop's type, default and length limit.
 3. **Fill it in.** Repeat `--prop name=value`. Lists take `"a; b; c"`; chart rows take `"Label: 42; Other: 17"`.
 4. **Pick the look.** `--style <name>` (`volito styles` lists all 36: the editor's ember, cream, mono, neon, pop,

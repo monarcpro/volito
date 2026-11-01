@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "effects",
+  "name": "MONARC Effects",
+  "version": "1.0.0",
+  "description": "Looks made from SVG filters, so they render the same in Node and the browser with no GPU: film grain, a light leak, a frosted glass card, a chromatic split title, a liquid warp title and a neon sign, in the brand's colours.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://volito.dev/docs/packs/effects",
+  "style": "cobalt",
+  "shared": "shared.js",
+  "items": ["grain", "light-leak", "glass", "chromatic", "warp", "neon"]
+}

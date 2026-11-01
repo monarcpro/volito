@@ -26,7 +26,7 @@ By [MONARC STUDIOS](https://monarcpro.app), the team behind MONARC PRO. Volito i
 inside the [MONARC PRO](https://monarcpro.app) video editor, opened up; the name is Latin for “to flutter”.
 Every graphic is a small program — `function frame(t, $)` returns the SVG of one frame — so it is
 readable, diffable, seekable to any frame, and something an AI agent can write and fix. It ships with
-96 ready-made graphics in ten packs (3D, maps, transitions and kinetic type among them), 36 brand styles,
+107 ready-made graphics in twelve packs (3D, maps, transitions, kinetic type, interactive UI and filter effects among them), 36 brand styles,
 sixteen animated patterns, a CLI, a Node API, a browser player and an MCP server, and renders to ProRes 4444 or HEVC with alpha, WebM, MP4, GIF, PNG frames or SVG.
 
 - **One design, every brand.** Items draw with colour roles and faces, not fixed colours: pass one of 36
@@ -69,7 +69,7 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 
 <img src=".github/assets/packs.jpg" alt="96 graphics in 10 packs: a render from each of Essentials, Broadcast, Social, Data, 3D, Transitions, Annotate, Type, Backdrops and Promo" width="100%">
 
-96 graphics in ten packs. Every one takes any brand style and any aspect, and every part of it takes any move.
+107 graphics in twelve packs. Every one takes any brand style and any aspect, and every part of it takes any move.
 
 | Pack | Items |
 | --- | --- |
@@ -83,6 +83,8 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 | **Type** (10) | Kinetic type: `typewriter` · `word-swap` (a word that keeps changing) · `split-flap` · `marquee` (tilted scrolling bands) · `echo` · `liquid-fill` · `decode` · `word-by-word` · `key-phrase` (marker on *marked* words) · `stack` (editorial) |
 | **Backdrops** (9) | Moving grounds: `pattern` (any of the sixteen) · `aurora` · `tiles` (Bauhaus field) · `retro-grid` (synthwave) · `blobs` (lava goo) · `gradient` · `starfield` · `bokeh` · `topo` |
 | **Promo** (8) | `sale-badge` (starburst) · `price-card` (counts down, strike, click) · `coupon` (copy the code) · `offer-countdown` (D:H:M:S) · `features` (checklist) · `cta` (button and cursor) · `launch` · `ribbon` (crossing tapes) |
+| **UI** (5) | Interactive states (see *Interactive states*): `button` (idle, hover, press, loading, done) · `toggle` · `like` (rolling count) · `loader` (success or failure) · `bell` (badge, read) |
+| **Effects** (6) | SVG filters, no GPU: `grain` (film grain, re-rolled every film frame) · `light-leak` · `glass` (frosted card over drifting colour) · `chromatic` (channels split and snap) · `warp` (liquid ripple settling) · `neon` (flickers on) |
 
 `volito info <item>` lists every prop. To see them all live, serve this package's folder and
 open `examples/gallery.html`.

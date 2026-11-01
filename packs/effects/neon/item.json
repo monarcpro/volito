@@ -1,0 +1,15 @@
+{
+  "id": "neon",
+  "name": "Neon sign",
+  "description": "A neon sign that flickers on: glass tubes of light in the accent with a glow around them, a buzz of flicker as it strikes, then a steady hum.",
+  "category": "title",
+  "tags": ["effect", "neon", "glow", "sign", "flicker", "night", "title", "retro"],
+  "placement": "full",
+  "duration": { "default": 4, "min": 2, "max": 20 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "title": { "type": "text", "label": "Sign", "default": "Open late", "maxLength": 20 },
+    "subtitle": { "type": "text", "label": "Under it", "default": "since 2026", "maxLength": 30, "description": "empty for none" }
+  },
+  "beats": { "on": 0.3 }
+}
