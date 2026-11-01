@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 — 2026-11-01
+
+One-step agent setup, Graphic specs, a review before rendering, interactive states, and two new packs.
 
 - `volito init` sets a project up for coding agents in one step: it adds the Volito MCP server to
   Claude Code's `.mcp.json`, Cursor's `.cursor/mcp.json` and VS Code's `.vscode/mcp.json` (merged,

@@ -3,7 +3,7 @@
   "name": "io.github.monarcpro/volito",
   "title": "Volito",
   "description": "Motion graphics as code: find, preview and render lower thirds, titles, charts and 3D to video",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "websiteUrl": "https://volito.dev",
   "repository": {
     "url": "https://github.com/monarcpro/volito",
@@ -11,18 +11,37 @@
     "id": "1431592139"
   },
   "icons": [
-    { "src": "https://volito.dev/icon-512.png", "mimeType": "image/png", "sizes": ["512x512"] },
-    { "src": "https://volito.dev/favicon.svg", "mimeType": "image/svg+xml", "sizes": ["any"] }
+    {
+      "src": "https://volito.dev/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    },
+    {
+      "src": "https://volito.dev/favicon.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": [
+        "any"
+      ]
+    }
   ],
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "volito",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "runtimeHint": "npx",
-      "transport": { "type": "stdio" },
-      "packageArguments": [{ "type": "positional", "value": "mcp" }]
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        }
+      ]
     }
   ]
 }

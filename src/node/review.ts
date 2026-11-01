@@ -196,7 +196,9 @@ export async function reviewItem(item: MotionItem, opts: RenderOptions & { aspec
         .trim()
         .split(/\s+/)
         .filter(Boolean).length;
-      if (timing.settledAt === null) issues.push({ level: "note", message: "it never holds still (an idle, a moving ground or a long entrance) — fine for grounds; check the sheet that text is readable while it moves" });
+      const interactive = !!(item as { states?: unknown }).states;
+      if (interactive) issues.push({ level: "note", message: "it has interactive states: on a page each state plays on its own, so its holds wait on the viewer — check each state with <volito-player>" });
+      else if (timing.settledAt === null) issues.push({ level: "note", message: "it never holds still (an idle, a moving ground or a long entrance) — fine for grounds; check the sheet that text is readable while it moves" });
       else {
         const entrance = timing.settledAt - timing.visibleAt;
         if (entrance > 1.5) issues.push({ level: "warning", message: `its entrance takes ${s2(entrance)} to settle — viewers wait for it`, fix: "--speed 1.25, a faster mood, or a shorter entrance move" });
