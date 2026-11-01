@@ -1,0 +1,21 @@
+{
+  "id": "like",
+  "name": "Like",
+  "description": "A heart and its count: it breathes while idle, pops full with a burst when liked as the count rolls up by one, and empties again when unliked. In a page, a click likes and unlikes.",
+  "category": "social",
+  "tags": ["ui", "like", "heart", "favourite", "count", "interactive", "micro-interaction", "social", "web"],
+  "placement": "overlay",
+  "duration": { "default": 3.2, "min": 3.2, "max": 3.2 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "count": { "type": "number", "label": "Likes before", "default": 128, "min": 0, "max": 9999999, "step": 1 }
+  },
+  "beats": { "idle": 0.5, "like": 1.5, "unlike": 2.6 },
+  "states": {
+    "enter": { "from": "start", "to": "idle", "play": "once", "next": "idle" },
+    "idle": { "from": "idle", "to": "like", "play": "loop" },
+    "like": { "from": "like", "to": "unlike", "play": "once" },
+    "unlike": { "from": "unlike", "to": "end", "play": "once", "next": "idle" }
+  },
+  "on": "click(idle|unlike): like; click(like): unlike"
+}

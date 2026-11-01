@@ -24,6 +24,15 @@
   program), a warning when the entrance is slow or the hold too short for its words, how much of an
   overlay sits under Instagram Reels', YouTube Shorts' and TikTok's interface at 9:16, and a contact sheet
   per aspect written beside a review.md. The MCP tool `motion_review` returns the sheets as images.
+- Interactive states in `<volito-player>`: a graphic's timeline cut into named stretches (enter, idle,
+  hover, press, loading, done…), each played once (then held, or handed on to `next`), looped or held,
+  with times as seconds or the item's beat names. The `on` attribute maps page events to states
+  (`"pointerenter(idle): hover; pointerleave(hover): idle; click: press"`, with optional guards), code sets
+  `player.state`, and a `statechange` event reports every change. Items can declare `states` and `on` in
+  item.json so they work with no setup; readers who prefer reduced motion see each state's resting frame.
+- A new pack, MONARC UI (`ui`): a button that breathes, lifts on hover, presses, spins while it loads and
+  lands on a check; a toggle; a like with a rolling count; a loader that succeeds or fails; and a
+  notification bell. Each declares its states, plays live in a page and renders to video like any item.
 - `.volito` bundles: `volito bundle spec.json` packs a spec with every file it uses (a DESIGN.md, a
   program, a transcript, images) into one file; every command and MCP tool takes a bundle where it takes a
   spec, and renders it byte for byte the same anywhere.

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>volito-player states</title>
+<!-- base="../" makes the player load fonts/ and dist/registry.json from this package instead of jsDelivr. -->
+<script type="module" src="../dist/player.js"></script>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #f4f1ea; color: #15140f; font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 16px 96px; }
+  h1 { font-size: 40px; line-height: 1.05; margin: 0 0 8px; }
+  h2 { font-size: 20px; margin: 0 0 4px; }
+  p { margin: 0 0 14px; color: #3f3b33; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 20px; margin-top: 24px; }
+  .card { padding: 14px; border: 1.5px solid #15140f; border-radius: 16px; background: #fff; }
+  .card volito-player { --volito-stage: transparent; --volito-stage-padding: 0; cursor: pointer; }
+  .state { font: 12px/1.4 ui-monospace, Menlo, monospace; color: #57534a; margin-top: 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  button { min-height: 36px; padding: 0 12px; border: 1.5px solid #15140f; border-radius: 10px; background: #fff; font: inherit; font-size: 14px; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Interactive states</h1>
+  <p>Every item in the <code>ui</code> pack names its states in <code>item.json</code>. Hover and click them: the player plays each state's stretch of the timeline, loops the idle ones and moves on by itself (press → loading). Your code switches the rest with <code>player.state = "done"</code>.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Button</h2>
+      <volito-player id="button" base="../" item="ui/button" aspect="1000x500" ground="none" brand="studio" loading="eager"></volito-player>
+      <div class="row"><button type="button" data-for="button" data-state="done">Finish loading</button></div>
+      <div class="state" data-log="button">state: …</div>
+    </div>
+    <div class="card">
+      <h2>Toggle</h2>
+      <volito-player id="toggle" base="../" item="ui/toggle" aspect="1000x500" ground="none" brand="studio" loading="eager"></volito-player>
+      <div class="state" data-log="toggle">state: …</div>
+    </div>
+    <div class="card">
+      <h2>Like</h2>
+      <volito-player id="like" base="../" item="ui/like" aspect="1000x500" ground="none" brand="studio" loading="eager"></volito-player>
+      <div class="state" data-log="like">state: …</div>
+    </div>
+    <div class="card">
+      <h2>Loader</h2>
+      <volito-player id="loader" base="../" item="ui/loader" aspect="1000x500" ground="none" brand="studio" loading="eager"></volito-player>
+      <div class="row">
+        <button type="button" data-for="loader" data-state="success">It worked</button>
+        <button type="button" data-for="loader" data-state="failure">It failed</button>
+        <button type="button" data-for="loader" data-state="loading">Again</button>
+      </div>
+      <div class="state" data-log="loader">state: …</div>
+    </div>
+    <div class="card">
+      <h2>Notification bell</h2>
+      <volito-player id="bell" base="../" item="ui/bell" aspect="1000x500" ground="none" brand="studio" loading="eager"></volito-player>
+      <div class="state" data-log="bell">state: …</div>
+    </div>
+  </div>
+</main>
+<script type="module">
+  for (const p of document.querySelectorAll("volito-player")) {
+    const log = document.querySelector(`[data-log="${p.id}"]`);
+    p.addEventListener("statechange", (e) => (log.textContent = `state: ${e.detail.to}${e.detail.from ? ` (from ${e.detail.from})` : ""}`));
+    p.addEventListener("error", (e) => (log.textContent = `error: ${e.detail.message}`));
+  }
+  for (const b of document.querySelectorAll("button[data-for]")) b.addEventListener("click", () => (document.getElementById(b.dataset.for).state = b.dataset.state));
+</script>
+</body>
+</html>

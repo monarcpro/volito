@@ -366,6 +366,26 @@ none of which bubble: `ready`, `play`, `pause`, `ended`, `timeupdate` (about ten
 (`--volito-accent`, `--volito-stage`, `--volito-max-height`, …) or `::part()`; Space, ←/→ (a frame,
 Shift for a second), Home and End work when it has focus. `examples/player.html` shows each of these.
 
+
+#### Interactive states
+
+A graphic can be a live UI element: its timeline cut into named states that page events and your code
+switch between. Every item in the `ui` pack declares its own, so this works with no setup:
+
+```html
+<volito-player item="ui/button" aspect="1000x500" ground="none" props='{"label":"Get started"}'></volito-player>
+<script type="module">
+  const button = document.querySelector("volito-player");
+  button.addEventListener("statechange", (e) => console.log(e.detail.to)); // enter → idle → hover → press → loading
+  await fetch("/api/signup", { method: "POST" });
+  button.state = "done";                                                  // lands on the check
+</script>
+```
+
+Any graphic can have states: `states='{"idle":{"from":"idle","to":"hover","play":"loop"},…}'` (times are seconds or
+beat names; `play` is `once`, `loop` or `hold`; `next` hands a finished `once` on), and
+`on="pointerenter(idle): hover; pointerleave(hover): idle; click: press"` maps page events to them.
+
 ## Brand styles
 
 36 built in. MONARC PRO's: `ember`, `cream`, `mono`, `neon`, `pop`, `studio`, and the explainer art

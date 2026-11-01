@@ -1,0 +1,26 @@
+{
+  "id": "button",
+  "name": "Button",
+  "description": "A product button with every state: it springs in, breathes while idle, lifts on hover, presses, spins while it loads and lands on a check with the done label. In a page, <volito-player> plays each state on hover and click.",
+  "category": "cta",
+  "tags": ["ui", "button", "hover", "press", "loading", "success", "interactive", "micro-interaction", "product", "web"],
+  "placement": "overlay",
+  "duration": { "default": 4.6, "min": 4.6, "max": 4.6 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "label": { "type": "text", "label": "Label", "default": "Get started", "maxLength": 22 },
+    "done": { "type": "text", "label": "Done label", "default": "You're in", "maxLength": 22 },
+    "icon": { "type": "icon", "label": "Icon", "default": "arrowRight" }
+  },
+  "beats": { "idle": 0.6, "hoverIn": 1.6, "hoverOut": 1.9, "press": 2.2, "loading": 2.6, "done": 3.6 },
+  "states": {
+    "enter": { "from": "start", "to": "idle", "play": "once", "next": "idle" },
+    "idle": { "from": "idle", "to": "hoverIn", "play": "loop" },
+    "hover": { "from": "hoverIn", "to": "hoverOut", "play": "once" },
+    "unhover": { "from": "hoverOut", "to": "press", "play": "once", "next": "idle" },
+    "press": { "from": "press", "to": "loading", "play": "once", "next": "loading" },
+    "loading": { "from": "loading", "to": "done", "play": "loop" },
+    "done": { "from": "done", "to": "end", "play": "once" }
+  },
+  "on": "pointerenter(idle|unhover): hover; pointerleave(hover): unhover; click(idle|hover|unhover): press"
+}

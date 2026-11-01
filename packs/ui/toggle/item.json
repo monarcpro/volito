@@ -1,0 +1,22 @@
+{
+  "id": "toggle",
+  "name": "Toggle",
+  "description": "A settings switch with its label: the knob stretches as it slides, the track fills with the accent, and it slides back. In a page, a click turns it on and off.",
+  "category": "cta",
+  "tags": ["ui", "toggle", "switch", "settings", "on off", "interactive", "micro-interaction", "product", "web"],
+  "placement": "overlay",
+  "duration": { "default": 2.4, "min": 2.4, "max": 2.4 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "label": { "type": "text", "label": "Label", "default": "Notifications", "maxLength": 24 },
+    "hint": { "type": "text", "label": "Hint", "default": "Get a ping when a render finishes", "maxLength": 44, "description": "empty for none" }
+  },
+  "beats": { "off": 0.4, "turnOn": 0.7, "turnOff": 1.7 },
+  "states": {
+    "enter": { "from": "start", "to": "off", "play": "once", "next": "off" },
+    "off": { "from": "off", "play": "hold" },
+    "on": { "from": "turnOn", "to": "turnOff", "play": "once" },
+    "turning-off": { "from": "turnOff", "to": "end", "play": "once", "next": "off" }
+  },
+  "on": "click(off|turning-off): on; click(on): turning-off"
+}

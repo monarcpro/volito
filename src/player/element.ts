@@ -12,6 +12,7 @@
 import { CDN_BASE, type MotionPlayer, type PlayerOptions, createPlayer, customItem, findItem, loadRegistry } from "../browser/index.js";
 import { type BuildOptions, type MotionItem, type StyleInput, type StyleOverrides, parseAspect } from "../pack.js";
 import { advance, aspectSize, canvasSize, formatTime, groundOf, numberAttr, parseAspects, parseBeats, parseJsonObject, parseMotionAttr, playRange } from "./attrs.js";
+import { type ResolvedState, type StateDef, type StateTrigger, initialState, parseStates, parseTriggers, reducedPlay, resolveState, triggerTarget } from "./states.js";
 import { PAUSE_ICON, PLAYER_CSS, PLAY_ICON } from "./styles.js";
 
 /** Events a <volito-player> fires. None bubbles, like a media element's. */
@@ -31,6 +32,8 @@ export interface VolitoPlayerEventMap {
   warnings: CustomEvent<{ warnings: string[] }>;
   /** The item could not load or a frame failed; `message` says why. */
   error: CustomEvent<{ message: string; error: unknown }>;
+  /** The interactive state changed (a page event, `state = …` or a `next`). */
+  statechange: CustomEvent<{ from: string | null; to: string }>;
 }
 
 // Attributes that change what is built (a reload of the program) and those that only change the UI.
@@ -43,7 +46,7 @@ const reducedMotion = () => typeof matchMedia === "function" && matchMedia("(pre
 
 export class VolitoPlayer extends Base {
   static get observedAttributes(): string[] {
-    return ["item", "aspect", "base", "loading", ...BUILD_ATTRS, ...UI_ATTRS];
+    return ["item", "aspect", "base", "loading", "states", "state", "on", ...BUILD_ATTRS, ...UI_ATTRS];
   }
 
   private readonly shadow: ShadowRoot;
@@ -89,6 +92,13 @@ export class VolitoPlayer extends Base {
   private shownAspect = "";
   private firstAspect = "";
   private queued = { build: false, item: false };
+
+  // Interactive states: the item's or the states attribute's stretches, and the page events that switch them.
+  private itemObj: MotionItem | null = null;
+  private stateNow: ResolvedState | null = null;
+  private reflecting = false;
+  private triggers: StateTrigger[] = [];
+  private readonly bound = new Map<string, (e: Event) => void>();
 
   private io: IntersectionObserver | null = null;
   private ro: ResizeObserver | null = null;
@@ -271,6 +281,7 @@ export class VolitoPlayer extends Base {
     });
     this.ro.observe(this.el.frame);
     document.addEventListener("visibilitychange", this.onVisibility);
+    this.bindTriggers();
     if (this.getAttribute("loading") === "eager") void this.load();
   }
 
@@ -279,6 +290,7 @@ export class VolitoPlayer extends Base {
     this.io?.disconnect();
     this.ro?.disconnect();
     document.removeEventListener("visibilitychange", this.onVisibility);
+    this.unbindTriggers();
     this.mp?.destroy();
     this.mp = null;
     this.starting = null;
@@ -288,6 +300,15 @@ export class VolitoPlayer extends Base {
 
   attributeChangedCallback(name: string, old: string | null, value: string | null): void {
     if (old === value || !this.isConnected) return;
+    if (name === "state") {
+      if (!this.reflecting && value && this.mp) void this.setState(value).catch((e) => this.fail(e));
+      return;
+    }
+    if (name === "states" || name === "on") {
+      this.bindTriggers();
+      if (name === "states" && this.mp) this.enterInitialState();
+      return;
+    }
     if (name === "item") this.queue("item");
     else if (name === "base") this.queue("item");
     else if (name === "aspect") void this.showAspect(this.initialAspect());
@@ -345,6 +366,8 @@ export class VolitoPlayer extends Base {
       const item = await this.resolveItem();
       if (gen !== this.gen) return;
       this.itemName = item.name;
+      this.itemObj = item;
+      this.stateNow = null;
       this.setSize(this.shownAspect);
       const mp = await createPlayer(this.el.canvas, item, this.playerOptions());
       if (gen !== this.gen || !this.isConnected) return mp.destroy();
@@ -358,6 +381,11 @@ export class VolitoPlayer extends Base {
       const { width, height } = this.el.canvas;
       this.emit("ready", { duration: this.dur, width, height, aspect: this.shownAspect });
       this.emit("durationchange", { duration: this.dur });
+      this.bindTriggers();
+      if (this.stateDefs()) {
+        this.enterInitialState();
+        return;
+      }
       if (this.hasAttribute("autoplay") && !reducedMotion()) this.intent = true;
       this.resume();
     } catch (err) {
@@ -379,7 +407,7 @@ export class VolitoPlayer extends Base {
       if (!this.playing) return;
       const now = performance.now();
       const fps = numberAttr(this.getAttribute("fps")) ?? 30;
-      const r = advance(this.anchorT, (now - this.anchorWall) / 1000, this.playbackRate, playRange(this.dur, this.rangeStart(), this.rangeEnd()), this.loop, fps);
+      const r = advance(this.anchorT, (now - this.anchorWall) / 1000, this.playbackRate, playRange(this.dur, this.rangeStart(), this.rangeEnd()), this.stateNow ? this.stateNow.play === "loop" : this.loop, fps);
       if (r.t < this.t) {
         this.anchorT = r.t;
         this.anchorWall = now;
@@ -392,6 +420,13 @@ export class VolitoPlayer extends Base {
         this.emit("timeupdate", { currentTime: r.t });
       }
       if (r.ended) {
+        const next = this.stateNow?.next;
+        if (next) {
+          this.playing = false;
+          cancelAnimationFrame(this.raf);
+          void this.setState(next).catch((e) => this.fail(e));
+          return;
+        }
         this.intent = false;
         this.stopClock(true);
         this.atEnd = true;
@@ -535,11 +570,105 @@ export class VolitoPlayer extends Base {
   }
 
   private rangeStart(): number | undefined {
-    return numberAttr(this.getAttribute("range-start"));
+    return this.stateNow ? this.stateNow.start : numberAttr(this.getAttribute("range-start"));
   }
 
   private rangeEnd(): number | undefined {
-    return numberAttr(this.getAttribute("range-end"));
+    return this.stateNow ? Math.max(this.stateNow.end, this.stateNow.start + 1e-3) : numberAttr(this.getAttribute("range-end"));
+  }
+
+  // ------------------------------------------------------------------------------------------
+  // Interactive states
+  // ------------------------------------------------------------------------------------------
+
+  /** The current interactive state, or "" when the graphic has none. Setting it switches state. */
+  get state(): string {
+    return this.stateNow?.name ?? "";
+  }
+  set state(v: string) {
+    void this.setState(v).catch((e) => this.fail(e));
+  }
+
+  /** The states this graphic has: the states attribute, else the item's own. */
+  stateDefs(): Record<string, StateDef> | undefined {
+    const attr = this.getAttribute("states");
+    return attr ? parseStates(attr) : parseStates((this.itemObj as { states?: unknown } | null)?.states, `${this.itemObj?.ref ?? "item"} states`);
+  }
+
+  /** Switch to a state: play its stretch once, loop it, or hold its first frame. */
+  async setState(name: string): Promise<void> {
+    await this.load();
+    const defs = this.stateDefs();
+    if (!defs) throw new Error("this graphic has no states — set a states attribute, or use an item that declares them");
+    const s = resolveState(name, defs, this.dur, this.beatTimes());
+    const from = this.stateNow?.name ?? null;
+    this.stateNow = s;
+    this.reflecting = true;
+    this.setAttribute("state", name);
+    this.reflecting = false;
+    this.atEnd = false;
+    if (from !== name) this.emit("statechange", { from, to: name });
+    if (s.play === "hold" || reducedMotion()) {
+      const r = reducedMotion() ? reducedPlay(s) : { show: s.start, thenNext: false };
+      this.intent = false;
+      this.stopClock(false);
+      this.t = r.show;
+      await this.paint(this.t, true);
+      this.updateTime();
+      if (r.thenNext && s.next) await this.setState(s.next);
+      return;
+    }
+    this.intent = true;
+    this.t = s.start;
+    if (this.playing) {
+      this.anchorT = s.start;
+      this.anchorWall = performance.now();
+    } else this.resume();
+  }
+
+  private enterInitialState(): void {
+    const defs = this.safe(() => this.stateDefs());
+    if (!defs) {
+      this.stateNow = null;
+      return;
+    }
+    void this.setState(initialState(defs, this.getAttribute("state"))).catch((e) => this.fail(e));
+  }
+
+  /** Beat times for state stretches: the item's beats, moved by the beats attribute. */
+  private beatTimes(): Record<string, number> {
+    const own = ((this.itemObj as { beats?: Record<string, number> } | null)?.beats ?? {}) as Record<string, number>;
+    return { ...own, ...(this.safe(() => parseBeats(this.getAttribute("beats"))) ?? {}) };
+  }
+
+  /** Listen for the page events in the on attribute (else the item's "on") and switch state on them. */
+  private bindTriggers(): void {
+    this.unbindTriggers();
+    const defs = this.safe(() => this.stateDefs());
+    if (!defs) return;
+    const spec = this.getAttribute("on") ?? (this.itemObj as { on?: string } | null)?.on;
+    let triggers: StateTrigger[] = [];
+    try {
+      triggers = parseTriggers(spec, defs);
+    } catch (e) {
+      this.fail(e);
+      return;
+    }
+    this.triggers = triggers;
+    for (const ev of new Set(triggers.map((t) => t.event))) {
+      const fn = () => {
+        const to = triggerTarget(this.triggers, ev, this.stateNow?.name ?? null);
+        if (to && to !== this.stateNow?.name) void this.setState(to).catch((e) => this.fail(e));
+      };
+      this.addEventListener(ev, fn);
+      this.bound.set(ev, fn);
+    }
+  }
+
+  private unbindTriggers(): void {
+    for (const [ev, fn] of this.bound) this.removeEventListener(ev, fn);
+    this.bound.clear();
+    this.triggers = [];
   }
 
   private base(): string {

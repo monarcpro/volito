@@ -1,0 +1,23 @@
+{
+  "id": "loader",
+  "name": "Loader",
+  "description": "A status card that waits, then ends one of two ways: a spinner turns while the line says what is happening, then it closes into a ring with a check, or turns into a cross with a shake. In a page, your code sets the state when the work finishes.",
+  "category": "callout",
+  "tags": ["ui", "loader", "spinner", "loading", "progress", "success", "error", "status", "interactive", "micro-interaction", "web"],
+  "placement": "overlay",
+  "duration": { "default": 3.6, "min": 3.6, "max": 3.6 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "loading": { "type": "text", "label": "While it works", "default": "Uploading your video", "maxLength": 32 },
+    "success": { "type": "text", "label": "When it works", "default": "Uploaded", "maxLength": 32 },
+    "failure": { "type": "text", "label": "When it fails", "default": "Upload failed — try again", "maxLength": 32 }
+  },
+  "beats": { "loading": 0.4, "success": 1.4, "failure": 2.5 },
+  "states": {
+    "enter": { "from": "start", "to": "loading", "play": "once", "next": "loading" },
+    "loading": { "from": "loading", "to": "success", "play": "loop" },
+    "success": { "from": "success", "to": "failure", "play": "once" },
+    "failure": { "from": "failure", "to": "end", "play": "once" }
+  },
+  "on": "click(success|failure): loading"
+}

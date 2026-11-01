@@ -21,6 +21,7 @@ import {
 } from "./engine.js";
 import { type GlyphTable, GLYPH_CHARS, glyphLibrary, glyphsFor } from "./glyphs.js";
 import { type MotionInput, MOTION_KIT_CODE, normalizeMotion } from "./kit.js";
+import { type StateDef, parseStates, parseTriggers, resolveState } from "./player/states.js";
 import { MOTION_3D_CODE } from "./three.js";
 
 export const MOTION_FORMAT = 1;
@@ -88,6 +89,13 @@ export interface ItemManifest {
   libs?: LibraryName[];
   /** Faces whose glyphs 3D text is built from: brand roles ("display") or specs ("Anton:400"). Default: display. */
   faces3d?: string[];
+  /**
+   * Interactive states for <volito-player>: named stretches of the timeline (beat names or seconds), each
+   * played once, looped or held — { "idle": { "from": "idle", "to": "hover", "play": "loop" }, … }.
+   */
+  states?: Record<string, StateDef>;
+  /** The page events that switch states by default: "pointerenter(idle): hover; click: press". */
+  on?: string;
 }
 
 export interface PackManifest {
@@ -149,6 +157,19 @@ export function manifestProblems(m: Partial<ItemManifest>): string[] {
     if (!["text", "longtext", "number", "boolean", "choice", "color", "list", "image", "icon"].includes(p?.type)) out.push(`prop "${name}" has an unknown type`);
     if (p?.type === "choice" && !p.options?.length) out.push(`prop "${name}" is a choice with no options`);
     if (p?.when && !(p.when.prop in (m.props ?? {}))) out.push(`prop "${name}" depends on an unknown prop "${p.when.prop}"`);
+  }
+  if (m.states !== undefined || m.on !== undefined) {
+    try {
+      const states = parseStates(m.states, "states");
+      if (!states) out.push("on needs states");
+      else {
+        parseTriggers(m.on, states);
+        const dur = m.duration?.default ?? 0;
+        for (const name of Object.keys(states)) resolveState(name, states, dur, m.beats ?? {});
+      }
+    } catch (e) {
+      out.push((e as Error).message);
+    }
   }
   return out;
 }

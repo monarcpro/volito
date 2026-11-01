@@ -1,0 +1,21 @@
+{
+  "id": "bell",
+  "name": "Notification bell",
+  "description": "A bell that rings: it swings on its hook, a badge pops in with the count, and it clears when read. In a page, hovering rings it and a click marks it read.",
+  "category": "social",
+  "tags": ["ui", "notification", "bell", "badge", "alert", "inbox", "interactive", "micro-interaction", "web"],
+  "placement": "overlay",
+  "duration": { "default": 3.0, "min": 3.0, "max": 3.0 },
+  "aspects": ["16:9", "9:16", "1:1", "4:5"],
+  "props": {
+    "count": { "type": "number", "label": "New", "default": 3, "min": 1, "max": 99, "step": 1 }
+  },
+  "beats": { "idle": 0.5, "ring": 1.5, "clear": 2.5 },
+  "states": {
+    "enter": { "from": "start", "to": "idle", "play": "once", "next": "idle" },
+    "idle": { "from": "idle", "to": "ring", "play": "loop" },
+    "ring": { "from": "ring", "to": "clear", "play": "once" },
+    "clear": { "from": "clear", "to": "end", "play": "once", "next": "idle" }
+  },
+  "on": "pointerenter(idle): ring; click(ring): clear"
+}

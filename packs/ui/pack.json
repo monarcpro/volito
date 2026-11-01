@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "ui",
+  "name": "MONARC UI",
+  "version": "1.0.0",
+  "description": "Product micro-interactions that play live in a page and render to video: a button that hovers, presses, loads and lands on a check, a toggle, a like with a count, a loader that succeeds or fails, and a notification bell. Each declares its states, so <volito-player> plays them on hover and click with no setup.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://volito.dev/docs/packs/ui",
+  "style": "studio",
+  "shared": "shared.js",
+  "items": ["button", "toggle", "like", "loader", "bell"]
+}
