@@ -244,7 +244,7 @@ Cursor, Windsurf and other MCP clients:
 | `motion_moves` | every move, ease, idle, hit and mood the `motion` settings take |
 | `motion_api` | the program API and the motion kit, for writing new graphics |
 
-Every tool takes an `item` or your own `code`, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skill/SKILL.md` — copy it
+Every tool takes an `item` or your own `code`, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skills/volito/SKILL.md` — `npx volito init` installs it for Claude Code, `npx skills add monarcpro/volito` for other agents, or copy it
 to `~/.claude/skills/volito/` for Claude Code.
 
 ## Node API

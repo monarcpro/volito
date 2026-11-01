@@ -35,6 +35,9 @@ const HELP = `Volito ${packageVersion()} — brand-aware, voice-synced motion gr
 Usage: volito <command> [item] [options]
 
 Commands
+  init [--agent a,b] [--dry-run] [--force]        set this project up for Claude Code, Cursor, VS Code or Codex:
+                                                  the MCP server in each agent's config and the Volito skill
+  doctor [--json]                                 what is ready: Node, FFmpeg and its formats, fonts, agents
   list [--search words] [--category c] [--json]   the graphics in the packs
   info <item> [--json] [--code]                   what an item is and every prop it takes
   styles [--json]                                 the built-in brand styles
@@ -127,6 +130,10 @@ const OPTIONS = {
   pack: { type: "string" },
   json: { type: "boolean" },
   code: { type: "boolean" },
+  agent: { type: "string" },
+  force: { type: "boolean" },
+  "dry-run": { type: "boolean" },
+  "no-skill": { type: "boolean" },
   quiet: { type: "boolean", short: "q" },
   help: { type: "boolean", short: "h" },
   version: { type: "boolean", short: "v" },
@@ -233,6 +240,27 @@ async function main(argv: string[]): Promise<number> {
   };
 
   switch (cmd) {
+    case "init": {
+      const { applyInit, describeInit, parseAgents, planInit } = await import("./node/init.js");
+      let agents;
+      try {
+        agents = v.agent ? parseAgents(v.agent) : undefined;
+      } catch (e) {
+        throw new MotionError((e as Error).message);
+      }
+      const plan = planInit(resolve(target ?? "."), { agents, force: v.force, skill: !v["no-skill"] });
+      if (!v["dry-run"]) applyInit(plan.actions);
+      if (v.json) process.stdout.write(`${JSON.stringify({ agents: plan.agents, dryRun: !!v["dry-run"], actions: plan.actions.map(({ kind, agent, detail, ...a }) => ({ kind, agent, detail, path: "path" in a ? a.path : undefined })) }, null, 2)}\n`);
+      else process.stdout.write(`${describeInit(plan, !!v["dry-run"])}\n`);
+      return 0;
+    }
+    case "doctor": {
+      const { describeDoctor, runDoctor } = await import("./node/init.js");
+      const checks = runDoctor(resolve(target ?? "."));
+      if (v.json) process.stdout.write(`${JSON.stringify(checks, null, 2)}\n`);
+      else process.stdout.write(`${describeDoctor(checks)}\n`);
+      return checks.some((c) => !c.ok && (c.name === "Node" || c.name === "Fonts")) ? 1 : 0;
+    }
     case "list": {
       if (v.category && !(CATEGORIES as readonly string[]).includes(v.category)) throw new MotionError(`--category is one of ${CATEGORIES.join(", ")}`);
       const items = searchItems({ search: v.search ?? target, category: v.category, pack: v.pack }, lib);
@@ -327,7 +355,7 @@ async function main(argv: string[]): Promise<number> {
       if (!target || !/^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/.test(target)) throw new MotionError("new needs an id: lowercase words joined by hyphens");
       const dir = resolve(v.dir ?? "motion", target);
       if (existsSync(dir)) throw new MotionError(`${dir} already exists`);
-      cpSync(join(packsDir(), "..", "skill", "template"), dir, { recursive: true });
+      cpSync(join(packsDir(), "..", "templates", "item"), dir, { recursive: true });
       const manifest = JSON.parse(readFileSync(join(dir, "item.json"), "utf8")) as Record<string, unknown>;
       manifest.id = target;
       manifest.name = target.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());

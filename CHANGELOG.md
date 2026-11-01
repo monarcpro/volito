@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- `volito init` sets a project up for coding agents in one step: it adds the Volito MCP server to
+  Claude Code's `.mcp.json`, Cursor's `.cursor/mcp.json` and VS Code's `.vscode/mcp.json` (merged,
+  never replacing another server; `--force` replaces an existing volito entry), puts the Volito skill
+  in `.claude/skills/volito`, and prints the `codex mcp add` line for Codex, whose config is global.
+  It picks the agents a project already uses (`--agent` chooses), and `--dry-run` shows the changes.
+- `volito doctor` says what is ready: Node, FFmpeg, the encoders behind each format, HEVC with alpha,
+  the bundled fonts, and each agent's MCP config and skill, with the fix for anything missing.
+- The agent skill moved to `skills/volito/SKILL.md`, where `npx skills add monarcpro/volito` finds it;
+  the item template for `volito new` moved to `templates/item`.
+
 ## 0.2.0 — 2026-10-26
 
 Sound, a web component, and a much faster browser player.
