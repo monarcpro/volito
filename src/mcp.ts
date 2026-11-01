@@ -18,14 +18,16 @@ import { checkItem, describeReport } from "./node/check.js";
 import { loadMedia, normalizeWords, readWords } from "./node/inputs.js";
 import { type Library, findItem, library, searchItems } from "./node/packs.js";
 import { packageVersion } from "./node/paths.js";
-import { formatIssues, itemOfSpec, loadSpecFile, specToOptions, validateSpec } from "./node/spec.js";
+import { formatIssues, itemOfSpec, specToOptions, validateSpec } from "./node/spec.js";
+import { loadAnySpec } from "./node/bundle.js";
+import { describeReview, reviewItem } from "./node/review.js";
 import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderSoundFile, renderStill, renderVideo } from "./node/render.js";
 
 const source = {
   item: z.string().optional().describe('A pack item: "essentials/lower-third", or its id "lower-third" (motion_list shows them). Give this or `code`.'),
   code: z.string().optional().describe("Your own program: plain JavaScript defining function frame(t, $) that returns SVG markup (see motion_api). Give this or `item`."),
   placement: z.enum(["overlay", "full"]).optional().describe("For `code`: overlay (transparent, over footage) or full (draws its own ground)."),
-  spec: z.string().optional().describe('A Graphic spec file (.json with "volito": 1; motion_validate checks one): its item and options are the base, and anything else given here wins. Give this instead of `item` or `code`.'),
+  spec: z.string().optional().describe('A Graphic spec file (.json with "volito": 1; motion_validate checks one) or a .volito bundle: its item and options are the base, and anything else given here wins. Give this instead of `item` or `code`.'),
 };
 
 const look = {
@@ -74,7 +76,7 @@ type Args = {
 };
 
 function pick(lib: Library, a: Args): MotionItem {
-  if (a.spec) return itemOfSpec(loadSpecFile(a.spec), lib);
+  if (a.spec) return itemOfSpec(loadAnySpec(a.spec), lib);
   if (a.code?.trim()) return customItem(a.code, { placement: a.placement, duration: a.duration });
   if (!a.item) throw new Error("give `item` (see motion_list) or `code` (see motion_api)");
   return findItem(a.item, lib);
@@ -89,7 +91,7 @@ function styleOf(s: string | undefined): string | undefined {
 
 async function optionsOf(item: MotionItem, a: Args): Promise<RenderOptions> {
   const words = a.words?.length ? normalizeWords(a.words) : a.wordsFile ? readWords(a.wordsFile) : undefined;
-  const base: RenderOptions = a.spec ? specToOptions(loadSpecFile(a.spec), item) : {};
+  const base: RenderOptions = a.spec ? specToOptions(loadAnySpec(a.spec), item) : {};
   const props = { ...(base.props ?? {}), ...(a.props ?? {}) };
   return {
     ...base,
@@ -212,6 +214,26 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
   );
 
   server.registerTool(
+    "motion_review",
+    {
+      title: "Review a motion graphic",
+      description: "Everything to look at before rendering, measured: the check at each aspect, when it settles and how long it holds still (with a warning when the entrance is slow or the hold too short to read its words), how much of an overlay sits under Reels', Shorts' and TikTok's own interface at 9:16, and a contact sheet per aspect (returned as images, written with a review.md to outDir).",
+      inputSchema: { ...source, ...look, outDir: z.string().optional().describe("Where to write the sheets and review.md. Default: volito-review/<id>.") },
+    },
+    async (a) => {
+      try {
+        const item = pick(lib(), a as Args);
+        const opts = await optionsOf(item, a as Args);
+        const rep = await reviewItem(item, { ...opts, ...(a.aspect ? { aspects: [parseAspect(a.aspect)] } : {}), outDir: a.outDir ?? `volito-review/${item.id}` });
+        const images = rep.aspects.filter((x) => x.sheet).slice(0, 2).map((x) => ({ type: "image" as const, data: readFileSync(x.sheet!).toString("base64"), mimeType: "image/png" }));
+        return { content: [...images, { type: "text" as const, text: describeReview(rep) }] };
+      } catch (err) {
+        return failure(err);
+      }
+    },
+  );
+
+  server.registerTool(
     "motion_render",
     {
       title: "Render a motion graphic",
@@ -233,7 +255,7 @@ export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
       try {
         const item = pick(lib(), a as Args);
         const opts = await optionsOf(item, a as Args);
-        const fromSpec = a.spec ? loadSpecFile(a.spec).spec.render : undefined;
+        const fromSpec = a.spec ? loadAnySpec(a.spec).spec.render : undefined;
         const format = (a.format ?? fromSpec?.format ?? "mov") as VideoFormat;
         const out = a.out ?? fromSpec?.out;
         const r = await renderVideo(item, {

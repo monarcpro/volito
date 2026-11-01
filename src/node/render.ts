@@ -147,6 +147,17 @@ function frameAt(s: Session, t: number, background: string | null, timeoutMs?: n
   return { doc, fonts: fontFilesForDocument(doc), frame };
 }
 
+/** One frame's pixels (RGBA, no ground under it), for analysis: what a review measures timing and safe zones on. */
+export function framePixels(s: Session, t: number): { data: Uint8Array; width: number; height: number } {
+  const f = frameAt(s, t, null);
+  try {
+    const img = new Resvg(f.doc, resvgOptions(f.fonts, s.width)).render();
+    return { data: img.pixels, width: img.width, height: img.height };
+  } catch (err) {
+    throw parseError(err);
+  }
+}
+
 function parseError(err: unknown): MotionError {
   return new MotionError(`the frame's SVG does not parse (${String((err as Error)?.message ?? err).slice(0, 200)}) — escape text with $.esc() and close every tag`);
 }

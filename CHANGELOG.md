@@ -19,6 +19,14 @@
   against its item (shape, props, parts, files, aspect, length; unknown fields get a "did you mean"),
   and `volito schema` prints its JSON Schema. The MCP tools take `spec`, and `motion_validate` checks one.
   Node: `parseSpec`, `validateSpec`, `loadSpecFile`, `specToOptions`, `specJsonSchema`.
+- `volito review` measures a graphic before anyone renders it: the check at each aspect, when it settles,
+  how long it holds still and when it leaves (read from the frames themselves, so it works for any
+  program), a warning when the entrance is slow or the hold too short for its words, how much of an
+  overlay sits under Instagram Reels', YouTube Shorts' and TikTok's interface at 9:16, and a contact sheet
+  per aspect written beside a review.md. The MCP tool `motion_review` returns the sheets as images.
+- `.volito` bundles: `volito bundle spec.json` packs a spec with every file it uses (a DESIGN.md, a
+  program, a transcript, images) into one file; every command and MCP tool takes a bundle where it takes a
+  spec, and renders it byte for byte the same anywhere.
 
 ## 0.2.0 — 2026-10-26
 

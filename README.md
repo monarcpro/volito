@@ -220,7 +220,19 @@ volito schema                                # the JSON Schema (also at https://
 ```
 
 Paths inside a spec (a DESIGN.md, a `program`, a transcript, image props) are relative to the spec file.
-`program` points at your own `frame(t, $)` file, or `code` holds it inline.
+`program` points at your own `frame(t, $)` file, or `code` holds it inline. `volito bundle priya.volito.json`
+packs the spec and those files into one `priya.volito` that every command takes, anywhere.
+
+### Review before you render
+
+```bash
+volito review lower-third --prop name="Priya Sharma" --aspect 9:16
+```
+
+The check at each aspect, then what the frames show: when the graphic settles, how long it holds still and
+when it leaves (with a warning when the entrance is slow or the hold too short for its words), how much of
+an overlay sits under Reels', Shorts' and TikTok's interface at 9:16, and a contact sheet per aspect in
+`volito-review/<item>/` with a `review.md`.
 
 | Option | |
 | --- | --- |
@@ -276,6 +288,7 @@ Cursor, Windsurf and other MCP clients:
 | `motion_sound` | the graphic's sound alone as a .wav, with its cue list |
 | `motion_moves` | every move, ease, idle, hit and mood the `motion` settings take |
 | `motion_validate` | check a Graphic spec (inline or a file) against its item before rendering |
+| `motion_review` | timing, 9:16 platform safe zones and a contact sheet per aspect, measured before rendering |
 | `motion_api` | the program API and the motion kit, for writing new graphics |
 
 Every tool takes an `item`, your own `code` or a `spec` file, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skills/volito/SKILL.md` — `npx volito init` installs it for Claude Code, `npx skills add monarcpro/volito` for other agents, or copy it

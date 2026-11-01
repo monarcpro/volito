@@ -16,7 +16,7 @@ process.stdout.on("error", (e: NodeJS.ErrnoException) => {
   if (e.code === "EPIPE") process.exit(0);
 });
 
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { AUTHORING_GUIDE, LIBRARY_GUIDE, MOTION_GUIDE, SOUND_GUIDE } from "./guide.js";
@@ -30,6 +30,7 @@ import { findItem, library, searchItems } from "./node/packs.js";
 import { packageVersion, packsDir } from "./node/paths.js";
 import { type LoadedSpec, formatIssues, isSpecFile, itemOfSpec, loadSpecFile, specFrom, specToOptions, validateSpec } from "./node/spec.js";
 import { specJsonSchema } from "./spec.js";
+import { bundleSpec, isBundleFile, loadBundleFile } from "./node/bundle.js";
 import { FORMAT_NOTES, type RenderOptions, VIDEO_FORMATS, type VideoFormat, renderSheet, renderSoundFile, renderStill, renderVideo } from "./node/render.js";
 
 const HELP = `Volito ${packageVersion()} — brand-aware, voice-synced motion graphics as code
@@ -40,7 +41,11 @@ Commands
   init [--agent a,b] [--dry-run] [--force]        set this project up for Claude Code, Cursor, VS Code or Codex:
                                                   the MCP server in each agent's config and the Volito skill
   doctor [--json]                                 what is ready: Node, FFmpeg and its formats, fonts, agents
+  review <item> [--aspect a] [--out dir]          check it, measure its timing and 9:16 safe zones, and write a
+                                                  contact sheet per aspect with a report (review.md)
   spec <item> [options] [--out g.volito.json]     write the options as a Graphic spec, a file any command takes
+  bundle <spec.json> [--out g.volito]             the spec and every file it uses (DESIGN.md, program, transcript,
+                                                  images) in one file any command takes
   validate <spec.json> [--strict] [--json]        check a spec against its item before rendering
   schema                                          the Graphic spec's JSON Schema
   list [--search words] [--category c] [--json]   the graphics in the packs
@@ -260,7 +265,7 @@ async function main(argv: string[]): Promise<number> {
   if (rest.length) throw new MotionError(`unexpected "${rest.join(" ")}" — options start with --`);
   const lib = library(v.packs ?? []);
   // A spec file stands in for an item: its options are the base the command line adds to.
-  const loaded: LoadedSpec | null = target && cmd !== "validate" && isSpecFile(target) ? loadSpecFile(target) : null;
+  const loaded: LoadedSpec | null = target && cmd !== "validate" && cmd !== "bundle" ? (isBundleFile(target) ? loadBundleFile(target) : isSpecFile(target) ? loadSpecFile(target) : null) : null;
   const need = () => {
     if (!target) throw new MotionError(`${cmd} needs an item (see: volito list)`);
     return loaded ? itemOfSpec(loaded, lib) : findItem(target, lib);
@@ -325,6 +330,19 @@ async function main(argv: string[]): Promise<number> {
       writeFileSync(resolve(out), `${JSON.stringify(spec, null, 2)}\n`);
       warn(rep.warnings.map((w) => `${w.path ? `${w.path}: ` : ""}${w.message}`), v.quiet);
       process.stdout.write(`${resolve(out)}\n  render it with: volito render ${JSON.stringify(out)}\n`);
+      return 0;
+    }
+    case "bundle": {
+      if (!target || !isSpecFile(target)) throw new MotionError("bundle needs a spec file (.json with \"volito\": 1) — write one with volito spec");
+      const b = bundleSpec(target, (spec, dir) => {
+        const item = itemOfSpec({ spec, dir }, lib);
+        return Object.entries(item.props).filter(([, p]) => p.type === "image").map(([k]) => k);
+      });
+      const out = resolve(v.out ?? target.replace(/(\.volito)?\.json$/i, "") + ".volito");
+      mkdirSync(dirname(out), { recursive: true });
+      writeFileSync(out, `${JSON.stringify(b)}\n`);
+      const names = Object.keys(b.files);
+      process.stdout.write(`${out}\n  the spec${names.length ? ` and ${names.join(", ")}` : ""} · ${bytes(statSync(out).size)}\n`);
       return 0;
     }
     case "schema":
@@ -424,6 +442,14 @@ async function main(argv: string[]): Promise<number> {
       warn(r.warnings, v.quiet);
       process.stdout.write(v.json ? `${JSON.stringify({ file: out, times: r.times, warnings: r.warnings }, null, 2)}\n` : `${out}\n  ${r.times.length} frames at ${r.times.map((t) => t.toFixed(2)).join(", ")} s\n`);
       return 0;
+    }
+    case "review": {
+      const item = need();
+      const opts = await optionsFor(item);
+      const { describeReview, reviewItem } = await import("./node/review.js");
+      const rep = await reviewItem(item, { ...opts, ...(v.aspect ? { aspects: [parseAspect(v.aspect)] } : {}), outDir: v.out ?? join("volito-review", item.id) });
+      process.stdout.write(v.json ? `${JSON.stringify(rep, null, 2)}\n` : `${describeReview(rep)}\n  report: ${join(rep.dir!, "review.md")}\n`);
+      return rep.ok ? 0 : 1;
     }
     case "check": {
       const item = need();

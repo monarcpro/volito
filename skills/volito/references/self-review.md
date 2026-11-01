@@ -5,7 +5,9 @@ second), so look every time.
 
 ## The loop
 
-1. `volito check <item> …` — fix every error; read every warning.
+1. `volito review <item> …` (MCP: `motion_review`) — the check at each aspect, measured timing (when it
+   settles, how long it holds, when it leaves) and 9:16 platform safe zones, with a sheet per aspect. Fix
+   every error; read every warning. `volito check` alone is the quicker pass while you iterate on code.
 2. `volito sheet <item> … --out sheet.png` — then open the PNG and look at it. With MCP,
    `motion_preview` returns the sheet as an image.
 3. Fix what you see, run the sheet again, compare.
