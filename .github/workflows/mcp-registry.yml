@@ -1,0 +1,50 @@
+name: mcp-registry
+# Lists the MCP server in the official MCP Registry (registry.modelcontextprotocol.io) as
+# io.github.monarcpro/volito. GitHub OIDC proves the run belongs to this repo, so no token or secret.
+# npm publishing stays manual (security-key 2FA): this lists the version in server.json once it is on
+# npm, and skips one that is already listed. It runs when a GitHub release is published, when
+# server.json changes on main, or by hand.
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+    paths: [server.json, .github/workflows/mcp-registry.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: mcp-registry
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: server.json matches package.json, is on npm and not listed yet
+        id: check
+        run: |
+          v=$(jq -r .version package.json)
+          name=$(jq -r .name server.json)
+          if [ "$(jq -r .version server.json)" != "$v" ] || [ "$(jq -r '.packages[0].version' server.json)" != "$v" ]; then
+            echo "::error::server.json is not at package.json's version $v"; exit 1
+          fi
+          if [ "$(jq -r .mcpName package.json)" != "$name" ]; then
+            echo "::error::package.json mcpName is not $name"; exit 1
+          fi
+          ready=true
+          if ! npm view "volito@$v" version >/dev/null 2>&1; then
+            echo "::notice::volito@$v is not on npm yet: publish it, then run this workflow again"; ready=false
+          elif [ "$(curl -s -o /dev/null -w '%{http_code}' "https://registry.modelcontextprotocol.io/v0.1/servers/${name/\//%2F}/versions/$v")" = "200" ]; then
+            echo "::notice::$name $v is already in the MCP Registry"; ready=false
+          fi
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+      - name: Install mcp-publisher
+        if: steps.check.outputs.ready == 'true'
+        run: curl -fsSL https://github.com/modelcontextprotocol/registry/releases/download/v1.8.7/mcp-publisher_linux_amd64.tar.gz | tar xz mcp-publisher
+      - name: Publish to the MCP Registry
+        if: steps.check.outputs.ready == 'true'
+        run: |
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
