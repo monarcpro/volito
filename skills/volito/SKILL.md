@@ -14,6 +14,22 @@ Everything below runs through the CLI (`npx -y volito …`, or just `volito …`
 `motion_preview`, `motion_check`, `motion_render`, `motion_sound`, `motion_moves`, `motion_api` — each takes `motion`, `mood`,
 `seed` and `speed`.
 
+## Read these when the task needs them
+
+The references in `references/` are the craft behind the commands. Load only what the task needs:
+
+| When | Read |
+|---|---|
+| Choosing an item, style or mood for someone | `references/art-direction.md` |
+| Changing how parts move, timing, moods and seeds | `references/motion-craft.md` |
+| Using or writing someone's brand (DESIGN.md, from a website) | `references/brand.md` |
+| Text that has to fit, every aspect, safe zones, contrast on footage | `references/type-and-layout.md` |
+| Landing on spoken words, beats, placing graphics in an edit | `references/voice-and-timing.md` |
+| Before handing over any render | `references/self-review.md` |
+| "Make it look like this" with a screenshot or clip | `references/matching-a-reference.md` |
+| No item fits and you write one | `references/writing-items.md` |
+| Picking formats, alpha, sound, batches from data | `references/delivery.md` |
+
 ## The loop
 
 1. **Find the item.** `volito list` (or `volito list --search "name plate"`). 96 items in ten packs:
@@ -86,6 +102,8 @@ DOM); size everything by `$.k`; colours from `$.c` (bg, fg, accent, accent2, sur
 
 ## Good to know
 
+- `volito init` sets a project up for Claude Code, Cursor and VS Code (the MCP server and this skill);
+  `volito doctor` says what is ready, including which video formats this machine's FFmpeg can write.
 - Overlays render transparent; `full` items draw their own ground. MP4 has no alpha.
 - Hindi (Devanagari), Cyrillic, Greek, Vietnamese and Latin-extended text are supported.
 - Video needs ffmpeg on PATH (or `VOLITO_FFMPEG`); stills, sheets and PNG frames do not.
