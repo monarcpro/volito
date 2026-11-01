@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.1 — 2026-11-01
+
+- The MCP server's instructions, which an agent reads before its first call, named only five of the
+  twelve packs. They now list every pack the server can render with its item count, read from the
+  library (so packs added with `--packs` or `VOLITO_PACKS` are named too), and mention `motion_review`,
+  Graphic specs and `motion_validate`.
+- The README says which MCP tools take `item`, `code` or `spec` (the preview, still, check, review,
+  render and sound tools; not every tool), and its pack image shows all 107 graphics in 12 packs.
+- The MCP Registry listing (`io.github.monarcpro/volito`) is published by a GitHub Actions workflow
+  with GitHub OIDC once a version is on npm.
+
 ## 0.3.0 — 2026-11-01
 
 One-step agent setup, Graphic specs, a review before rendering, interactive states, and two new packs.

@@ -299,6 +299,10 @@ describe("mcp", () => {
     await server.connect(a);
     const client = new Client({ name: "test", version: "1.0.0" });
     await client.connect(b);
+    const instructions = client.getInstructions() ?? "";
+    const packs = library().packs;
+    for (const p of packs) expect(instructions).toContain(`${p.id} (${p.entries.length})`);
+    expect(instructions).toContain(`${packs.reduce((n, p) => n + p.entries.length, 0)} graphics in ${packs.length} packs`);
     const tools = (await client.listTools()).tools.map((t) => t.name);
     expect(tools).toEqual(expect.arrayContaining(["motion_list", "motion_info", "motion_styles", "motion_preview", "motion_still", "motion_check", "motion_render", "motion_api"]));
     const list = await client.callTool({ name: "motion_list", arguments: { search: "subscribe" } });

@@ -67,7 +67,7 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 
 ## The packs
 
-<img src=".github/assets/packs.jpg" alt="96 graphics in 10 packs: a render from each of Essentials, Broadcast, Social, Data, 3D, Transitions, Annotate, Type, Backdrops and Promo" width="100%">
+<img src=".github/assets/packs.jpg" alt="107 graphics in 12 packs: a render from each of Essentials, Broadcast, Social, Data, 3D, Transitions, Annotate, Type, Backdrops, Promo, UI and Effects" width="100%">
 
 107 graphics in twelve packs. Every one takes any brand style and any aspect, and every part of it takes any move.
 
@@ -293,7 +293,7 @@ Cursor, Windsurf and other MCP clients:
 | `motion_review` | timing, 9:16 platform safe zones and a contact sheet per aspect, measured before rendering |
 | `motion_api` | the program API and the motion kit, for writing new graphics |
 
-Every tool takes an `item`, your own `code` or a `spec` file, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skills/volito/SKILL.md` — `npx volito init` installs it for Claude Code, `npx skills add monarcpro/volito` for other agents, or copy it
+The preview, still, check, review, render and sound tools take an `item`, your own `code` or a `spec` file, plus `motion`, `mood`, `seed` and `speed`. A ready-made agent skill is in `skills/volito/SKILL.md` — `npx volito init` installs it for Claude Code, `npx skills add monarcpro/volito` for other agents, or copy it
 to `~/.claude/skills/volito/` for Claude Code.
 
 ## Node API

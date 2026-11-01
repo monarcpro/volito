@@ -114,9 +114,34 @@ const text = (t: string) => ({ content: [{ type: "text" as const, text: t }] });
 const failure = (err: unknown) => ({ isError: true, content: [{ type: "text" as const, text: String((err as Error)?.message ?? err) }] });
 const warnings = (w: string[]) => (w.length ? `\nWarnings:\n${w.map((x) => `- ${x}`).join("\n")}` : "");
 
+/**
+ * What the server tells an agent before its first call. The pack list is read from the library the
+ * server renders from, so it names every pack, extra ones from --packs or VOLITO_PACKS included.
+ */
+export function mcpInstructions(packs: { id: string; entries: unknown[] }[]): string {
+  const total = packs.reduce((n, p) => n + p.entries.length, 0);
+  return [
+    "Volito renders brand-aware motion graphics to video files with alpha: lower thirds, titles, kinetic type, charts and maps, 3D, transitions, annotations, backgrounds, promos, UI micro-interactions and filter effects.",
+    "Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), measure its timing and 9:16 safe zones with motion_review, then motion_render to a file.",
+    packs.length ? `${total} graphics in ${packs.length} packs: ${packs.map((p) => `${p.id} (${p.entries.length})`).join(", ")}; motion_list says what each one is.` : "",
+    "Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed.",
+    "The preview, still, check, review, render and sound tools take an `item`, your own `code`, or a Graphic spec (`spec`: a .json file with \"volito\": 1, or a .volito bundle) that keeps the whole recipe; motion_validate checks a spec before rendering.",
+    "To make something no item covers, write a program against motion_api (it includes 3D scenes and world maps) and use the same tools with `code`.",
+    "Every render can carry sound Volito synthesises itself (motion_render with sound: true, or motion_sound for the track alone): a program's own sound($) cues, else the right pops, whooshes, ticks and hits read from its motion.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
 export function createMcpServer(opts: { packs?: string[] } = {}): McpServer {
   const lib = () => library(opts.packs ?? []);
-  const server = new McpServer({ name: "volito", version: packageVersion() }, { instructions: "Volito renders brand-aware motion graphics (lower thirds, titles, CTAs, stats, lists, end cards…) to video files with alpha. Find one with motion_list, read its props and parts with motion_info, look at it with motion_preview (a contact sheet image), then motion_render to a file. Motion is open-ended: any part takes any move, ease, idle, emphasis or keyframes (motion_moves lists them) through `motion`, and `mood` + `seed` give a new choreography for every seed. Packs: essentials, broadcast (lower thirds, tickers, score bugs), social (follow cards, notifications, chat), data (charts, maps, flight routes) and 3d (extruded logos and titles, card flips, globes). To make something no item covers, write a program against motion_api (it includes 3D scenes and world maps) and use the same tools with `code`. Every render can carry sound Volito synthesises itself (motion_render with sound: true, or motion_sound for the track alone): a program's own sound($) cues, else the right pops, whooshes, ticks and hits read from its motion." });
+  let packs: Library["packs"] = [];
+  try {
+    packs = lib().packs;
+  } catch {
+    // A broken extra pack still reports itself on the first call that loads the library.
+  }
+  const server = new McpServer({ name: "volito", version: packageVersion() }, { instructions: mcpInstructions(packs) });
 
   server.registerTool(
     "motion_list",

@@ -14,7 +14,7 @@
     "marked": { "type": "text", "label": "Marked word", "description": "the word the lime marker swipes under", "default": "sentence.", "maxLength": 20 },
     "wordmark": { "type": "text", "label": "Wordmark", "default": "VOLITO", "maxLength": 10 },
     "tagline": { "type": "text", "label": "Tagline", "default": "MOTION GRAPHICS AS CODE", "maxLength": 32 },
-    "chips": { "type": "text", "label": "Chips", "description": "three short facts, \"a; b; c\"", "default": "96 graphics; 36 styles; any aspect", "maxLength": 60 },
+    "chips": { "type": "text", "label": "Chips", "description": "three short facts, \"a; b; c\"", "default": "107 graphics; 36 styles; any aspect", "maxLength": 60 },
     "cmd": { "type": "text", "label": "Command", "default": "$ npx volito", "maxLength": 24 },
     "name": { "type": "text", "label": "Name", "default": "Volito", "maxLength": 12 },
     "byline": { "type": "text", "label": "Byline", "default": "by MONARC PRO", "maxLength": 30 },
