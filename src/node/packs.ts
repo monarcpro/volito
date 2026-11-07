@@ -39,7 +39,7 @@ export function builtinPacks(): MotionPack[] {
   if (builtin) return builtin;
   const dir = packsDir();
   // Essentials first, then the rest in the order they are shown, then any others by name.
-  const order = ["essentials", "broadcast", "social", "data", "3d", "transitions", "annotate", "type", "backdrops", "promo", "ui", "effects"];
+  const order = ["essentials", "broadcast", "social", "data", "3d", "transitions", "annotate", "type", "captions", "backdrops", "promo", "ui", "effects"];
   const rank = (d: string) => (order.includes(d) ? order.indexOf(d) : order.length);
   builtin = existsSync(dir)
     ? readdirSync(dir)

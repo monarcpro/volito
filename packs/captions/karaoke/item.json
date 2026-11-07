@@ -1,0 +1,135 @@
+{
+  "id": "karaoke",
+  "name": "Karaoke captions",
+  "description": "Social captions on the voice: a line or two at a time, the word being said lit by a pill that slides from word to word (or in the accent colour, or underlined), the rest of the line waiting dimmed. Give a transcript with --words; *starred* words and the ones in `accents` take the accent.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "subtitles",
+    "karaoke",
+    "transcript",
+    "words",
+    "social",
+    "reels",
+    "shorts",
+    "tiktok"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 7,
+    "min": 1.5,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Captions keep people watching, so every *word* lands right on time.",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "look": {
+      "type": "choice",
+      "label": "Highlight",
+      "description": "pill: a block of accent behind the word being said · color: the word turns the accent · underline: a bar draws under it",
+      "options": [
+        "pill",
+        "color",
+        "underline"
+      ],
+      "default": "pill"
+    },
+    "upcoming": {
+      "type": "choice",
+      "label": "Words not said yet",
+      "options": [
+        "dim",
+        "hidden"
+      ],
+      "default": "dim"
+    },
+    "lines": {
+      "type": "choice",
+      "label": "Lines",
+      "options": [
+        "two",
+        "one"
+      ],
+      "default": "two"
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "bottom",
+        "center",
+        "top"
+      ],
+      "default": "bottom"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "ground": {
+      "type": "choice",
+      "label": "Behind the words",
+      "description": "shadow: straight on the footage with a soft shadow · box: a dark rounded box behind each line",
+      "options": [
+        "shadow",
+        "box"
+      ],
+      "default": "shadow"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "as typed",
+        "upper",
+        "lower",
+        "style"
+      ],
+      "default": "as typed"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.3,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    },
+    "ticks": {
+      "type": "boolean",
+      "label": "Sound on every word",
+      "default": false
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the caption lines, their highlight and box"
+  }
+}

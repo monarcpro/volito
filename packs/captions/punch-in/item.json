@@ -1,0 +1,89 @@
+{
+  "id": "punch-in",
+  "name": "Punch-in captions",
+  "description": "Each phrase punches in from far too close out of a blur, then holds with a slow push while its words light up as they are said, the word being said in the accent. Give a transcript with --words.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "zoom",
+    "punch in",
+    "kinetic typography",
+    "hook",
+    "transcript",
+    "reels"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Every phrase *punches* straight in.",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "center",
+        "bottom",
+        "top"
+      ],
+      "default": "center"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "upper",
+        "as typed",
+        "lower",
+        "style"
+      ],
+      "default": "upper"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the caption words and everything drawn with them"
+  }
+}

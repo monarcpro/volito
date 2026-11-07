@@ -26,7 +26,7 @@ import { MOTION_3D_CODE } from "./three.js";
 
 export const MOTION_FORMAT = 1;
 
-export const CATEGORIES = ["lower-third", "title", "cta", "stat", "list", "quote", "end-card", "callout", "social", "chart", "logo", "transition", "banner", "timer", "text", "scene"] as const;
+export const CATEGORIES = ["lower-third", "title", "cta", "stat", "list", "quote", "end-card", "callout", "social", "chart", "logo", "transition", "banner", "timer", "text", "captions", "scene"] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 /** overlay: transparent, sits over footage · full: draws its own ground (a card, a scene). */

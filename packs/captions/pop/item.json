@@ -1,0 +1,117 @@
+{
+  "id": "pop",
+  "name": "Pop captions",
+  "description": "Big captions a few words at a time, each word landing on its own time with a pop — the newest one in the accent. Give a transcript with --words; *starred* words and the ones in `accents` take the second accent.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "subtitles",
+    "kinetic typography",
+    "transcript",
+    "words",
+    "social",
+    "reels",
+    "shorts",
+    "tiktok",
+    "hook"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Most videos lose people in the first *three seconds.*",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "words": {
+      "type": "choice",
+      "label": "Words at a time",
+      "options": [
+        "two",
+        "one",
+        "three"
+      ],
+      "default": "two"
+    },
+    "highlight": {
+      "type": "choice",
+      "label": "Highlight",
+      "description": "newest: the word just said is in the accent · none: only the accent words",
+      "options": [
+        "newest",
+        "none"
+      ],
+      "default": "newest"
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "center",
+        "bottom",
+        "top"
+      ],
+      "default": "center"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "large",
+        "huge"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "upper",
+        "as typed",
+        "lower",
+        "style"
+      ],
+      "default": "upper"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    },
+    "ticks": {
+      "type": "boolean",
+      "label": "Sound on every word",
+      "default": false
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the words"
+  }
+}

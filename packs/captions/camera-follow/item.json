@@ -1,0 +1,141 @@
+{
+  "id": "camera-follow",
+  "name": "Camera-follow captions",
+  "description": "Each sentence written across a canvas far bigger than the frame while a camera follows the words as they are said: every word a step bigger than the last with the camera pulling back to keep it the same size (or the camera gliding along lines of text), motion blur on every move, and a pull-back at the sentence's end to show it whole. Give a transcript with --words; *starred* words and the ones in `accents` take the accent.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "kinetic typography",
+    "camera",
+    "zoom",
+    "transcript",
+    "words",
+    "social",
+    "reels",
+    "hook"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1.5,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Captions that follow every word you say, *right* on time.",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "camera": {
+      "type": "choice",
+      "label": "Camera",
+      "description": "grow: each word a step bigger, the camera pulling back to keep up · track: lines of one size, the camera gliding along them",
+      "options": [
+        "grow",
+        "track"
+      ],
+      "default": "grow"
+    },
+    "framing": {
+      "type": "choice",
+      "label": "Framing",
+      "description": "how big the newest word is on screen",
+      "options": [
+        "standard",
+        "tight",
+        "wide"
+      ],
+      "default": "standard"
+    },
+    "growth": {
+      "type": "choice",
+      "label": "Growth",
+      "description": "grow camera: how much bigger each word is than the last",
+      "options": [
+        "standard",
+        "steady",
+        "bold"
+      ],
+      "default": "standard"
+    },
+    "blur": {
+      "type": "choice",
+      "label": "Motion blur",
+      "options": [
+        "standard",
+        "subtle",
+        "heavy",
+        "off"
+      ],
+      "default": "standard"
+    },
+    "ending": {
+      "type": "choice",
+      "label": "Sentence end",
+      "description": "pull back: the camera shows each sentence whole once it is said · hold: it stays on the last word",
+      "options": [
+        "pull back",
+        "hold"
+      ],
+      "default": "pull back"
+    },
+    "ground": {
+      "type": "choice",
+      "label": "Behind the words",
+      "description": "vignette: a soft dark edge over the footage · none: straight on the footage with a shadow · panel: the brand's ground, full frame",
+      "options": [
+        "vignette",
+        "none",
+        "panel"
+      ],
+      "default": "vignette"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "upper",
+        "as typed",
+        "lower",
+        "style"
+      ],
+      "default": "upper"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.42,
+      "min": 0.1,
+      "max": 2,
+      "step": 0.01
+    },
+    "ticks": {
+      "type": "boolean",
+      "label": "Sound on every word",
+      "default": false
+    }
+  },
+  "beats": {
+    "in": 0.15
+  },
+  "parts": {
+    "ground": "the vignette or panel behind the words",
+    "words": "the words and the camera over them"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "id": "blur-in",
+  "name": "Blur-in captions",
+  "description": "Calm captions: each word resolves from a soft blur and rises into place as it is said, in the brand's text face (or display face). Give a transcript with --words.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "subtitles",
+    "calm",
+    "keynote",
+    "blur",
+    "transcript",
+    "interview"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Calm words that settle into focus as they are said.",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "bottom",
+        "center",
+        "top"
+      ],
+      "default": "bottom"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "as typed",
+        "upper",
+        "lower",
+        "style"
+      ],
+      "default": "as typed"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    },
+    "face": {
+      "type": "choice",
+      "label": "Face",
+      "options": [
+        "text",
+        "display"
+      ],
+      "default": "text"
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the caption words and everything drawn with them"
+  }
+}

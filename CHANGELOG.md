@@ -1,5 +1,47 @@
 # Changelog
 
+## Unreleased
+
+- A captions pack, timed to the voice from a transcript (`--words`, Whisper JSON or `[{w, s, e}]`):
+  `captions/camera-follow` writes each sentence across a canvas far bigger than the frame while a camera
+  follows the words — every word a step bigger with the camera pulling back to keep it the same size, or
+  lines of text the camera glides along — with motion blur on its moves and a pull-back to show each
+  sentence whole; `captions/karaoke` shows a line or two with the spoken word lit by a sliding pill, the
+  accent colour or an underline; `captions/pop` lands a few big words at a time; `captions/subtitles` sets
+  clean, balanced two-line subtitles on a box or a shadow; and fifty-three more styles — `marker` (a highlighter
+  swipes under each word and stays lit), `neon-tubes` (unlit tubes that flicker on with a glow), `scramble`
+  (scrambled characters settle into the word), `slam` (one huge word at a time from alternating sides with
+  motion blur), `typed` (letters across the spoken time, a blinking caret), `editorial` (key words far
+  bigger in the accent face), `stacked` (lines stacking up, older ones shrinking and fading), `blur-in` (calm
+  blur-to-sharp rise), `gradient-fill` (gradient-filled words with an elastic bounce), `wipe-on` (each word wiped on
+  behind an accent edge), `rgb-split` (RGB split, jitter and a torn slice as each word lands), `burst` (particle
+  bursts on the key words), `boxes` (every word on its own block), `sticker` (die-cut white borders, slapped on
+  at a tilt), `focus-pull` (the spoken word sharp, the rest blurred), `wave` (letters rise and ride a wave),
+  `outline` (hollow words that fill as they are said), `bubble` (speech bubbles that alternate sides),
+  `crawl` (a news crawl with the spoken word at the reading point), `extrude` (retro 3D words),
+  `two-tone` (each word split white over accent), `drop` (words fall and bounce onto the line), `punch-in`
+  (phrases zoom in out of a blur), `flipboard` (split-flap tiles that flip to each letter), `progress` (a bar
+  that fills with the voice), `lyrics` (the sung line big in the middle, the view scrolling), `messages` (a chat
+  thread taking turns), `striped` (moving stripes in the brand's accents), `icons` (an icon pops above words
+  that have one) and `scribble` (handwritten, key words underlined or circled); 23 social caption looks
+  on a shared look engine — line styles (`index-card`, `weight-shift`, `italic-aside`, `tile-step`, `soft-rise`,
+  `ember-caps`, `aura-caps`, `tape-bars`, `punch-outline`, `wide-pair`, `signed-line`, `spaced-serif`,
+  `night-script`) and lockups built around each phrase's key word (`headline-word`, `flare-word`, `zine-stack`,
+  `type-medley`, `tube-light`, `tide-poster`, `block-justify`, `circled-word`, `notebook`, `loop-script`); and ten
+  script captions — `pen-write` (a signature script written on as it is said, a glowing nib leading), `cursive-neon`
+  (script neon tubes that buzz on, words still to come in dark glass), `groovy-script` (seventies script with
+  stacked offset shadows), `script-sandwich` (a huge formal script key word between spaced capitals and fine rules),
+  `swash-mark` (the key word in script on a paint swash), `vow-script` (fine lowercase script out of a soft blur over
+  a hairline rule), `brush-ribbon` (brush script on a ragged painted ribbon), `script-fill` (outlined script that
+  fills as it is said), `doodle-script` (handwriting with scribbled underlines and sparks) and `script-duet` (every
+  other word in script) — each in its own colours or, with `palette: brand`, the brand's accents: 67 styles in all. Each takes the
+  transcript's own words, or `text`
+  timed to it (or paced evenly without one), with *starred* or listed accent words, in the brand's faces.
+  The item category list gains `captions`.
+- Twelve more bundled faces for them (SIL Open Font License, from Fontsource): Instrument Sans, Instrument Serif
+  (with italic), Kaushan Script, Parisienne, Michroma, Great Vibes, Dancing Script, Yellowtail, Mr Dafoe,
+  Sacramento, Homemade Apple and Allura.
+
 ## 0.3.1 — 2026-11-01
 
 - The MCP server's instructions, which an agent reads before its first call, named only five of the

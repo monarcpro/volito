@@ -26,7 +26,7 @@ By [MONARC STUDIOS](https://monarcpro.app), the team behind MONARC PRO. Volito i
 inside the [MONARC PRO](https://monarcpro.app) video editor, opened up; the name is Latin for “to flutter”.
 Every graphic is a small program — `function frame(t, $)` returns the SVG of one frame — so it is
 readable, diffable, seekable to any frame, and something an AI agent can write and fix. It ships with
-107 ready-made graphics in twelve packs (3D, maps, transitions, kinetic type, interactive UI and filter effects among them), 36 brand styles,
+174 ready-made graphics in thirteen packs (3D, maps, transitions, kinetic type, captions on the voice, interactive UI and filter effects among them), 36 brand styles,
 sixteen animated patterns, a CLI, a Node API, a browser player and an MCP server, and renders to ProRes 4444 or HEVC with alpha, WebM, MP4, GIF, PNG frames or SVG.
 
 - **One design, every brand.** Items draw with colour roles and faces, not fixed colours: pass one of 36
@@ -69,7 +69,7 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 
 <img src=".github/assets/packs.jpg" alt="107 graphics in 12 packs: a render from each of Essentials, Broadcast, Social, Data, 3D, Transitions, Annotate, Type, Backdrops, Promo, UI and Effects" width="100%">
 
-107 graphics in twelve packs. Every one takes any brand style and any aspect, and every part of it takes any move.
+174 graphics in thirteen packs. Every one takes any brand style and any aspect, and every part of it takes any move.
 
 | Pack | Items |
 | --- | --- |
@@ -81,6 +81,7 @@ stills, contact sheets and PNG frames do not. WebM needs an ffmpeg built with li
 | **Transitions** (11) | Cover the frame by the cut, reveal the next shot: `iris` (circle, diamond, star, square) · `blinds` · `doors` (with a Bauhaus disc) · `glitch` · `ink` (wobbly blooms) · `clock` · `tiles` (Bauhaus shapes) · `pixels` · `stripes` · `slices` · `whip` — each with a word at the cut |
 | **Annotate** (10) | Point at things in footage (places in % of the frame): `arrow` (hand-drawn or clean) · `circle` · `spotlight` (feathered dim) · `focus` (brackets that lock on) · `highlight` (highlighter, underline, box, strike) · `stamp` (pressed ink) · `reactions` (live hearts, likes, fire) · `pointer` (leader line and card) · `emphasis` · `markers` (numbered) |
 | **Type** (10) | Kinetic type: `typewriter` · `word-swap` (a word that keeps changing) · `split-flap` · `marquee` (tilted scrolling bands) · `echo` · `liquid-fill` · `decode` · `word-by-word` · `key-phrase` (marker on *marked* words) · `stack` (editorial) |
+| **Captions** (67) | On the voice from a transcript (see *Captions on the voice*): `camera-follow` (a camera that follows the words) · `karaoke` · `pop` · `subtitles`, 30 motion styles (`marker`, `neon-tubes`, `scramble`, `slam`, `typed`, `flipboard`, `lyrics`, `messages`, `crawl` …), 23 social looks — line styles (`index-card`, `tape-bars`, `punch-outline`, `ember-caps` …) and key-word lockups (`headline-word`, `tide-poster`, `circled-word`, `notebook` …) — and 10 script styles: `pen-write` · `cursive-neon` · `groovy-script` · `script-sandwich` · `swash-mark` · `vow-script` · `brush-ribbon` · `script-fill` · `doodle-script` · `script-duet` |
 | **Backdrops** (9) | Moving grounds: `pattern` (any of the sixteen) · `aurora` · `tiles` (Bauhaus field) · `retro-grid` (synthwave) · `blobs` (lava goo) · `gradient` · `starfield` · `bokeh` · `topo` |
 | **Promo** (8) | `sale-badge` (starburst) · `price-card` (counts down, strike, click) · `coupon` (copy the code) · `offer-countdown` (D:H:M:S) · `features` (checklist) · `cta` (button and cursor) · `launch` · `ribbon` (crossing tapes) |
 | **UI** (5) | Interactive states (see *Interactive states*): `button` (idle, hover, press, loading, done) · `toggle` · `like` (rolling count) · `loader` (success or failure) · `bell` (badge, read) |
@@ -134,6 +135,23 @@ function frame(t, $) {
 Maps use Natural Earth's countries (177, packed into 30 KB): `worldMap($, { center, zoom })` projects them
 flat (Equal Earth), `worldGlobe(S, …)` puts them on a 3D globe, and `worldFind("UK")` finds one by name,
 short name or ISO number. `volito api` documents both.
+
+## Captions on the voice
+
+The `captions` pack turns a transcript into captions: each word comes in when it is said, phrases break
+where a reader would, and a sentence's last word stays with its line. Give Whisper JSON (or `[{w, s, e}]`)
+with `--words`; add `text` to caption your own wording timed to the voice, or give `text` alone to pace it
+evenly.
+
+```bash
+volito render captions/karaoke --words talk.json --aspect 9:16 --out captions.mov
+volito render captions/pen-write --words talk.json --prop accents=launch,free --out signed.mov
+volito render captions/tape-bars --words talk.json --style cobalt --prop palette=brand --out brand.mov
+```
+
+*Starred* words in `text`, or the words listed in `accents`, are key words; the lockup styles build each
+phrase around its key word (the longest one when none is marked). Styles with colours of their own take
+`palette: brand` to use the brand's accents instead. Over footage, render ProRes 4444 or WebM with alpha.
 
 ## Sound design
 

@@ -1,0 +1,98 @@
+{
+  "id": "two-tone",
+  "name": "Two-tone captions",
+  "description": "Each word cut through the middle — its top half white, its bottom half in the accent — the halves sliding together as it is said. Give a transcript with --words.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "two tone",
+    "split",
+    "fashion",
+    "bold",
+    "transcript"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Two tones, *one* voice.",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "center",
+        "bottom",
+        "top"
+      ],
+      "default": "center"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "upper",
+        "as typed",
+        "lower",
+        "style"
+      ],
+      "default": "upper"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    },
+    "colors": {
+      "type": "choice",
+      "label": "Colours",
+      "options": [
+        "white and accent",
+        "accents"
+      ],
+      "default": "white and accent",
+      "description": "white and accent: a white top over an accent bottom · accents: the brand's two accents"
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the caption words and everything drawn with them"
+  }
+}

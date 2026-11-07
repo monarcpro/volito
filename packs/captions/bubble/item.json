@@ -1,0 +1,117 @@
+{
+  "id": "bubble",
+  "name": "Speech-bubble captions",
+  "description": "Each phrase pops up in a speech bubble with a tail, its words appearing as they are said; bubbles alternate sides like a conversation, or stay on one side. Give a transcript with --words.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "speech bubble",
+    "chat",
+    "dialogue",
+    "podcast",
+    "transcript"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Hey! Did you see this? It's *wild.*",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "bottom",
+        "center",
+        "top"
+      ],
+      "default": "bottom"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "as typed",
+        "upper",
+        "lower",
+        "style"
+      ],
+      "default": "as typed"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    },
+    "side": {
+      "type": "choice",
+      "label": "Side",
+      "options": [
+        "alternate",
+        "left",
+        "right"
+      ],
+      "default": "alternate"
+    },
+    "look": {
+      "type": "choice",
+      "label": "Bubble",
+      "options": [
+        "light",
+        "dark",
+        "brand"
+      ],
+      "default": "light"
+    },
+    "upcoming": {
+      "type": "choice",
+      "label": "Words not said yet",
+      "options": [
+        "hidden",
+        "dim"
+      ],
+      "default": "hidden"
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the caption words and everything drawn with them"
+  }
+}

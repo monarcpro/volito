@@ -15,6 +15,20 @@ export const EXTRA_FONTS: Record<string, { weights: number[]; italic?: number[] 
   Pacifico: { weights: [400] },
   Fraunces: { weights: [600, 900], italic: [600] },
   "Bricolage Grotesque": { weights: [500, 800] },
+  // For the caption looks (captions pack): an editorial sans and serif pair, two scripts and a wide display face.
+  "Instrument Sans": { weights: [500, 700] },
+  "Instrument Serif": { weights: [400], italic: [400] },
+  "Kaushan Script": { weights: [400] },
+  Parisienne: { weights: [400] },
+  Michroma: { weights: [400] },
+  // Scripts for the script captions: signature, neon, formal, monoline, casual, handwriting and brush.
+  "Great Vibes": { weights: [400] },
+  "Dancing Script": { weights: [500, 700] },
+  Yellowtail: { weights: [400] },
+  "Mr Dafoe": { weights: [400] },
+  Sacramento: { weights: [400] },
+  "Homemade Apple": { weights: [400] },
+  Allura: { weights: [400] },
 };
 
 /** Generic fallbacks for faces the browser has not loaded yet (anything not named here is sans). */
@@ -29,6 +43,16 @@ const GENERIC: Record<string, string> = {
   "Permanent Marker": "'Comic Sans MS', cursive",
   "Patrick Hand": "'Comic Sans MS', cursive",
   Pacifico: "'Comic Sans MS', cursive",
+  "Instrument Serif": "Georgia, serif",
+  "Kaushan Script": "'Brush Script MT', cursive",
+  Parisienne: "'Snell Roundhand', cursive",
+  "Great Vibes": "'Snell Roundhand', cursive",
+  "Dancing Script": "'Brush Script MT', cursive",
+  Yellowtail: "'Brush Script MT', cursive",
+  "Mr Dafoe": "'Snell Roundhand', cursive",
+  Sacramento: "'Snell Roundhand', cursive",
+  "Homemade Apple": "'Comic Sans MS', cursive",
+  Allura: "'Snell Roundhand', cursive",
 };
 
 /**

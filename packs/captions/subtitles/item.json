@@ -1,0 +1,99 @@
+{
+  "id": "subtitles",
+  "name": "Subtitles",
+  "description": "Clean subtitles timed to the voice: up to two lines at a time in the brand's text face, broken at pauses and sentence ends, on a dark box behind each line or with a shadow. Give a transcript with --words.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "subtitles",
+    "accessibility",
+    "transcript",
+    "words",
+    "interview",
+    "broadcast"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 8,
+    "min": 1.5,
+    "max": 300
+  },
+  "aspects": [
+    "16:9",
+    "9:16",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Most videos lose people in the first three seconds. Captions keep them watching.",
+      "maxLength": 1200
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "ground": {
+      "type": "choice",
+      "label": "Behind the words",
+      "description": "box: a translucent box behind each line · solid: a near-opaque box · shadow: a soft shadow only",
+      "options": [
+        "box",
+        "solid",
+        "shadow"
+      ],
+      "default": "box"
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "bottom",
+        "top"
+      ],
+      "default": "bottom"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "as typed",
+        "upper",
+        "lower",
+        "style"
+      ],
+      "default": "as typed"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    }
+  },
+  "beats": {
+    "in": 0
+  },
+  "parts": {
+    "words": "the subtitle lines and their boxes"
+  }
+}

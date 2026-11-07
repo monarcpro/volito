@@ -1,0 +1,113 @@
+{
+  "id": "scribble",
+  "name": "Scribble captions",
+  "description": "Handwritten captions: each word written on in a marker hand as it is said, the key words underlined or circled with a quick scribble in the second accent. Give a transcript with --words.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "handwritten",
+    "marker",
+    "scribble",
+    "doodle",
+    "transcript",
+    "explainer"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Write it down, *underline* the good bits.",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "bottom",
+        "center",
+        "top"
+      ],
+      "default": "bottom"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "as typed",
+        "upper",
+        "lower",
+        "style"
+      ],
+      "default": "as typed"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    },
+    "ticks": {
+      "type": "boolean",
+      "label": "Sound on every word",
+      "default": false
+    },
+    "hand": {
+      "type": "choice",
+      "label": "Hand",
+      "options": [
+        "marker",
+        "print"
+      ],
+      "default": "marker",
+      "description": "marker: a fast marker script · print: neat printed handwriting"
+    },
+    "mark": {
+      "type": "choice",
+      "label": "Mark",
+      "options": [
+        "underline",
+        "circle"
+      ],
+      "default": "underline"
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the caption words and everything drawn with them"
+  }
+}

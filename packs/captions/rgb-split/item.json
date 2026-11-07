@@ -1,0 +1,103 @@
+{
+  "id": "rgb-split",
+  "name": "Glitch captions",
+  "description": "Each word lands as a broken signal — split into red and cyan, jittering, a slice torn sideways — then locks clean; accent words flare again now and then. Give a transcript with --words.",
+  "category": "captions",
+  "tags": [
+    "captions",
+    "glitch",
+    "rgb split",
+    "tech",
+    "gaming",
+    "transcript"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 1,
+    "max": 120
+  },
+  "aspects": [
+    "9:16",
+    "16:9",
+    "1:1",
+    "4:5"
+  ],
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Text",
+      "description": "what is said; leave empty to caption the transcript as it is. Wrap a word in *stars* for the accent",
+      "default": "Signal lost. Signal *found.*",
+      "maxLength": 600
+    },
+    "accents": {
+      "type": "text",
+      "label": "Accent words",
+      "description": "words to put in the accent wherever they are said, comma separated",
+      "default": "",
+      "maxLength": 120
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "center",
+        "bottom",
+        "top"
+      ],
+      "default": "center"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "case": {
+      "type": "choice",
+      "label": "Case",
+      "options": [
+        "upper",
+        "as typed",
+        "lower",
+        "style"
+      ],
+      "default": "upper"
+    },
+    "pace": {
+      "type": "number",
+      "label": "Seconds per word",
+      "description": "without a transcript",
+      "default": 0.32,
+      "min": 0.08,
+      "max": 2,
+      "step": 0.01
+    },
+    "ticks": {
+      "type": "boolean",
+      "label": "Sound on every word",
+      "default": false
+    },
+    "intensity": {
+      "type": "choice",
+      "label": "Glitch",
+      "options": [
+        "standard",
+        "subtle",
+        "heavy"
+      ],
+      "default": "standard"
+    }
+  },
+  "beats": {
+    "in": 0.05
+  },
+  "parts": {
+    "words": "the caption words and everything drawn with them"
+  }
+}
