@@ -1,0 +1,19 @@
+{
+  "format": 1,
+  "id": "cursors",
+  "name": "MONARC Cursors",
+  "version": "1.0.0",
+  "description": "Cursors that act out a product: an AI agent working through steps, several people's cursors at once, a drag and drop, a text selection and a right-click menu — over your screen recordings, in the brand's colours.",
+  "author": "MONARC STUDIOS",
+  "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
+  "homepage": "https://volito.dev/docs/packs/cursors",
+  "style": "studio",
+  "shared": "shared.js",
+  "items": [
+    "agent-cursor",
+    "multiplayer",
+    "drag-drop",
+    "text-select",
+    "context-menu"
+  ]
+}

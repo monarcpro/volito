@@ -1,0 +1,135 @@
+{
+  "id": "orbit-carousel",
+  "name": "Orbit carousel",
+  "description": "Cards orbiting a title on a tilted ellipse: they pass behind the words and swing round in front, larger and brighter when near, each tilting with its path.",
+  "category": "scene",
+  "tags": [
+    "carousel",
+    "orbit",
+    "gallery",
+    "title",
+    "3d"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 3,
+    "max": 60
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Made this year",
+      "maxLength": 50
+    },
+    "cards": {
+      "type": "list",
+      "label": "Cards (Title: tag)",
+      "default": [
+        {
+          "title": "Morning light",
+          "tag": "Lookbook 01"
+        },
+        {
+          "title": "City nights",
+          "tag": "Lookbook 02"
+        },
+        {
+          "title": "Studio session",
+          "tag": "Behind the scenes"
+        },
+        {
+          "title": "Coastline",
+          "tag": "Travel"
+        },
+        {
+          "title": "Golden hour",
+          "tag": "Portraits"
+        },
+        {
+          "title": "Night market",
+          "tag": "Street"
+        },
+        {
+          "title": "Snow days",
+          "tag": "Winter"
+        },
+        {
+          "title": "Road trip",
+          "tag": "Travel"
+        }
+      ],
+      "maxItems": 16,
+      "minItems": 1,
+      "of": {
+        "title": "text",
+        "tag": "text"
+      }
+    },
+    "count": {
+      "type": "number",
+      "label": "Cards",
+      "default": 7,
+      "min": 3,
+      "max": 10
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0.2,
+      "max": 3,
+      "step": 0.1
+    },
+    "image1": {
+      "type": "image",
+      "label": "Picture 1",
+      "default": ""
+    },
+    "image2": {
+      "type": "image",
+      "label": "Picture 2",
+      "default": ""
+    },
+    "image3": {
+      "type": "image",
+      "label": "Picture 3",
+      "default": ""
+    },
+    "image4": {
+      "type": "image",
+      "label": "Picture 4",
+      "default": ""
+    },
+    "image5": {
+      "type": "image",
+      "label": "Picture 5",
+      "default": ""
+    },
+    "image6": {
+      "type": "image",
+      "label": "Picture 6",
+      "default": ""
+    },
+    "image7": {
+      "type": "image",
+      "label": "Picture 7",
+      "default": ""
+    },
+    "image8": {
+      "type": "image",
+      "label": "Picture 8",
+      "default": ""
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the title",
+    "cards": "the cards"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

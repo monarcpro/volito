@@ -1,0 +1,65 @@
+{
+  "id": "tile-flip",
+  "name": "Tile flip",
+  "description": "A headline split into tiles that flip one after another in a diagonal sweep, each turning over to show its slice of a second headline — lifting as the sweep passes, shaded as it turns edge-on.",
+  "category": "text",
+  "tags": [
+    "flip",
+    "tiles",
+    "reveal",
+    "3d",
+    "headline"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 2,
+    "max": 20
+  },
+  "props": {
+    "front": {
+      "type": "text",
+      "label": "Front headline",
+      "default": "MAKE IT",
+      "maxLength": 16
+    },
+    "rear": {
+      "type": "text",
+      "label": "Rear headline",
+      "default": "MATTER.",
+      "maxLength": 16
+    },
+    "tiles": {
+      "type": "number",
+      "label": "Tiles across",
+      "default": 12,
+      "min": 4,
+      "max": 24
+    },
+    "sweep": {
+      "type": "number",
+      "label": "Sweep (seconds)",
+      "default": 1.4,
+      "min": 0.6,
+      "max": 4,
+      "step": 0.1
+    },
+    "rearColor": {
+      "type": "choice",
+      "label": "Rear side",
+      "options": [
+        "accent",
+        "same"
+      ],
+      "default": "accent"
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "tiles": "the tiles"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "id": "agent-cursor",
+  "name": "Agent cursor",
+  "description": "An AI agent working a UI: its cursor glides to each target while its name tag types out the step, clicks with a ring, moves on, and ends with a check and the done line. Places in % of the frame.",
+  "category": "callout",
+  "tags": [
+    "agent",
+    "ai",
+    "cursor",
+    "automation",
+    "walkthrough"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 2,
+    "max": 30
+  },
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Agent name",
+      "default": "Agent",
+      "maxLength": 20
+    },
+    "steps": {
+      "type": "list",
+      "label": "Steps (Step: across %, down %)",
+      "default": [
+        {
+          "step": "Opening the timeline",
+          "x": 30,
+          "y": 38
+        },
+        {
+          "step": "Selecting the interview",
+          "x": 55,
+          "y": 56
+        },
+        {
+          "step": "Trimming the pauses",
+          "x": 72,
+          "y": 40
+        },
+        {
+          "step": "Exporting in 4K",
+          "x": 82,
+          "y": 72
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 1,
+      "of": {
+        "step": "text",
+        "x": "number",
+        "y": "number"
+      }
+    },
+    "done": {
+      "type": "text",
+      "label": "Done line",
+      "default": "Done",
+      "maxLength": 20
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "cursor": "the cursor, tag and clicks"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "text-select",
+  "name": "Text select",
+  "description": "Selecting text: a paragraph on a card, an I-beam drags across a phrase as the highlight grows word by word, lets go, and a small toolbar pops over the selection with one action pressed.",
+  "category": "callout",
+  "tags": [
+    "select",
+    "text",
+    "highlight",
+    "toolbar",
+    "docs"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 20
+  },
+  "props": {
+    "text": {
+      "type": "longtext",
+      "label": "Paragraph",
+      "default": "The best edits feel invisible. Every cut lands on purpose, every caption arrives on the word, and the story never waits for the tools.",
+      "maxLength": 260
+    },
+    "select": {
+      "type": "text",
+      "label": "Phrase to select",
+      "default": "every caption arrives on the word",
+      "maxLength": 80
+    },
+    "actions": {
+      "type": "list",
+      "label": "Toolbar",
+      "default": [
+        "Copy",
+        "Highlight",
+        "Comment"
+      ],
+      "maxItems": 4,
+      "minItems": 1,
+      "of": "text"
+    },
+    "press": {
+      "type": "number",
+      "label": "Pressed button",
+      "default": 2,
+      "min": 1,
+      "max": 4
+    }
+  },
+  "parts": {
+    "card": "the paragraph card",
+    "toolbar": "the toolbar",
+    "cursor": "the cursor"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

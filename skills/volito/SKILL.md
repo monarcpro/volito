@@ -32,17 +32,19 @@ The references in `references/` are the craft behind the commands. Load only wha
 
 ## The loop
 
-1. **Find the item.** `volito list` (or `volito list --search "name plate"`). 204 items in thirteen packs:
+1. **Find the item.** `volito list` (or `volito list --search "name plate"`). 217 items in fifteen packs:
    `essentials/…` (lower third, title card, headline, stat, chart, steps, quote, end card, logo sting, chapter, logo wall, progress bar, before/after, agenda …), `broadcast/…` (lower thirds, ticker, live badge, score bug, location, countdown),
    `social/…` (follow card, notifications, comments, chat, post, now playing, rating, poll, milestone, story frame,
    live chat, joined), `data/…` (line, donut, bar race, goals, versus, timeline, funnel, world map choropleth, flight route,
    heatmap, gauge, KPI tiles, waffle, leaderboard) and `3d/…` (3D logo, title,
-   number, card flip, word cube, 3D bars, globe), `transitions/…` (iris, blinds, doors, glitch, ink, clock,
+   number, card flip, word cube, 3D bars, globe, exploded stack, isometric blocks), `carousels/…` (ring, orbit, path,
+   text ring, cover flow — `image1`…`image8` for pictures), `transitions/…` (iris, blinds, doors, glitch, ink, clock,
    tiles, pixels, stripes, slices, whip — cut your clips at the midpoint), `annotate/…` (arrow, circle,
    spotlight, focus, highlight, stamp, reactions, pointer, emphasis, numbered markers, bracket, box with label,
-   cursor click, dimension line, tick or cross — places in % of the frame), `type/…` (typewriter, word swap,
+   cursor click, dimension line, tick or cross — places in % of the frame), `cursors/…` (agent cursor, multiplayer,
+   drag and drop, text select, context menu), `type/…` (typewriter, word swap,
    split-flap, marquee, echo, liquid fill, decode, word by word, key phrase, editorial stack, slot reel, outline
-   draw, weight flex, shimmer, streaming answer), `captions/…` (camera follow, karaoke, pop, subtitles, marker, neon tubes, scramble, slam,
+   draw, weight flex, shimmer, streaming answer, tile flip), `captions/…` (camera follow, karaoke, pop, subtitles, marker, neon tubes, scramble, slam,
    typed, editorial, stacked, blur-in, gradient fill, wipe-on, RGB split, burst, boxes, sticker, focus pull,
    wave, outline, speech bubble, news crawl, extrude, two-tone, drop, punch-in, flipboard, progress,
    lyrics, messages, striped, icons, scribble, social caption looks — index-card, weight-shift,

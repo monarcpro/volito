@@ -1,0 +1,75 @@
+{
+  "id": "iso-blocks",
+  "name": "Isometric blocks",
+  "description": "An isometric block chart: a floor grid, then a row of blocks rising to their values one after another, the tallest in the accent, each with its value on top and its label on the floor.",
+  "category": "chart",
+  "tags": [
+    "isometric",
+    "3d chart",
+    "blocks",
+    "bars",
+    "data"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Renders per day",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Blocks (Label: value)",
+      "default": [
+        {
+          "label": "Mon",
+          "value": 120
+        },
+        {
+          "label": "Tue",
+          "value": 180
+        },
+        {
+          "label": "Wed",
+          "value": 150
+        },
+        {
+          "label": "Thu",
+          "value": 260
+        },
+        {
+          "label": "Fri",
+          "value": 210
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 1,
+      "of": {
+        "label": "text",
+        "value": "number"
+      }
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After values",
+      "default": "",
+      "maxLength": 6
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "floor": "the floor",
+    "blocks": "the blocks"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

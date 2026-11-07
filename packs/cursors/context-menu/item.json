@@ -1,0 +1,83 @@
+{
+  "id": "context-menu",
+  "name": "Context menu",
+  "description": "A right-click: the cursor arrives and clicks, a menu opens beside it with items and shortcuts, the cursor moves to one item — it lights up — and clicks it, and the menu closes. Places in % of the frame.",
+  "category": "callout",
+  "tags": [
+    "context menu",
+    "right click",
+    "menu",
+    "cursor",
+    "ui"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 4,
+    "min": 2,
+    "max": 20
+  },
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Click across (%)",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Click down (%)",
+      "default": 34,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "items": {
+      "type": "list",
+      "label": "Items (Label: shortcut)",
+      "default": [
+        {
+          "label": "Cut",
+          "keys": "Cmd X"
+        },
+        {
+          "label": "Copy",
+          "keys": "Cmd C"
+        },
+        {
+          "label": "Duplicate",
+          "keys": "Cmd D"
+        },
+        {
+          "label": "Split at playhead",
+          "keys": "S"
+        },
+        {
+          "label": "Delete",
+          "keys": "Del"
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 1,
+      "of": {
+        "label": "text",
+        "keys": "text"
+      }
+    },
+    "pick": {
+      "type": "number",
+      "label": "Chosen item",
+      "default": 4,
+      "min": 1,
+      "max": 8
+    }
+  },
+  "parts": {
+    "menu": "the cursor and menu"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

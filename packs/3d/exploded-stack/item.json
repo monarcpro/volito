@@ -1,0 +1,50 @@
+{
+  "id": "exploded-stack",
+  "name": "Exploded stack",
+  "description": "Isometric plates, one per layer of a system, start as one stack, spread apart with a numbered label on a leader line beside each, light up one after another, then close back into one block. For architecture and system diagrams.",
+  "category": "chart",
+  "tags": [
+    "exploded",
+    "isometric",
+    "layers",
+    "architecture",
+    "stack"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "How a request moves",
+      "maxLength": 50
+    },
+    "layers": {
+      "type": "list",
+      "label": "Layers (top first)",
+      "default": [
+        "Interface",
+        "API gateway",
+        "Services",
+        "Database"
+      ],
+      "maxItems": 6,
+      "minItems": 1,
+      "of": "text"
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "stack": "the plates",
+    "labels": "the labels"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

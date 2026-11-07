@@ -1,0 +1,86 @@
+{
+  "id": "drag-drop",
+  "name": "Drag and drop",
+  "description": "The cursor picks up a file card — it lifts, with a deeper shadow — carries it along a curve to a dashed drop zone that lights up as it arrives, lets go, and the zone confirms.",
+  "category": "callout",
+  "tags": [
+    "drag and drop",
+    "upload",
+    "file",
+    "cursor",
+    "ui"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 20
+  },
+  "props": {
+    "file": {
+      "type": "text",
+      "label": "File",
+      "default": "interview_final.mp4",
+      "maxLength": 40
+    },
+    "size": {
+      "type": "text",
+      "label": "Size",
+      "default": "2.4 GB · 4K",
+      "maxLength": 24
+    },
+    "zone": {
+      "type": "text",
+      "label": "Zone",
+      "default": "Drop to upload",
+      "maxLength": 30
+    },
+    "done": {
+      "type": "text",
+      "label": "Done",
+      "default": "Uploaded",
+      "maxLength": 24
+    },
+    "fromX": {
+      "type": "number",
+      "label": "Card across (%)",
+      "default": 28,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "fromY": {
+      "type": "number",
+      "label": "Card down (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "toX": {
+      "type": "number",
+      "label": "Zone across (%)",
+      "default": 70,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "toY": {
+      "type": "number",
+      "label": "Zone down (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    }
+  },
+  "parts": {
+    "zone": "the drop zone",
+    "card": "the file card",
+    "cursor": "the cursor"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

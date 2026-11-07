@@ -1,0 +1,56 @@
+{
+  "id": "text-ring",
+  "name": "Text ring",
+  "description": "Words set round a circle and turning slowly, a second ring turning the other way inside it, and a big word (or a mark) in the centre — a badge, a loop, a seal.",
+  "category": "scene",
+  "tags": [
+    "text circle",
+    "badge",
+    "ring",
+    "rotating",
+    "seal"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 3,
+    "max": 60
+  },
+  "props": {
+    "text": {
+      "type": "text",
+      "label": "Outer ring",
+      "default": "Made with Volito · Motion as code",
+      "maxLength": 60
+    },
+    "inner": {
+      "type": "text",
+      "label": "Inner ring",
+      "default": "Any brand · any aspect",
+      "maxLength": 50
+    },
+    "center": {
+      "type": "text",
+      "label": "Centre",
+      "default": "V",
+      "maxLength": 8
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 4,
+      "step": 0.1
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "rings": "the text rings",
+    "center": "the centre"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

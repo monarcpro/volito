@@ -51,7 +51,16 @@
 - A pack's `style` is now the default for its items, as `pack.json` always said (items were shown in the
   engine's default, ember, unless a style was passed). Essentials, Data, Social, Annotate, Type and Backdrops
   default to light styles: studio, cream, pastel, candy, pop and memphis. Pass `--style` for any other.
-- The README's pack image shows all 204 graphics in 13 packs.
+- Two new packs. `carousels/…`: `ring-carousel` (cards round a ring, sized by depth, swinging card to card),
+  `orbit-carousel` (cards orbiting a title), `path-carousel` (a conveyor along an S-curve), `text-ring` (words
+  set round a circle, a second ring inside turning the other way) and `cover-flow` — each card your picture
+  (`image1` … `image8`) or a designed tile in the brand's colours. `cursors/…`: `agent-cursor` (an AI agent's
+  cursor whose name tag types each step as it clicks through them), `multiplayer` (several named cursors at once),
+  `drag-drop` (a file card carried to a drop zone), `text-select` (an I-beam selection and its toolbar) and
+  `context-menu` (a right-click menu, an item chosen). And `3d/exploded-stack` (isometric layers that spread apart
+  with labels, light up in turn and close again), `3d/iso-blocks` (an isometric block chart) and `type/tile-flip`
+  (a headline that flips tile by tile to a second one).
+- The README's pack image shows all 217 graphics in 15 packs.
 - Twelve more bundled faces for them (SIL Open Font License, from Fontsource): Instrument Sans, Instrument Serif
   (with italic), Kaushan Script, Parisienne, Michroma, Great Vibes, Dancing Script, Yellowtail, Mr Dafoe,
   Sacramento, Homemade Apple and Allura.

@@ -23,7 +23,8 @@ function frame(t, $) {
   const press = 1 - 0.14 * $.bump(t, click, 0.06, 0.18);
   const sz = 56 * k * (p.size === "large" ? 1.4 : 1);
   const arrow = "M0 0 L0 " + $.fx(sz) + " L" + $.fx(sz * 0.27) + " " + $.fx(sz * 0.76) + " L" + $.fx(sz * 0.47) + " " + $.fx(sz * 1.18) + " L" + $.fx(sz * 0.62) + " " + $.fx(sz * 1.1) + " L" + $.fx(sz * 0.43) + " " + $.fx(sz * 0.7) + " L" + $.fx(sz * 0.76) + " " + $.fx(sz * 0.7) + " Z";
-  s += $.g({ transform: "translate(" + $.fx(x) + " " + $.fx(y) + ") scale(" + $.fx(press) + ")" }, $.path(arrow, { fill: c.ink, stroke: "#FFFFFF", sw: 3.5 * k, shadow: "md" }));
+  // Its shadow is an offset, translucent copy (a filter shadow on a path draws a box round it).
+  s += $.g({ transform: "translate(" + $.fx(x) + " " + $.fx(y) + ") scale(" + $.fx(press) + ")" }, $.g({ transform: "translate(" + $.fx(3 * k) + " " + $.fx(5 * k) + ")" }, $.path(arrow, { fill: "#000000", op: 0.22 })) + $.path(arrow, { fill: c.ink, stroke: "#FFFFFF", sw: 3.5 * k }));
   let out = M.part("cursor", { at: tin, in: "fade", dur: 0.2, out: "fade" }, s);
   if (p.label) {
     const tg = tagAt($, p.label, to[0] + 40 * k + $.measure(String(p.label), { size: 36 * k, weight: 700 }) / 2, to[1] + sz * 1.6, col, 36);

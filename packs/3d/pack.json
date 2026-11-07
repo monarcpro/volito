@@ -3,7 +3,7 @@
   "id": "3d",
   "name": "MONARC 3D",
   "version": "1.0.0",
-  "description": "Extruded logos, titles and numbers, a card that flips, a word cube, a 3D bar chart and a globe \u2014 real depth, light and camera moves, rendered without a GPU, in any brand.",
+  "description": "Extruded logos, titles and numbers, a card that flips, a word cube, a 3D bar chart, a globe, an exploded isometric stack and isometric blocks — real depth, light and camera moves, rendered without a GPU, in any brand.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
   "homepage": "https://volito.dev/docs/packs/3d",
@@ -16,6 +16,8 @@
     "card-flip",
     "cube",
     "bars-3d",
-    "globe"
+    "globe",
+    "exploded-stack",
+    "iso-blocks"
   ]
 }
