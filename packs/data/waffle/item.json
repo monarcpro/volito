@@ -1,0 +1,61 @@
+{
+  "id": "waffle",
+  "name": "Waffle chart",
+  "description": "A ten-by-ten waffle chart where each cell is one percent, filling in to the value beside the number counting up and what it measures. Squares, dots or people.",
+  "category": "chart",
+  "tags": [
+    "chart",
+    "waffle",
+    "percent",
+    "share",
+    "grid"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Who stays to the end",
+      "maxLength": 50
+    },
+    "value": {
+      "type": "number",
+      "label": "Percent",
+      "default": 68,
+      "min": 0,
+      "max": 100
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "of viewers watch the whole video",
+      "maxLength": 70
+    },
+    "shape": {
+      "type": "choice",
+      "label": "Cells",
+      "options": [
+        "square",
+        "dot",
+        "person"
+      ],
+      "default": "square"
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "grid": "the grid",
+    "value": "the number",
+    "label": "the label"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

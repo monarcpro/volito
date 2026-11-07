@@ -1,0 +1,57 @@
+{
+  "id": "dot-grid",
+  "name": "Dot grid",
+  "description": "A grid of small dots with ripples running out from a few points: as a ripple passes, the dots swell and take the accent, then settle — a quiet, techy ground for titles.",
+  "category": "scene",
+  "tags": [
+    "dots",
+    "grid",
+    "ripple",
+    "tech",
+    "minimal"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "props": {
+    "spacing": {
+      "type": "number",
+      "label": "Spacing",
+      "default": 1,
+      "min": 0.5,
+      "max": 2.5,
+      "step": 0.1
+    },
+    "sources": {
+      "type": "number",
+      "label": "Ripple sources",
+      "default": 2,
+      "min": 1,
+      "max": 3
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "dots": "the dots"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "outline-draw",
+  "name": "Outline draw",
+  "description": "A word traced on as an outline, every letter's contour drawing at once, then filled in a wipe from the left, with a line under it rising after.",
+  "category": "text",
+  "tags": [
+    "outline",
+    "stroke",
+    "draw",
+    "trace",
+    "reveal"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 3.5,
+    "min": 2,
+    "max": 15
+  },
+  "props": {
+    "text": {
+      "type": "text",
+      "label": "Word",
+      "default": "Crafted",
+      "maxLength": 18
+    },
+    "subtitle": {
+      "type": "text",
+      "label": "Line under",
+      "default": "Every frame on purpose",
+      "maxLength": 60
+    },
+    "fill": {
+      "type": "choice",
+      "label": "Fill",
+      "options": [
+        "accent",
+        "fg"
+      ],
+      "default": "accent"
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "word": "the word",
+    "subtitle": "the line under it"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

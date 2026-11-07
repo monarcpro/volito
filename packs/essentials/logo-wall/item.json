@@ -1,0 +1,58 @@
+{
+  "id": "logo-wall",
+  "name": "Logo wall",
+  "description": "Social proof: a line like \"Trusted by teams at\" over a wall of wordmarks — each name set as a small logo with its own mark and face — popping in one after another.",
+  "category": "social",
+  "tags": [
+    "logos",
+    "trusted by",
+    "clients",
+    "partners",
+    "social proof"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 20
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Trusted by teams at",
+      "maxLength": 50
+    },
+    "names": {
+      "type": "list",
+      "label": "Names",
+      "default": [
+        "Velora",
+        "Quintic",
+        "Brightfold",
+        "Marrow & Co",
+        "Atlasyn",
+        "Kindlewood",
+        "Nimbleform",
+        "Tessel"
+      ],
+      "maxItems": 12,
+      "minItems": 1,
+      "of": "text"
+    },
+    "mono": {
+      "type": "boolean",
+      "label": "One colour",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the line above",
+    "logos": "each logo cell"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

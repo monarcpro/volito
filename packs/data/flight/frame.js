@@ -60,16 +60,38 @@ function frame(t, $) {
   }
   // Pins and names at both ends.
   const nf = { ...$.font("display"), size: 40 * k };
-  const pin = function (q, name, at, right) {
-    const pr = 13 * k;
+  // The destination is marked from the start as an open ring; it fills, with a pulse, when the plane lands.
+  const pin = function (q, name, at, right, landAt) {
+    const pr = 13 * k, landed = landAt == null ? 1 : $.E.out3($.seg(t, landAt, landAt + 0.3));
+    let ring = "";
+    if (landAt != null && t > landAt) for (let i = 0; i < 2; i++) {
+      const u = $.clamp((t - landAt - i * 0.35) / 1.1);
+      if (u > 0 && u < 1) ring += $.circle(q[0], q[1], pr * (1 + u * 3.2), { stroke: c.accent, sw: 3 * k, op: 0.7 * (1 - u) });
+    }
     return M.part("pins", { at: at, in: "pop", out: "fade", box: { x: q[0] - pr, y: q[1] - pr, w: 2 * pr, h: 2 * pr } },
-      $.circle(q[0], q[1], pr, { fill: c.accent, stroke: c.bg, sw: 4 * k }),
+      ring,
+      $.circle(q[0], q[1], pr, { fill: landed >= 1 ? c.accent : c.bg, stroke: c.accent, sw: 4 * k }),
+      landed > 0 && landed < 1 ? $.circle(q[0], q[1], pr * landed, { fill: c.accent }) : "",
       $.text($.case(String(name)), { ...nf, x: q[0] + (right ? 1 : -1) * 26 * k, y: q[1] - nf.size * 0.55, anchor: right ? "start" : "end", fill: c.fg, shadow: "sm" }));
   };
   const ra = P[0], rb = P[P.length - 1];
   // Names face inward, toward the middle of the frame.
   s += pin(ra, p.from, tin + 0.5, ra[0] < W / 2);
-  s += pin(rb, p.to, t1 - 0.1, rb[0] < W / 2);
-  if (p.note) s += M.text("note", { at: t1, in: "rise", distance: 16, out: "fade", ...$.font("mono"), size: 30 * k, ls: 0.06, x: W / 2, y: A.y + A.h - 40 * k, anchor: "middle", fill: c.mute }, String(p.note));
+  s += pin(rb, p.to, tin + 0.75, rb[0] < W / 2, t1);
+  // A boarding-pass card: from → to, and the note (distance, time) under it.
+  const cf = { ...$.font("display"), size: 34 * k }, mf = { ...$.font("mono"), size: 24 * k, ls: 0.05 };
+  // From and to with a drawn arrow between them (not every face has an arrow glyph).
+  const fromS = $.case(String(p.from)), toS = $.case(String(p.to)), aw = cf.size * 0.8, gap = cf.size * 0.4;
+  const routeW = $.measure(fromS, cf) + gap + aw + gap + $.measure(toS, cf);
+  const cw = Math.min(A.w, Math.max(routeW, p.note ? $.measure(String(p.note), mf) : 0) + 64 * k), ch = 32 * k + cf.size * 1.2 + (p.note ? mf.size * 1.6 : 0);
+  const cx = W / 2 - cw / 2, cy = A.y + A.h - ch;
+  let card = $.rect(cx, cy, cw, ch, { r: 18 * k, fill: c.surface, stroke: c.line, sw: 1.5 * k, shadow: "md" });
+  card += $.rect(cx, cy, 10 * k, ch, { r: 4 * k, fill: c.accent });
+  const rx = W / 2 + 5 * k - routeW / 2;
+  card += $.text(fromS, { ...cf, x: rx, y: cy + 16 * k, fill: c.fg });
+  card += $.icon("arrowRight", rx + $.measure(fromS, cf) + gap, cy + 16 * k + cf.size * 0.1, aw, { color: c.accent, sw: 3 * k });
+  card += $.text(toS, { ...cf, x: rx + $.measure(fromS, cf) + gap + aw + gap, y: cy + 16 * k, fill: c.fg });
+  if (p.note) card += $.text(String(p.note), { ...mf, x: W / 2 + 5 * k, y: cy + 16 * k + cf.size * 1.25, anchor: "middle", fill: c.mute });
+  s += M.part("note", { at: t0, in: "rise", distance: 24, out: "fade", box: { x: cx, y: cy, w: cw, h: ch } }, card);
   return s;
 }

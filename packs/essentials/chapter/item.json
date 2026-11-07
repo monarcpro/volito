@@ -1,0 +1,58 @@
+{
+  "id": "chapter",
+  "name": "Chapter card",
+  "description": "A chapter card: a huge outlined number that fills from the bottom, the chapter's name under a kicker, and a row of segments showing where it sits among all the chapters.",
+  "category": "title",
+  "tags": [
+    "chapter",
+    "section",
+    "title",
+    "part",
+    "episode"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 4,
+    "min": 2,
+    "max": 20
+  },
+  "props": {
+    "number": {
+      "type": "number",
+      "label": "Chapter",
+      "default": 2,
+      "min": 1,
+      "max": 12
+    },
+    "total": {
+      "type": "number",
+      "label": "Chapters",
+      "default": 5,
+      "min": 1,
+      "max": 12
+    },
+    "kicker": {
+      "type": "text",
+      "label": "Kicker",
+      "default": "Chapter",
+      "maxLength": 20
+    },
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Finding the hook",
+      "maxLength": 50
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "number": "the big number",
+    "kicker": "the kicker",
+    "title": "the chapter name",
+    "progress": "the chapter segments"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 — 2026-11-07
 
 - A captions pack, timed to the voice from a transcript (`--words`, Whisper JSON or `[{w, s, e}]`):
   `captions/camera-follow` writes each sentence across a canvas far bigger than the frame while a camera
@@ -38,6 +38,20 @@
   transcript's own words, or `text`
   timed to it (or paced evenly without one), with *starred* or listed accent words, in the brand's faces.
   The item category list gains `captions`.
+- Thirty more items in six packs, and a redesign of the ones that looked thin. Essentials: `chapter`,
+  `logo-wall`, `progress-bar`, `before-after`, `agenda`. Data: `heatmap`, `gauge`, `kpi-grid`, `waffle`,
+  `leaderboard`. Social: `poll`, `milestone`, `story`, `live-chat`, `joined`. Annotate: `bracket`, `box-label`,
+  `cursor`, `measure`, `check`. Type: `slot`, `outline-draw`, `flex`, `shimmer`, `stream`. Backdrops: `halftone`,
+  `waves`, `orbits`, `dot-grid`, `paper-cut`. `data/world-map` is now a full choropleth (one colour scale from a
+  pale tint to the accent, countries filling west to east, a gradient legend, `subtitle` and `source`, and a ranked
+  list under the map on tall frames); `data/timeline` puts each milestone on a card and lights the newest;
+  `data/flight` marks the destination from the start and ends on a boarding-pass card; `essentials/end-card`
+  draws designed tiles when no pictures are given; `backdrops/starfield` and `backdrops/bokeh` use the accents
+  (not ink) on light grounds.
+- A pack's `style` is now the default for its items, as `pack.json` always said (items were shown in the
+  engine's default, ember, unless a style was passed). Essentials, Data, Social, Annotate, Type and Backdrops
+  default to light styles: studio, cream, pastel, candy, pop and memphis. Pass `--style` for any other.
+- The README's pack image shows all 204 graphics in 13 packs.
 - Twelve more bundled faces for them (SIL Open Font License, from Fontsource): Instrument Sans, Instrument Serif
   (with italic), Kaushan Script, Parisienne, Michroma, Great Vibes, Dancing Script, Yellowtail, Mr Dafoe,
   Sacramento, Homemade Apple and Allura.

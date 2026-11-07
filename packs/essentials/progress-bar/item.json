@@ -1,0 +1,62 @@
+{
+  "id": "progress-bar",
+  "name": "Progress bar",
+  "description": "A progress card for footage: an icon, what is happening, a striped bar filling with the percentage counting up, then a check and the done line when it reaches the end.",
+  "category": "timer",
+  "tags": [
+    "progress",
+    "loading",
+    "export",
+    "upload",
+    "status"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 30
+  },
+  "props": {
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "Exporting your video",
+      "maxLength": 40
+    },
+    "value": {
+      "type": "number",
+      "label": "Reaches (%)",
+      "default": 100,
+      "min": 0,
+      "max": 100
+    },
+    "done": {
+      "type": "text",
+      "label": "Done line",
+      "default": "Ready to post",
+      "maxLength": 40
+    },
+    "icon": {
+      "type": "icon",
+      "label": "Icon",
+      "default": "download"
+    },
+    "position": {
+      "type": "choice",
+      "label": "Position",
+      "options": [
+        "bottom",
+        "center",
+        "top"
+      ],
+      "default": "bottom"
+    }
+  },
+  "parts": {
+    "card": "the card"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

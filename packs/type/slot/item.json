@@ -1,0 +1,50 @@
+{
+  "id": "slot",
+  "name": "Slot reel",
+  "description": "A slot-machine reel: the line's last word rolls through the list, fast and blurred, slows and lands on the final word with a bounce, in an accent window beside the words before it.",
+  "category": "text",
+  "tags": [
+    "slot",
+    "reel",
+    "rolling",
+    "word",
+    "casino"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 3.5,
+    "min": 2,
+    "max": 15
+  },
+  "props": {
+    "before": {
+      "type": "text",
+      "label": "Before the reel",
+      "default": "We make",
+      "maxLength": 30
+    },
+    "words": {
+      "type": "list",
+      "label": "Words (it lands on the last)",
+      "default": [
+        "films",
+        "reels",
+        "shorts",
+        "ads",
+        "stories"
+      ],
+      "maxItems": 10,
+      "minItems": 2,
+      "of": "text"
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "lead": "the words before",
+    "reel": "the reel"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

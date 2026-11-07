@@ -3,7 +3,8 @@ function frame(t, $) {
   const M = motion($, t);
   let s = M.part("ground", { in: "none", out: "none", vary: false }, plain($, t));
   let l = "";
-  const pal = [c.accent, c.accent2, c.fg];
+  // On a light ground the third light is a blend of the accents, not ink (which reads as dirt) or a blend of the two (which turns grey).
+  const pal = [c.accent, c.accent2, $.style.mode === "light" ? $.mix(c.accent2, "#FFFFFF", 0.45) : c.fg];
   for (let i = 0; i < Math.round(p.count); i++) {
     const r = Math.min(W, H) * (0.03 + 0.12 * Math.pow($.hash(i * 2.3), 2));
     const x = ($.hash(i * 5.1) * 1.2 - 0.1) * W + Math.sin(t * 0.3 * p.speed + i) * 40 * k, y = ($.hash(i * 8.7) * 1.2 - 0.1) * H - ((t * 14 * k * p.speed * (0.5 + $.hash(i))) % (H * 1.4)) + H * 0.2;

@@ -1,0 +1,80 @@
+{
+  "id": "leaderboard",
+  "name": "Leaderboard",
+  "description": "A leaderboard: ranked rows slide in, each with its place, an initials badge, the name, a bar and the score counting up, and how many places it moved; the leader wears a crown.",
+  "category": "list",
+  "tags": [
+    "leaderboard",
+    "ranking",
+    "scores",
+    "top",
+    "list"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Top creators this week",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Rows (Name: score)",
+      "default": [
+        {
+          "name": "Ana Ruiz",
+          "score": 9820,
+          "change": 2
+        },
+        {
+          "name": "Kenji Mori",
+          "score": 9410,
+          "change": -1
+        },
+        {
+          "name": "Lea Novak",
+          "score": 8760,
+          "change": 1
+        },
+        {
+          "name": "Sam Okafor",
+          "score": 8125,
+          "change": 0
+        },
+        {
+          "name": "Priya Das",
+          "score": 7690,
+          "change": -2
+        }
+      ],
+      "maxItems": 10,
+      "minItems": 1,
+      "of": {
+        "name": "text",
+        "score": "number",
+        "change": "number"
+      }
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After scores",
+      "default": "pts",
+      "maxLength": 6
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "rows": "each row"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

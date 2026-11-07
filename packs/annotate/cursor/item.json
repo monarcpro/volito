@@ -1,0 +1,81 @@
+{
+  "id": "cursor",
+  "name": "Cursor click",
+  "description": "A cursor glides in along a gentle curve and clicks the spot — a press and a ripple — then a tooltip pops beside it. For walkthroughs over screen recordings.",
+  "category": "callout",
+  "tags": [
+    "cursor",
+    "click",
+    "pointer",
+    "walkthrough",
+    "tutorial"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1.5,
+    "max": 12
+  },
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Click across (%)",
+      "default": 58,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Click down (%)",
+      "default": 46,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "fromX": {
+      "type": "number",
+      "label": "Start across (%)",
+      "default": 86,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "fromY": {
+      "type": "number",
+      "label": "Start down (%)",
+      "default": 86,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "label": {
+      "type": "text",
+      "label": "Tooltip",
+      "default": "Click Export",
+      "maxLength": 28
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "normal",
+        "large"
+      ],
+      "default": "normal"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "cursor": "the cursor and ripple",
+    "label": "the tooltip"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

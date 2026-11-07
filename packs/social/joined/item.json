@@ -1,0 +1,56 @@
+{
+  "id": "joined",
+  "name": "Joined",
+  "description": "Who joined: overlapping avatar badges pop in one after another, a +N badge closes the row and the line (\"Ana, Kenji and 12 others joined\") types in.",
+  "category": "social",
+  "tags": [
+    "joined",
+    "avatars",
+    "community",
+    "members",
+    "social proof"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 2,
+    "max": 20
+  },
+  "props": {
+    "names": {
+      "type": "list",
+      "label": "Names",
+      "default": [
+        "Ana Ruiz",
+        "Kenji Mori",
+        "Lea Novak",
+        "Sam Okafor"
+      ],
+      "maxItems": 6,
+      "minItems": 1,
+      "of": "text"
+    },
+    "more": {
+      "type": "number",
+      "label": "Others",
+      "default": 12,
+      "min": 0,
+      "max": 1000000000.0
+    },
+    "line": {
+      "type": "text",
+      "label": "Line",
+      "default": "joined the stream",
+      "maxLength": 40
+    }
+  },
+  "parts": {
+    "pill": "the pill",
+    "avatars": "the avatars",
+    "line": "the line"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

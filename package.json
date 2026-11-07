@@ -1,6 +1,6 @@
 {
   "name": "volito",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "mcpName": "io.github.monarcpro/volito",
   "type": "module",
   "description": "Volito by MONARC STUDIOS: brand-aware, voice-synced motion graphics as code. Packs of ready-made graphics (interactive UI states and filter effects among them), Graphic specs, a CLI, a Node API, an MCP server and a <volito-player> web component that render them to ProRes 4444, WebM, MP4, GIF, PNG or SVG, with sound Volito synthesises itself.",

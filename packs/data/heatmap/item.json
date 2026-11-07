@@ -1,0 +1,65 @@
+{
+  "id": "heatmap",
+  "name": "Activity heatmap",
+  "description": "A calendar heatmap: weeks across, days down, each day shaded by how busy it was, filling in week by week under a total that counts up, with a Less–More key.",
+  "category": "chart",
+  "tags": [
+    "chart",
+    "heatmap",
+    "calendar",
+    "activity",
+    "streak"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "A year of uploads",
+      "maxLength": 50
+    },
+    "total": {
+      "type": "number",
+      "label": "Total",
+      "default": 1284,
+      "min": 0,
+      "max": 1000000000.0
+    },
+    "label": {
+      "type": "text",
+      "label": "Total label",
+      "default": "uploads since January",
+      "maxLength": 60
+    },
+    "weeks": {
+      "type": "number",
+      "label": "Weeks",
+      "default": 26,
+      "min": 4,
+      "max": 53
+    },
+    "seed": {
+      "type": "number",
+      "label": "Pattern seed",
+      "default": 3,
+      "min": 1,
+      "max": 999
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "total": "the total and its label",
+    "cells": "the day cells",
+    "key": "the day names and key"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

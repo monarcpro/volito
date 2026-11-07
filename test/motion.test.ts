@@ -177,8 +177,8 @@ describe("props and styles", () => {
     const words = normalizeWords({ segments: [{ words: [{ word: "Meet", start: 0.2, end: 0.4 }, { word: "Priya", start: 1.5, end: 1.9 }] }] });
     const s = await openSession(findItem("lower-third"), { words, width: 480 });
     // The name enters on "Priya" (1.5 s): before it, the name is not drawn at all.
-    expect(s.runner.frame(1.2).svg).not.toMatch(/PRIYA/);
-    expect(s.runner.frame(2.4).svg).toMatch(/PRIYA/);
+    expect(s.runner.frame(1.2).svg).not.toMatch(/PRIYA/i);
+    expect(s.runner.frame(2.4).svg).toMatch(/PRIYA/i);
   });
 });
 
@@ -337,8 +337,8 @@ describe("motion", () => {
 
   it("lets a creator change any part's move", async () => {
     // By default the name rises in at ~0.3 s; with in: none it is there from the first frame.
-    expect(await svgAt("lower-third", 0.05)).not.toMatch(/PRIYA/);
-    expect(await svgAt("lower-third", 0.05, { motion: { name: { in: "none" } } })).toMatch(/PRIYA/);
+    expect(await svgAt("lower-third", 0.05)).not.toMatch(/PRIYA/i);
+    expect(await svgAt("lower-third", 0.05, { motion: { name: { in: "none" } } })).toMatch(/PRIYA/i);
     // Letters: one <text> per letter while they land.
     const letters = await svgAt("lower-third", 1, { motion: { name: { split: "letters", in: "pop" } } });
     expect((letters.match(/<text/g) ?? []).length).toBeGreaterThan(8);
@@ -347,7 +347,7 @@ describe("motion", () => {
     expect(typed).toMatch(/>P</);
     expect(typed).not.toMatch(/>M</);
     // An exit of "none" holds to the end.
-    expect(await svgAt("lower-third", 4.98, { motion: { "*": { out: "none" } } })).toMatch(/PRIYA/);
+    expect(await svgAt("lower-third", 4.98, { motion: { "*": { out: "none" } } })).toMatch(/PRIYA/i);
   });
 
   it("follows keyframes and emphasis hits", async () => {

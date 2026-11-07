@@ -1,7 +1,7 @@
 {
   "id": "world-map",
   "name": "World map",
-  "description": "A world map in the brand's colours: chosen countries fill in one by one (shaded by their values when given) and the top ones are labelled. Zooms to a region.",
+  "description": "A choropleth in the brand's colours: the countries given fill in west to east, shaded on one scale from a pale tint to the accent, the top ones labelled, with a gradient legend and the data's source. Zooms to a region.",
   "category": "chart",
   "tags": [
     "map",
@@ -25,6 +25,12 @@
       "label": "Title",
       "default": "Where our viewers are",
       "maxLength": 50
+    },
+    "subtitle": {
+      "type": "text",
+      "label": "Subtitle",
+      "default": "Share of watch time, last 90 days",
+      "maxLength": 80
     },
     "countries": {
       "type": "list",
@@ -51,16 +57,64 @@
           "value": 11
         },
         {
+          "name": "Philippines",
+          "value": 9
+        },
+        {
           "name": "Germany",
           "value": 9
+        },
+        {
+          "name": "Mexico",
+          "value": 8
         },
         {
           "name": "Nigeria",
           "value": 7
         },
         {
+          "name": "Canada",
+          "value": 7
+        },
+        {
           "name": "Japan",
           "value": 6
+        },
+        {
+          "name": "Vietnam",
+          "value": 6
+        },
+        {
+          "name": "France",
+          "value": 6
+        },
+        {
+          "name": "Australia",
+          "value": 5
+        },
+        {
+          "name": "Turkey",
+          "value": 5
+        },
+        {
+          "name": "South Africa",
+          "value": 5
+        },
+        {
+          "name": "Spain",
+          "value": 4
+        },
+        {
+          "name": "Egypt",
+          "value": 4
+        },
+        {
+          "name": "Argentina",
+          "value": 4
+        },
+        {
+          "name": "Kenya",
+          "value": 3
         }
       ],
       "maxItems": 40,
@@ -110,6 +164,17 @@
       "default": 0,
       "min": 0,
       "max": 3
+    },
+    "source": {
+      "type": "text",
+      "label": "Source",
+      "default": "Source: channel analytics",
+      "maxLength": 90
+    },
+    "legend": {
+      "type": "boolean",
+      "label": "Legend",
+      "default": true
     }
   },
   "parts": {
@@ -117,7 +182,8 @@
     "title": "the heading",
     "map": "the map",
     "highlights": "the chosen countries",
-    "labels": "the labels"
+    "labels": "the labels",
+    "legend": "the legend and the source"
   },
   "beats": {
     "in": 0.15,

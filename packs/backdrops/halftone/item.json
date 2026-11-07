@@ -1,0 +1,59 @@
+{
+  "id": "halftone",
+  "name": "Halftone",
+  "description": "A halftone field: a grid of dots whose size follows slow waves of light rolling across the frame, like newsprint breathing, with a second offset screen in the other accent printed over it.",
+  "category": "scene",
+  "tags": [
+    "halftone",
+    "dots",
+    "print",
+    "riso",
+    "pattern"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "props": {
+    "scale": {
+      "type": "number",
+      "label": "Dot size",
+      "default": 1,
+      "min": 0.5,
+      "max": 2.5,
+      "step": 0.1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "layers": {
+      "type": "choice",
+      "label": "Screens",
+      "options": [
+        "two",
+        "one"
+      ],
+      "default": "two"
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "dots": "the dots"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

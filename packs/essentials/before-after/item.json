@@ -1,0 +1,58 @@
+{
+  "id": "before-after",
+  "name": "Before and after",
+  "description": "Two pictures (or two tiles when none are given) split by a handle that sweeps across to reveal the after side and settles in the middle, each side labelled.",
+  "category": "callout",
+  "tags": [
+    "before after",
+    "compare",
+    "split",
+    "reveal",
+    "transformation"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 20
+  },
+  "props": {
+    "caption": {
+      "type": "text",
+      "label": "Caption",
+      "default": "Same footage, one pass of the agent",
+      "maxLength": 60
+    },
+    "before": {
+      "type": "text",
+      "label": "Before label",
+      "default": "Before",
+      "maxLength": 16
+    },
+    "after": {
+      "type": "text",
+      "label": "After label",
+      "default": "After",
+      "maxLength": 16
+    },
+    "beforeImage": {
+      "type": "image",
+      "label": "Before picture",
+      "default": ""
+    },
+    "afterImage": {
+      "type": "image",
+      "label": "After picture",
+      "default": ""
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "frame": "the pictures, handle and labels",
+    "caption": "the caption"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

@@ -3,11 +3,11 @@
   "id": "backdrops",
   "name": "MONARC Backdrops",
   "version": "1.0.0",
-  "description": "Grounds that move, to set titles, products or footage on: any of sixteen patterns, aurora, a Bauhaus field, a synthwave grid, lava blobs, a colour sweep, a starfield, bokeh and topographic lines.",
+  "description": "Grounds that move, to set titles, products or footage on: any of sixteen patterns, aurora, a Bauhaus field, a synthwave grid, lava blobs, a colour sweep, a starfield, bokeh, topographic lines, halftone screens, waves, orbits, a rippling dot grid and paper-cut hills.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
   "homepage": "https://volito.dev/docs/packs/backdrops",
-  "style": "aurora",
+  "style": "memphis",
   "shared": "shared.js",
   "items": [
     "pattern",
@@ -18,6 +18,11 @@
     "gradient",
     "starfield",
     "bokeh",
-    "topo"
+    "topo",
+    "halftone",
+    "waves",
+    "orbits",
+    "dot-grid",
+    "paper-cut"
   ]
 }

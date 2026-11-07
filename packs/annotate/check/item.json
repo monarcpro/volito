@@ -1,0 +1,75 @@
+{
+  "id": "check",
+  "name": "Tick or cross",
+  "description": "A verdict mark: a big hand-drawn tick or cross inked onto the spot in green or red over a soft disc, with an optional word under it — \"Do this\", \"Not this\".",
+  "category": "callout",
+  "tags": [
+    "check",
+    "tick",
+    "cross",
+    "right",
+    "wrong"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 2.5,
+    "min": 1,
+    "max": 12
+  },
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Across (%)",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Down (%)",
+      "default": 45,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "mark": {
+      "type": "choice",
+      "label": "Mark",
+      "options": [
+        "tick",
+        "cross"
+      ],
+      "default": "tick"
+    },
+    "size": {
+      "type": "choice",
+      "label": "Size",
+      "options": [
+        "medium",
+        "small",
+        "large"
+      ],
+      "default": "medium"
+    },
+    "label": {
+      "type": "text",
+      "label": "Word",
+      "default": "Do this",
+      "maxLength": 20
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "mark": "the mark",
+    "label": "the word"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

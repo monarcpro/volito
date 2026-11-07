@@ -8,7 +8,9 @@ function frame(t, $) {
     const a = $.hash(i * 1.37) * 6.2832, r0 = 0.02 + $.hash(i * 7.1) * 0.98;
     const z = ((r0 + t * 0.18 * p.speed * (0.6 + $.hash(i * 3.3))) % 1);
     const d = Math.pow(z, 2.2) * D, d0 = Math.pow(Math.max(0, z - 0.04 * p.speed), 2.2) * D;
-    const x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d, col = i % 9 === 0 ? c.accent : i % 13 === 0 ? c.accent2 : c.fg;
+    // On a light ground the stars are the accents and a soft ink, not solid ink.
+    const light = $.style.mode === "light";
+    const x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d, col = light ? (i % 3 === 0 ? c.accent : i % 3 === 1 ? c.accent2 : $.rgba(c.fg, 0.35)) : i % 9 === 0 ? c.accent : i % 13 === 0 ? c.accent2 : c.fg;
     const sw = (0.8 + 3.2 * z) * k, op = Math.min(1, z * 2.4);
     st += p.streaks ? $.line(cx + Math.cos(a) * d0, cy + Math.sin(a) * d0, x, y, { stroke: col, sw: sw, op: op }) : $.circle(x, y, sw, { fill: col, op: op });
   }

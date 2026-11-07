@@ -1,0 +1,81 @@
+{
+  "id": "box-label",
+  "name": "Box with label",
+  "description": "A box drawn round something with its label on a tab hanging off the corner — \"the new menu\", \"fixed\". Hand-drawn or clean. Places in % of the frame.",
+  "category": "callout",
+  "tags": [
+    "box",
+    "label",
+    "frame",
+    "annotation",
+    "tag"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1.5,
+    "max": 12
+  },
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Box left (%)",
+      "default": 36,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Box top (%)",
+      "default": 34,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "w": {
+      "type": "number",
+      "label": "Box width (%)",
+      "default": 28,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "h": {
+      "type": "number",
+      "label": "Box height (%)",
+      "default": 26,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "The new menu",
+      "maxLength": 28
+    },
+    "look": {
+      "type": "choice",
+      "label": "Look",
+      "options": [
+        "marker",
+        "clean"
+      ],
+      "default": "marker"
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "box": "the box",
+    "label": "the tab"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

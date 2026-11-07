@@ -32,15 +32,17 @@ The references in `references/` are the craft behind the commands. Load only wha
 
 ## The loop
 
-1. **Find the item.** `volito list` (or `volito list --search "name plate"`). 164 items in thirteen packs:
-   `essentials/…`, `broadcast/…` (lower thirds, ticker, live badge, score bug, location, countdown),
-   `social/…` (follow card, notifications, comments, chat, post, now playing, rating), `data/…` (line,
-   donut, bar race, goals, versus, timeline, funnel, world map, flight route) and `3d/…` (3D logo, title,
+1. **Find the item.** `volito list` (or `volito list --search "name plate"`). 204 items in thirteen packs:
+   `essentials/…` (lower third, title card, headline, stat, chart, steps, quote, end card, logo sting, chapter, logo wall, progress bar, before/after, agenda …), `broadcast/…` (lower thirds, ticker, live badge, score bug, location, countdown),
+   `social/…` (follow card, notifications, comments, chat, post, now playing, rating, poll, milestone, story frame,
+   live chat, joined), `data/…` (line, donut, bar race, goals, versus, timeline, funnel, world map choropleth, flight route,
+   heatmap, gauge, KPI tiles, waffle, leaderboard) and `3d/…` (3D logo, title,
    number, card flip, word cube, 3D bars, globe), `transitions/…` (iris, blinds, doors, glitch, ink, clock,
    tiles, pixels, stripes, slices, whip — cut your clips at the midpoint), `annotate/…` (arrow, circle,
-   spotlight, focus, highlight, stamp, reactions, pointer, emphasis, numbered markers — places in % of the
-   frame), `type/…` (typewriter, word swap, split-flap, marquee, echo, liquid fill, decode, word by word,
-   key phrase, editorial stack), `captions/…` (camera follow, karaoke, pop, subtitles, marker, neon tubes, scramble, slam,
+   spotlight, focus, highlight, stamp, reactions, pointer, emphasis, numbered markers, bracket, box with label,
+   cursor click, dimension line, tick or cross — places in % of the frame), `type/…` (typewriter, word swap,
+   split-flap, marquee, echo, liquid fill, decode, word by word, key phrase, editorial stack, slot reel, outline
+   draw, weight flex, shimmer, streaming answer), `captions/…` (camera follow, karaoke, pop, subtitles, marker, neon tubes, scramble, slam,
    typed, editorial, stacked, blur-in, gradient fill, wipe-on, RGB split, burst, boxes, sticker, focus pull,
    wave, outline, speech bubble, news crawl, extrude, two-tone, drop, punch-in, flipboard, progress,
    lyrics, messages, striped, icons, scribble, social caption looks — index-card, weight-shift,
@@ -49,7 +51,7 @@ The references in `references/` are the craft behind the commands. Load only wha
    block-justify, circled-word, notebook, loop-script — and script captions — pen-write, cursive-neon,
    groovy-script, script-sandwich, swash-mark, vow-script, brush-ribbon, script-fill, doodle-script, script-duet
    (`palette: brand` swaps in the brand's accents) — on the voice with `--words transcript.json`), `backdrops/…` (any pattern, aurora, Bauhaus field, synthwave grid, lava
-   blobs, colour sweep, starfield, bokeh, topographic) and `promo/…` (sale badge, price card, coupon, offer
+   blobs, colour sweep, starfield, bokeh, topographic, halftone, waves, orbits, dot grid, paper-cut hills) and `promo/…` (sale badge, price card, coupon, offer
    countdown, feature list, call to action, launch, tape ribbons), `ui/…` (button, toggle, like, loader, bell —
    each with interactive states for `<volito-player>`) and `effects/…` (film grain, light leak, glass card,
    chromatic split, liquid warp, neon sign).

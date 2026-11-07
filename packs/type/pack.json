@@ -3,11 +3,11 @@
   "id": "type",
   "name": "MONARC Type",
   "version": "1.0.0",
-  "description": "Kinetic typography on the brand's ground: typewriter, word swap, split-flap board, marquee bands, echo stack, liquid fill, decode, word by word, key phrase and an editorial stack.",
+  "description": "Kinetic typography on the brand's ground: typewriter, word swap, split-flap board, slot reel, marquee bands, echo stack, liquid fill, outline draw, weight flex, shimmer, decode, word by word, key phrase, a streaming AI answer and an editorial stack.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
   "homepage": "https://volito.dev/docs/packs/type",
-  "style": "tomato",
+  "style": "pop",
   "shared": "shared.js",
   "items": [
     "typewriter",
@@ -19,6 +19,11 @@
     "decode",
     "word-by-word",
     "key-phrase",
-    "stack"
+    "stack",
+    "slot",
+    "outline-draw",
+    "flex",
+    "shimmer",
+    "stream"
   ]
 }

@@ -1,0 +1,49 @@
+{
+  "id": "orbits",
+  "name": "Orbits",
+  "description": "Orbits: tilted rings round a glowing core with small planets travelling along them at their own speeds, the far side of each ring dimmer so it reads as depth.",
+  "category": "scene",
+  "tags": [
+    "orbits",
+    "planets",
+    "space",
+    "rings",
+    "tech"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "props": {
+    "rings": {
+      "type": "number",
+      "label": "Rings",
+      "default": 4,
+      "min": 2,
+      "max": 8
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "orbits": "the rings, core and planets"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

@@ -23,11 +23,17 @@ function frame(t, $) {
     const sx = stack ? left : left + i * (sw + 60 * k);
     const sy = top + headH + (stack ? i * (sh + labelH + 30 * k) : 0);
     const ccx = sx + sw / 2, ccy = sy + sh / 2;
-    let el = $.rect(sx, sy, sw, sh, { r: $.style.radius * 0.6, fill: $.rgba(c.fg, 0.06), stroke: $.rgba(c.fg, 0.22), sw: 3 * k, dash: slot[1] ? null : 14 * k + " " + 10 * k });
-    if (slot[1]) el += $.image(slot[1], sx, sy, sw, sh, { r: $.style.radius * 0.6 });
+    const rr = $.style.radius * 0.6;
+    let el = "";
+    if (slot[1]) el += $.image(slot[1], sx, sy, sw, sh, { r: rr });
     else {
+      // No picture: a tile in the brand's accents, a faint pattern, its number and a play button.
+      const a = i ? c.accent2 : c.accent, b = i ? c.accent : c.accent2;
+      el += $.rect(sx, sy, sw, sh, { r: rr, fill: $.gradient([a, $.mix(a, b, 0.55)], { angle: 135 }), shadow: "md" });
+      el += $.clip(sx, sy, sw, sh, rr, $.pattern(t, "dots", { box: { x: sx, y: sy, w: sw, h: sh }, color: $.on(a), a: 0.12, scale: 1.2 }));
+      el += $.text("0" + (i + 1), Object.assign({}, $.font("display"), { size: sh * 0.42, x: sx + 24 * k, y: sy + sh - sh * 0.42 - 14 * k, fill: $.on(a), op: 0.22 }));
       const pr = Math.min(sw, sh) * 0.14 * (1 + 0.06 * $.wave(t, 1.6, i * 0.3));
-      el += $.circle(ccx, ccy, pr, { fill: c.accent, shadow: "md" }) + $.icon("play", ccx - pr * 0.42, ccy - pr * 0.5, pr, { color: $.on(c.accent), fill: true });
+      el += $.circle(ccx, ccy, pr, { fill: "#FFFFFF", shadow: "md" }) + $.icon("play", ccx - pr * 0.42, ccy - pr * 0.5, pr, { color: a, fill: true });
     }
     $.wrap($.case(slot[0] || ""), sw, slotF).slice(0, 2).forEach(function (line, j) { el += $.text(line, Object.assign({}, slotF, { x: sx, y: sy + sh + 18 * k + j * slotF.size * 1.2 })); });
     s += M.part("slots", { at: tin + 0.25 + i * 0.15, in: "rise", distance: 40, box: { x: sx, y: sy, w: sw, h: sh + labelH } }, el);

@@ -1,0 +1,71 @@
+{
+  "id": "live-chat",
+  "name": "Live chat",
+  "description": "A live chat over the stream: messages arrive at the bottom and push the earlier ones up, each name in its own colour, under a LIVE header with the viewer count.",
+  "category": "social",
+  "tags": [
+    "live",
+    "chat",
+    "stream",
+    "comments",
+    "twitch"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 7,
+    "min": 3,
+    "max": 60
+  },
+  "props": {
+    "viewers": {
+      "type": "text",
+      "label": "Viewers",
+      "default": "2.4K",
+      "maxLength": 10
+    },
+    "messages": {
+      "type": "list",
+      "label": "Messages (Name: text)",
+      "default": [
+        {
+          "name": "ana_r",
+          "text": "the colour on this is unreal"
+        },
+        {
+          "name": "kenji",
+          "text": "how long did the edit take?"
+        },
+        {
+          "name": "leanovak",
+          "text": "cutting on the beat >>>"
+        },
+        {
+          "name": "sam.o",
+          "text": "first time catching it live!"
+        },
+        {
+          "name": "priya",
+          "text": "can you share the LUT?"
+        },
+        {
+          "name": "tomasz",
+          "text": "this is the best one yet"
+        }
+      ],
+      "maxItems": 12,
+      "minItems": 1,
+      "of": {
+        "name": "text",
+        "text": "text"
+      }
+    }
+  },
+  "parts": {
+    "panel": "the panel and header",
+    "messages": "the messages"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

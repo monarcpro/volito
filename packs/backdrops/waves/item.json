@@ -1,0 +1,57 @@
+{
+  "id": "waves",
+  "name": "Waves",
+  "description": "Layered waves: bands from the brand's accents stacked up the frame, each a slow sum of sines drifting sideways at its own speed, the front ones deeper.",
+  "category": "scene",
+  "tags": [
+    "waves",
+    "sea",
+    "layers",
+    "flow",
+    "calm"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 8,
+    "min": 2,
+    "max": 60
+  },
+  "props": {
+    "layers": {
+      "type": "number",
+      "label": "Layers",
+      "default": 5,
+      "min": 2,
+      "max": 9
+    },
+    "height": {
+      "type": "number",
+      "label": "Wave height",
+      "default": 1,
+      "min": 0.2,
+      "max": 3,
+      "step": 0.1
+    },
+    "speed": {
+      "type": "number",
+      "label": "Speed",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    "vignette": {
+      "type": "boolean",
+      "label": "Dark edges",
+      "default": false
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "waves": "the waves"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

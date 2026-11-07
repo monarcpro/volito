@@ -1,0 +1,68 @@
+{
+  "id": "story",
+  "name": "Story frame",
+  "description": "A story's frame over your footage: progress segments along the top with the current one filling, the poster's badge, name and time, a tilted caption sticker and the reply bar.",
+  "category": "social",
+  "tags": [
+    "story",
+    "stories",
+    "reels",
+    "overlay",
+    "vertical"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 2,
+    "max": 30
+  },
+  "props": {
+    "name": {
+      "type": "text",
+      "label": "Name",
+      "default": "Monarc Studio",
+      "maxLength": 30
+    },
+    "time": {
+      "type": "text",
+      "label": "Time",
+      "default": "2h",
+      "maxLength": 8
+    },
+    "segments": {
+      "type": "number",
+      "label": "Segments",
+      "default": 4,
+      "min": 1,
+      "max": 8
+    },
+    "current": {
+      "type": "number",
+      "label": "Current",
+      "default": 2,
+      "min": 1,
+      "max": 8
+    },
+    "caption": {
+      "type": "text",
+      "label": "Sticker",
+      "default": "New cut drops Friday",
+      "maxLength": 50
+    },
+    "reply": {
+      "type": "boolean",
+      "label": "Reply bar",
+      "default": true
+    }
+  },
+  "parts": {
+    "segments": "the progress segments",
+    "poster": "the badge, name and time",
+    "sticker": "the caption sticker",
+    "reply": "the reply bar"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

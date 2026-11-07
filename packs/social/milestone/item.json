@@ -1,0 +1,63 @@
+{
+  "id": "milestone",
+  "name": "Milestone",
+  "description": "A milestone badge: the platform's icon and the count rolling up to the goal; at the goal it pops, confetti bursts and the thank-you line rises under it.",
+  "category": "social",
+  "tags": [
+    "milestone",
+    "followers",
+    "subscribers",
+    "celebration",
+    "thank you"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 20
+  },
+  "props": {
+    "value": {
+      "type": "number",
+      "label": "Goal",
+      "default": 100000,
+      "min": 1,
+      "max": 10000000000.0
+    },
+    "label": {
+      "type": "text",
+      "label": "Counts",
+      "default": "",
+      "maxLength": 20
+    },
+    "platform": {
+      "type": "choice",
+      "label": "Platform",
+      "options": [
+        "youtube",
+        "instagram",
+        "tiktok",
+        "x",
+        "linkedin",
+        "threads",
+        "website"
+      ],
+      "default": "youtube"
+    },
+    "line": {
+      "type": "text",
+      "label": "Line",
+      "default": "Thank you for 100K!",
+      "maxLength": 40
+    }
+  },
+  "parts": {
+    "badge": "the badge",
+    "confetti": "the confetti",
+    "line": "the line under it"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

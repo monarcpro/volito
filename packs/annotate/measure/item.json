@@ -1,0 +1,77 @@
+{
+  "id": "measure",
+  "name": "Dimension line",
+  "description": "A dimension line between two points, like a technical drawing: end ticks and arrowheads, the line drawing out from its middle and the measurement on a pill at the centre.",
+  "category": "callout",
+  "tags": [
+    "measure",
+    "dimension",
+    "size",
+    "distance",
+    "spec"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1.5,
+    "max": 12
+  },
+  "props": {
+    "x1": {
+      "type": "number",
+      "label": "Start across (%)",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y1": {
+      "type": "number",
+      "label": "Start down (%)",
+      "default": 62,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "x2": {
+      "type": "number",
+      "label": "End across (%)",
+      "default": 70,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y2": {
+      "type": "number",
+      "label": "End down (%)",
+      "default": 62,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "label": {
+      "type": "text",
+      "label": "Measurement",
+      "default": "146.7 mm",
+      "maxLength": 20
+    },
+    "dashed": {
+      "type": "boolean",
+      "label": "Dashed",
+      "default": false
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "line": "the line, ticks and arrowheads",
+    "label": "the measurement"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

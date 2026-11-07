@@ -1,0 +1,83 @@
+{
+  "id": "bracket",
+  "name": "Bracket",
+  "description": "A curly bracket drawn along one side of a region from its middle out, its point reaching to a note — \"these three\", \"all of this\". Places in % of the frame.",
+  "category": "callout",
+  "tags": [
+    "bracket",
+    "brace",
+    "group",
+    "annotation",
+    "note"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 3,
+    "min": 1.5,
+    "max": 12
+  },
+  "props": {
+    "x": {
+      "type": "number",
+      "label": "Box left (%)",
+      "default": 34,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "y": {
+      "type": "number",
+      "label": "Box top (%)",
+      "default": 28,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "w": {
+      "type": "number",
+      "label": "Box width (%)",
+      "default": 26,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "h": {
+      "type": "number",
+      "label": "Box height (%)",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "side": {
+      "type": "choice",
+      "label": "Bracket side",
+      "options": [
+        "right",
+        "left",
+        "below",
+        "above"
+      ],
+      "default": "right"
+    },
+    "label": {
+      "type": "text",
+      "label": "Note",
+      "default": "These three",
+      "maxLength": 28
+    },
+    "color": {
+      "type": "color",
+      "label": "Colour",
+      "default": "",
+      "description": "empty: the brand's colour"
+    }
+  },
+  "parts": {
+    "bracket": "the bracket",
+    "label": "the note"
+  },
+  "beats": {
+    "in": 0.1
+  }
+}

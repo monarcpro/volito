@@ -27,7 +27,8 @@ export function loadPack(dir: string): MotionPack {
     const itemDir = join(dir, id);
     const m = readJson<ItemManifest>(join(itemDir, "item.json"));
     if (m.id !== id) throw new MotionError(`${itemDir}: item.json id "${m.id}" does not match its folder`);
-    return makeItem(manifest.id, m, readFileSync(join(itemDir, "frame.js"), "utf8"), shared);
+    // An item without a style of its own is shown in its pack's.
+    return makeItem(manifest.id, { ...m, style: m.style ?? manifest.style }, readFileSync(join(itemDir, "frame.js"), "utf8"), shared);
   });
   return { ...manifest, entries };
 }

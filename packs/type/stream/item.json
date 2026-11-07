@@ -1,0 +1,48 @@
+{
+  "id": "stream",
+  "name": "Streaming answer",
+  "description": "An assistant's answer streaming in: the prompt in a bubble, a moment of thinking dots, then the reply arriving word by word, each fading up, with a caret while it writes.",
+  "category": "text",
+  "tags": [
+    "ai",
+    "chat",
+    "streaming",
+    "prompt",
+    "assistant"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "prompt": {
+      "type": "text",
+      "label": "Prompt",
+      "default": "Cut this interview into a 30-second teaser",
+      "maxLength": 120
+    },
+    "response": {
+      "type": "longtext",
+      "label": "Reply",
+      "default": "Done. I kept the three strongest answers, trimmed the pauses, put the hook first and timed the cuts to the music. Captions are on and the colour matches your last video.",
+      "maxLength": 400
+    },
+    "speed": {
+      "type": "number",
+      "label": "Words a second",
+      "default": 9,
+      "min": 2,
+      "max": 30
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "prompt": "the prompt bubble"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

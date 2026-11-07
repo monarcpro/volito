@@ -1,0 +1,64 @@
+{
+  "id": "poll",
+  "name": "Poll",
+  "description": "A poll card: the question, then each option's bar filling to its share with the percentage counting up; the winning option is ticked and lit, the vote count under it.",
+  "category": "social",
+  "tags": [
+    "poll",
+    "vote",
+    "question",
+    "results",
+    "community"
+  ],
+  "placement": "overlay",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "question": {
+      "type": "text",
+      "label": "Question",
+      "default": "What should the next video be about?",
+      "maxLength": 90
+    },
+    "options": {
+      "type": "list",
+      "label": "Options (Label: votes)",
+      "default": [
+        {
+          "label": "Colour grading",
+          "votes": 4210
+        },
+        {
+          "label": "Sound design",
+          "votes": 2980
+        },
+        {
+          "label": "Cutting dialogue",
+          "votes": 1870
+        }
+      ],
+      "maxItems": 5,
+      "minItems": 1,
+      "of": {
+        "label": "text",
+        "votes": "number"
+      }
+    },
+    "total": {
+      "type": "text",
+      "label": "Votes line",
+      "default": "9,060 votes · Final results",
+      "maxLength": 40
+    }
+  },
+  "parts": {
+    "card": "the card"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

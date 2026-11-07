@@ -1,0 +1,83 @@
+{
+  "id": "gauge",
+  "name": "Gauge",
+  "description": "A half-dial gauge: the needle swings to the value with a little overshoot, the arc fills behind it and the number counts up in the middle, with the label under it.",
+  "category": "stat",
+  "tags": [
+    "gauge",
+    "dial",
+    "meter",
+    "score",
+    "kpi"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "Audience retention",
+      "maxLength": 50
+    },
+    "value": {
+      "type": "number",
+      "label": "Value",
+      "default": 72,
+      "min": 0,
+      "max": 1000000000.0
+    },
+    "max": {
+      "type": "number",
+      "label": "Maximum",
+      "default": 100,
+      "min": 1,
+      "max": 1000000000.0
+    },
+    "label": {
+      "type": "text",
+      "label": "Label",
+      "default": "watched past the first minute",
+      "maxLength": 60
+    },
+    "prefix": {
+      "type": "text",
+      "label": "Before numbers",
+      "default": "",
+      "maxLength": 3
+    },
+    "suffix": {
+      "type": "text",
+      "label": "After numbers",
+      "default": "%",
+      "maxLength": 6
+    },
+    "decimals": {
+      "type": "number",
+      "label": "Decimals",
+      "default": 0,
+      "min": 0,
+      "max": 3
+    },
+    "zones": {
+      "type": "boolean",
+      "label": "Good zone",
+      "default": true
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "dial": "the dial, ticks and zone",
+    "needle": "the needle",
+    "value": "the number",
+    "label": "the label"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

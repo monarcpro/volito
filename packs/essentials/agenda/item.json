@@ -1,0 +1,71 @@
+{
+  "id": "agenda",
+  "name": "Agenda",
+  "description": "\"In this video\": the topics as a numbered list with their timestamps, a marker moving down to light the current one and the ones before it ticked off.",
+  "category": "list",
+  "tags": [
+    "agenda",
+    "contents",
+    "chapters",
+    "timestamps",
+    "list"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 5,
+    "min": 3,
+    "max": 20
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "In this video",
+      "maxLength": 40
+    },
+    "rows": {
+      "type": "list",
+      "label": "Topics (Topic: time)",
+      "default": [
+        {
+          "topic": "Why the first frame matters",
+          "time": "0:00"
+        },
+        {
+          "topic": "Cutting on the beat",
+          "time": "1:42"
+        },
+        {
+          "topic": "Captions that keep people",
+          "time": "3:10"
+        },
+        {
+          "topic": "The export settings we use",
+          "time": "5:05"
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 1,
+      "of": {
+        "topic": "text",
+        "time": "text"
+      }
+    },
+    "current": {
+      "type": "number",
+      "label": "Current topic",
+      "default": 3,
+      "min": 1,
+      "max": 8
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "rows": "each topic"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

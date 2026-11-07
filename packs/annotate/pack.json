@@ -3,7 +3,7 @@
   "id": "annotate",
   "name": "MONARC Annotate",
   "version": "1.0.0",
-  "description": "Point things out in footage: hand-drawn arrows and circles, a spotlight, focus brackets, highlighter marks, a rubber stamp, live reactions, a tech pointer, emphasis marks and numbered markers.",
+  "description": "Point things out in footage: hand-drawn arrows, circles and boxes, brackets, a spotlight, focus brackets, highlighter marks, a rubber stamp, a cursor that clicks, dimension lines, ticks and crosses, live reactions, a tech pointer, emphasis marks and numbered markers.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
   "homepage": "https://volito.dev/docs/packs/annotate",
@@ -19,6 +19,11 @@
     "reactions",
     "pointer",
     "emphasis",
-    "markers"
+    "markers",
+    "bracket",
+    "box-label",
+    "cursor",
+    "measure",
+    "check"
   ]
 }

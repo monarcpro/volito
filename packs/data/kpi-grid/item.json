@@ -1,0 +1,74 @@
+{
+  "id": "kpi-grid",
+  "name": "KPI tiles",
+  "description": "Key numbers as tiles: each label, its value counting up, a change chip (up in green, down in red) and a small trend line — four across, two by two or stacked.",
+  "category": "stat",
+  "tags": [
+    "kpi",
+    "dashboard",
+    "metrics",
+    "tiles",
+    "numbers"
+  ],
+  "placement": "full",
+  "duration": {
+    "default": 6,
+    "min": 3,
+    "max": 30
+  },
+  "props": {
+    "title": {
+      "type": "text",
+      "label": "Title",
+      "default": "This month",
+      "maxLength": 50
+    },
+    "rows": {
+      "type": "list",
+      "label": "Tiles (Label: value)",
+      "default": [
+        {
+          "label": "Views",
+          "value": 1240000,
+          "suffix": "",
+          "delta": 18
+        },
+        {
+          "label": "Watch hours",
+          "value": 48200,
+          "suffix": "",
+          "delta": 9
+        },
+        {
+          "label": "Click-through",
+          "value": 6.4,
+          "suffix": "%",
+          "delta": -2
+        },
+        {
+          "label": "New subscribers",
+          "value": 3120,
+          "suffix": "",
+          "delta": 24
+        }
+      ],
+      "maxItems": 8,
+      "minItems": 1,
+      "of": {
+        "label": "text",
+        "value": "number",
+        "suffix": "text",
+        "delta": "number"
+      }
+    }
+  },
+  "parts": {
+    "ground": "the ground",
+    "title": "the heading",
+    "tiles": "each tile"
+  },
+  "beats": {
+    "in": 0.15,
+    "out": -0.45
+  }
+}

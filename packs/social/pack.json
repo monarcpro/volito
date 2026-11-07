@@ -3,11 +3,11 @@
   "id": "social",
   "name": "MONARC Social",
   "version": "1.0.0",
-  "description": "Follow cards, notifications, comments, chat threads, posts, now playing and ratings \u2014 the social and app UI that videos borrow, in any brand, any aspect.",
+  "description": "Follow cards, notifications, comments, chat threads, posts, polls, milestones, story frames, live chat, avatar groups, now playing and ratings — the social and app UI that videos borrow, in any brand, any aspect.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
   "homepage": "https://volito.dev/docs/packs/social",
-  "style": "studio",
+  "style": "pastel",
   "shared": "shared.js",
   "items": [
     "follow-card",
@@ -17,6 +17,11 @@
     "chat",
     "post",
     "now-playing",
-    "rating"
+    "rating",
+    "poll",
+    "milestone",
+    "story",
+    "live-chat",
+    "joined"
   ]
 }

@@ -3,7 +3,7 @@
   "id": "data",
   "name": "MONARC Data",
   "version": "1.0.0",
-  "description": "Line charts, donuts, bar races, goal meters, versus splits, timelines, funnels, world maps and flight routes \u2014 data that moves, in any brand, any aspect.",
+  "description": "Line charts, donuts, bar races, goal meters, gauges, KPI tiles, waffles, heatmaps, leaderboards, versus splits, timelines, funnels, a world-map choropleth and flight routes — data that moves, in any brand, any aspect.",
   "author": "MONARC STUDIOS",
   "license": "MONARC Packs License 1.0 (free to use in any video; not for resale as templates)",
   "homepage": "https://volito.dev/docs/packs/data",
@@ -18,6 +18,11 @@
     "timeline",
     "funnel",
     "world-map",
-    "flight"
+    "flight",
+    "heatmap",
+    "gauge",
+    "kpi-grid",
+    "waffle",
+    "leaderboard"
   ]
 }
