@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0 — 2026-11-07
+## 0.4.0 — 2026-11-08
 
 - A captions pack, timed to the voice from a transcript (`--words`, Whisper JSON or `[{w, s, e}]`):
   `captions/camera-follow` writes each sentence across a canvas far bigger than the frame while a camera
